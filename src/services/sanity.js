@@ -10,7 +10,6 @@ class Sanity {
     );
     let URL = `https://${PROJECTID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERY}`;
     const resp = await axios.get(URL);
-    console.log(resp);
     return resp;
   }
 
@@ -20,7 +19,6 @@ class Sanity {
     );
     let URL = `https://${PROJECTID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERY}`;
     const resp = await axios.get(URL);
-    console.log(resp);
     return resp;
   }
 }

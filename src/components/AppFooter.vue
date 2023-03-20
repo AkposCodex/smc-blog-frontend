@@ -75,7 +75,7 @@
           this.response = 'Subscribed'
         })
         .catch(err => {
-          console.log(err)
+           
         })
       }
     },

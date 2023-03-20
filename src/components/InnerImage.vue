@@ -17,7 +17,6 @@ export default {
     },
   },
   created() {
-    console.log(this.url);
   },
   data() {
     return {

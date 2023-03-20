@@ -30,14 +30,13 @@ export default {
       this.posts = response.data
       this.text = this.posts.body
       this.cat = this.posts.categories
-      console.log(this.posts)
       
       getAPI.get('/categories/'+this.cat)
       .then(response => {
         this.cat = response.data.cat_title
       })
       .catch(err => {
-        console.log(err)
+         
       })
 
       getAPI.get('/users/'+this.posts.author)
@@ -46,7 +45,7 @@ export default {
         this.auth_img = response.data.image
       })
       .catch(err => {
-        console.log(err)
+         
       })
 
       getAPI.get('/posts?category='+this.cat)
@@ -60,11 +59,11 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
+         
       })
     })
     .catch(err => {
-      console.log(err)
+       
     })
   },
   components: { BlogCardList, BaseIcon, AddComment, Comment },

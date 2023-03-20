@@ -30,7 +30,7 @@ export default {
     async addPost({ commit }, payload) {
       const post = await sanityClient.loadPost(payload).then((response) => {
         commit("ADD_POST", response);
-        console.log(response);
+         
       });
     },
   },

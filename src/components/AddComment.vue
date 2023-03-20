@@ -46,7 +46,7 @@ export default {
           this.$router.go();
         })
         .catch((err) => {
-          console.log(err);
+          
         });
     },
   },

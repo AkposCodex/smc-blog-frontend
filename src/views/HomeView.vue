@@ -31,7 +31,7 @@ export default {
           this.typedPosts = response.data;
         })
         .catch((err) => {
-          console.log(err);
+          
         });
     },
   },
@@ -40,12 +40,12 @@ export default {
     getAPI
       .get("/posts")
       .then((response) => {
-        console.log("posts API has received data");
+
         this.blogPosts = response.data;
-        console.log(this.blogPosts);
+
       })
       .catch((err) => {
-        console.log(err);
+        
       });
 
     getAPI
@@ -54,7 +54,7 @@ export default {
         this.editorPosts = response.data;
       })
       .catch((err) => {
-        console.log(err);
+        
       });
   },
   components: {

@@ -30,7 +30,7 @@ export default {
       this.blogPosts = response.data
     })
     .catch(err => {
-      console.log(err)
+       
     })
   },
 }

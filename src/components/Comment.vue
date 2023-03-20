@@ -14,7 +14,7 @@
         this.comment = response.data
       })
       .catch(err => {
-        console.log(err)
+         
       })
     },
     methods: {
@@ -25,7 +25,7 @@
           this.$router.go()
         })
         .catch(err => {
-          console.log(err)
+           
         })
       }
     },

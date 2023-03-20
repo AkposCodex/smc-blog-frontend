@@ -17,7 +17,7 @@
         Login to dashboard
       </h1>
       <div class="flex flex-col space-y-6">
-        <div class="flex flex-col w-min mx-auto">
+        <div class="flex flex-col w-3/5 mx-auto">
           <label for="name" class="font-semibold">Email</label>
           <input
             type="text"
@@ -28,7 +28,7 @@
             class="rounded-xl border p-4 dark:border-white/50 border-black bg-transparent"
           />
         </div>
-        <div class="flex flex-col w-min mx-auto">
+        <div class="flex flex-col w-3/5 mx-auto">
           <label for="email" class="font-semibold">Password</label>
           <input
             type="password"
@@ -41,7 +41,7 @@
         </div>
         <div class="flex justify-center">
           <button
-            class="bg-white/10 px-10 py-3 rounded-xl border dark:border-white border-black"
+            class="bg-black dark:bg-white/10 px-10 py-3 text-white rounded-xl border border-white dark:border-black"
           >
             LOGIN
           </button>
@@ -86,15 +86,14 @@ export default {
             .get("/users?email=" + this.email)
             .then((response) => {
               this.userslg = response.data[0].slug;
-              // console.log(this.userslg)
               this.$router.push({ path: "profile/" + this.userslg });
             })
             .catch((err) => {
-              console.log(err);
+              
             });
         })
         .catch((err) => {
-          console.log(err);
+          
           this.error = err;
         });
     },

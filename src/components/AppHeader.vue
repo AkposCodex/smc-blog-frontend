@@ -123,10 +123,10 @@ export default {
       <!-- TODO: Refactor mobile menu dropdown -->
       <div
         v-if="isMenuOpen"
-        class="flex absolute bg-white dark:bg-[#272626] mt-[4.8rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+        class="flex absolute bg-white dark:bg-[#272626] mt-[4rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
         <div
-          class="flex gap-2 items-center border-b border-[#004FE5] w-full px-6 py-3"
+          class="flex gap-2 items-center overflow-scroll border-b border-[#004FE5] w-full px-6 py-3"
         >
           <BaseIcon name="search" class="text-[#366BFF]" />
           <input type="text" placeholder="search" class="outline-none w-full" />

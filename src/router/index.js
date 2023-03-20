@@ -15,6 +15,12 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
+      path: "/profile/:slug",
+      name: "adminProfile",
+      component: () => import("../components/AdminPost.vue"),
+      props: true,
+    },
+    {
       path: "/geo",
       name: "geoReport",
       component: () => import("../views/GeoReport.vue"),
@@ -35,7 +41,7 @@ const router = createRouter({
       component: () => import("../views/EqReport.vue"),
     },
     {
-      path: "/profile/:slug",
+      path: "/profil/:slug",
       name: "profileView",
       component: () => import("../views/profileView.vue"),
       props: true,
