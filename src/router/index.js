@@ -41,7 +41,7 @@ const router = createRouter({
       component: () => import("../views/EqReport.vue"),
     },
     {
-      path: "/profil/:slug",
+      path: "/profil",
       name: "profileView",
       component: () => import("../views/profileView.vue"),
       props: true,

@@ -1,10 +1,20 @@
 <template>
+  <SavedModal v-show="showModal" @close-modal="showModal = false" />
+
   <div class="pt-12 max-w-3xl mx-auto">
-    <p
-      class="bg-black text-white w-min p-3 font-bold dark:bg-white dark:text-black mb-12"
-    >
-      EDITOR
-    </p>
+    <div class="flex w-2/5 items-center mb-12 gap-4">
+      <p
+        class="bg-black text-white text-2xl w-min p-3 font-bold dark:bg-white dark:text-black"
+      >
+        EDITOR
+      </p>
+      <button
+        class="bg-red-400 p-2 font-bold text-white"
+        @click="this.$router.push('/')"
+      >
+        LOG OUT
+      </button>
+    </div>
 
     <div class="flex gap-6 mb-5">
       <figure>
@@ -19,6 +29,11 @@
         <br />
         <p v-if="res.bio">{{ res.bio }}<br /></p>
         <p v-else>No Bio</p>
+        <div class="save-btn">
+          <button class="savebtn" @click="showModal = true">
+            <i class="text-blue-400">Edit Profile</i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -69,7 +84,7 @@
         accept="image/*"
       />
 
-      <div class="mb-12">
+      <div class="mb-12 -z-50">
         <ckeditor
           required
           :editor="editor"
@@ -140,6 +155,7 @@ import SavedModal from "../components/Modal.vue";
 import AddPost from "../components/AddPost.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+import router from "../router";
 
 export default {
   components: {
@@ -194,6 +210,8 @@ export default {
     postForm() {
       let data = new FormData();
       data.append("title", this.title);
+      data.append("author", this.res.slug);
+      data.append("categories", this.categorySel.selected);
       data.append("picked", this.editorpost);
       data.append("summary", this.summary);
       data.append("body", this.editorData);
@@ -201,35 +219,25 @@ export default {
       data.append("slug", this.title.split(" ").join("").toLowerCase());
 
       getAPI
-        .post(
-          "/posts",
-          {
-            author:this.res.name,
-            categories: this.categorySel.selected,
-            title: this.title,
-            picked: this.editorpost,
-            summary: this.summary,
-            body: this.editorData,
-            mainImage: this.file,
-            slug: this.title.split(" ").join("").toLowerCase(),
+        .post("/posts", data, {
+          headers: {
+            Authorization: `token 6e8cf68a4fc854801686530dcd0ec256e39a9e43`,
+            "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
           },
-          {
-            headers: {
-              Authorization: `token 6e8cf68a4fc854801686530dcd0ec256e39a9e43`,
-            },
-          }
-        )
+        })
         .then((response) => {
-          console.log(this.file)
+          console.log(response);
           this.success = true;
           this.$router.go();
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err);
+        });
     },
     Changeimage(e) {
       let file = e.target.files[0];
       this.file = file;
-      console.log(this.file)
+      console.log(this.file);
     },
     showblog() {
       getAPI
@@ -253,6 +261,7 @@ export default {
 .ck-editor__editable {
   height: 12rem;
 }
+
 .toggler-wrapper {
   display: block;
   width: 45px;
