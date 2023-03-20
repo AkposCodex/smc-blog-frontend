@@ -1,5 +1,6 @@
 <template>
   <footer
+  id="footer"
     class="text-center bg-[#1B1B1F] dark:bg-black text-white py-9 text-xs"
   >
     <div class="md:w-1/2 mx-auto">
@@ -35,23 +36,13 @@
       <div class="">
         <p class="flex md:space-x-4 text-sm justify-center">
           &copy;2023 SMC Desk &nbsp;|<span
-            class="mx-3 flex justify-center space-x-6"
+            class="mx-3 flex justify-center items-center space-x-6"
           >
-            <img src="@/assets/icons/discord.png" alt="" width="12" />
-            <img src="@/assets/icons/twitter.png" alt="" width="12" />
-            <img src="@/assets/icons/youtube.png" alt="" width="12" />
-            <img src="@/assets/icons/instagram.png" alt="" width="12" />
-            <img src="@/assets/icons/telegram.png" alt="" width="12" />
+            <a href="https://twitter.com/smcdao"><img src="@/assets/icons/twitter.png" alt="" width="12" /></a>
+            <a href="https://youtube.com/@smcdao"><img src="@/assets/icons/youtube.png" alt="" width="12" /></a>
+            <a href="https://t.me/smcnewdesk"><img src="@/assets/icons/telegram.png" alt="" width="12" /></a>
           </span>
         </p>
-      </div>
-      <div class="">
-        <div class="flex justify-between w-full space-x-6">
-          <RouterLink to="/"> About Us </RouterLink>
-          <RouterLink to="">Privacy </RouterLink>
-          <RouterLink to="/"> Learn</RouterLink>
-          <RouterLink to="/"> Cookie Policy</RouterLink>
-        </div>
       </div>
     </div>
   </footer>

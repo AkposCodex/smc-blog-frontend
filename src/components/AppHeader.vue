@@ -4,6 +4,7 @@ import AppLogo from "./AppLogo.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import BaseIcon from "./BaseIcon.vue";
 import { useRouter } from "vue-router";
+import { getAPI } from "../axios";
 
 export default {
   setup() {
@@ -18,12 +19,34 @@ export default {
   data() {
     return {
       isMenuOpen: false,
+      searchWord: "",
+      word: "",
+      results: [],
     };
   },
   methods: {
     openMenu() {
       this.isMenuOpen = !this.isMenuOpen;
       document.body.classList.toggle("overflow-hidden");
+    },
+    async search(e) {
+      await getAPI.get(`/posts?name=${e}`).then((response) => {
+        this.results = response.data;
+        console.log(this.results);
+      });
+    },
+    async searchMini(e) {
+      await getAPI.get(`/posts?name=${e}`).then((response) => {
+        this.results = response.data;
+        console.log(this.results);
+      });
+    },
+    navigate(e) {
+      this.$router.push({
+        name: "post",
+        params: { slug: e },
+      });
+      this.$router.go();
     },
   },
   mounted() {
@@ -54,7 +77,7 @@ export default {
           >
         </button>
       </div>
-      <RouterLink class="md:hidden" to="/">
+      <RouterLink class="lg:hidden" to="/">
         <AppLogo class="text-black dark:text-white" />
       </RouterLink>
       <div class="hidden lg:flex gap-9 w-full capitalize justify-evenly">
@@ -97,7 +120,7 @@ export default {
           >
         </div>
       </div>
-      <div class="hidden md:block">
+      <div class="hidden lg:block">
         <div
           class="flex gap-2 transition-all items-center border-b border-[#004FE5] w-full text-sm group"
         >
@@ -109,7 +132,14 @@ export default {
             type="text"
             placeholder="search"
             class="outline-none w-12 group-focus-within:w-full transition-all"
+            v-model="searchWord"
           />
+          <button
+            @click="search(searchWord)"
+            class="bg-blue-600 uppercase text-white p-2 font-bold"
+          >
+            Search
+          </button>
         </div>
       </div>
       <div class="lg:hidden">
@@ -126,63 +156,110 @@ export default {
         class="flex absolute bg-white dark:bg-[#272626] mt-[4rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
         <div
-          class="flex gap-2 items-center overflow-scroll border-b border-[#004FE5] w-full px-6 py-3"
+          class="flex gap-2 hidden items-center border-b border-[#004FE5] w-full px-6 py-3"
         >
           <BaseIcon name="search" class="text-[#366BFF]" />
-          <input type="text" placeholder="search" class="outline-none w-full" />
+          <input
+            type="text"
+            placeholder="search"
+            class="outline-none w-full"
+            v-model="word"
+          />
+          <button
+            @click="searchMini(word)"
+            class="bg-blue-600 uppercase text-white p-2 font-bold"
+          >
+            Search
+          </button>
         </div>
         <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
-          <RouterLink
-            to="/"
-            class="font-bold"
-            exact-active-class="text-[#366bff]"
-          >
+          <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
             home
-          </RouterLink>
-          <RouterLink
-            to="/bc"
+          </a>
+          <a
+            href="/bc"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
             >blockchain report
-          </RouterLink>
-          <RouterLink
-            to="/eq"
+          </a>
+          <a
+            href="/eq"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            equity report</RouterLink
+            equity report</a
           >
-          <RouterLink
-            to="/eco"
+          <a
+            href="/eco"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            economics report</RouterLink
+            economics report</a
           >
-          <RouterLink
-            to="/geo"
+          <a
+            href="/geo"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            geopolitical report</RouterLink
+            geopolitical report</a
           >
         </div>
         <hr class="border w-full" />
-        <BaseButton class="capitalize">
-          subscribe to our daily news letter
-        </BaseButton>
+        <a
+          href="#footer"
+          class="block mx-auto p-3 text-xs font-semibold bg-black text-white"
+          @click="openMenu"
+        >
+          Subscribe to our Newsletter
+        </a>
         <div class="flex justify-center space-x-6">
-          <img src="@/assets/icons/discord.png" alt="" width="20" />
-          <img src="@/assets/icons/twitter.png" alt="" width="20" />
-          <img src="@/assets/icons/youtube.png" alt="" width="20" />
-          <img src="@/assets/icons/instagram.png" alt="" width="20" />
-          <img src="@/assets/icons/telegram.png" alt="" width="20" />
+          <a href="https://twitter.com/smcdao"
+            ><img src="@/assets/icons/twitter.png" alt="" width="20"
+          /></a>
+          <a href="https://youtube.com/@smcdao"
+            ><img src="@/assets/icons/youtube.png" alt="" width="20"
+          /></a>
+          <a href="https://t.me/smcnewdesk"
+            ><img src="@/assets/icons/telegram.png" alt="" width="20"
+          /></a>
         </div>
       </div>
     </nav>
+    <div class="lg:hidden md:block">
+      <div
+        class="flex gap-2 bg-white dark:bg-[#1B1B1F] transition-all items-center justify-center w-full text-sm group"
+      >
+        <div class="border-b border-[#004FE5] items-center flex gap-2">
+          <BaseIcon
+            name="search"
+            class="group-focus-within:text-[#00E0B1] transition-all t text-[#366BFF]"
+          />
+          <input
+            type="text"
+            placeholder="search"
+            class="outline-none w-12 group-focus-within:w-full transition-all"
+            v-model="searchWord"
+          />
+          <button
+            @click="search(searchWord)"
+            class="bg-blue-600 uppercase text-white p-2 font-bold"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shadow mx-auto w-3/5" v-show="results">
+    <div class="" v-for="res in results">
+      <button class="w-full text-left" @click="navigate(res.slug)">
+        <p class="p-3">{{ res.title }}</p>
+      </button>
+      <hr class="w-full" />
+    </div>
   </div>
 </template>

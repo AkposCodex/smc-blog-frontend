@@ -1,8 +1,8 @@
 <template>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
 
-  <div class="pt-12 max-w-3xl mx-auto">
-    <div class="flex w-2/5 items-center mb-12 gap-4">
+  <div class="pt-12 max-w-3xl px-6 mx-auto">
+    <div class="flex lg:w-2/5 items-center mb-12 gap-4">
       <p
         class="bg-black text-white text-2xl w-min p-3 font-bold dark:bg-white dark:text-black"
       >
@@ -26,8 +26,7 @@
         <!-- <p v-else class="text-3xl font-bold font-serifFamilty">No Name</p> -->
         <br />
         <p>{{ blogPosts.length }} Articles Written</p>
-        <br />
-        <p v-if="res.bio">{{ res.bio }}<br /></p>
+        <p v-if="res.bio">{{ res.bio }}</p>
         <p v-else>No Bio</p>
         <div class="save-btn">
           <button class="savebtn" @click="showModal = true">
@@ -62,7 +61,7 @@
         type="text"
         name="title"
         v-model="title"
-        class="w-3/5 border-b mb-8 bg-gray-200 h-[3rem] border-black"
+        class="w-full border-b mb-8 bg-gray-200 h-[3rem] border-black"
         id=""
       />
       <br />
@@ -73,31 +72,32 @@
         id=""
         cols="30"
         rows="4"
-        class="w-3/5 border-b mb-8 bg-gray-200 border-black"
+        class="w-full border-b mb-8 bg-gray-200 border-black"
         v-model="summary"
       ></textarea>
       <input
         type="file"
         @change="Changeimage"
         required
-        class="border-dashed border-2 mb-12 py-[10%] px-[30%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center w-full h-[12rem]"
+        class="border-dashed border-2 mb-12 lg:py-[10%] lg:px-[30%] py-[20%] px-[10%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center w-full h-[12rem]"
         accept="image/*"
       />
 
       <div class="mb-12 -z-50">
         <ckeditor
           required
+          id="editor"
           :editor="editor"
           v-model="editorData"
-          :config="eConfig"
+          :config="editorConfig"
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-12 mb-12">
+      <div class="grid grid-cols-2 lg:gap-12 gap-6 mb-12">
         <div class="border border-gray-700 capitalize">
           <p class="p-3">Add to a Category</p>
           <hr class="w-full border-black mt-5" />
-          <div class="p-8">
+          <div class="lg:p-8 p-2 lg:text-md text-sm">
             <div
               class=""
               v-for="choice in categorySel.autocompleteItems"
@@ -107,10 +107,10 @@
                 type="radio"
                 name="category"
                 :value="choice.slug"
-                id="geopolitics"
+                id="category"
                 v-model="categorySel.selected"
               />
-              <label for="geopolitics" class="px-4">{{
+              <label for="category" class="lg:px-4 pl-2">{{
                 choice.cat_title
               }}</label>
             </div>
@@ -119,8 +119,8 @@
         <div class="border border-gray-700">
           <p class="p-3">Get featured on the Home screen</p>
           <hr class="border-black mt-5" />
-          <div class="p-8">
-            <p class="mb-3">
+          <div class="lg:p-8 p-2">
+            <p class="mb-3 lg:text-md text-sm">
               Tag this post as <i>Editor's Pick</i> to get featured on the home
               screen
             </p>
@@ -182,6 +182,13 @@ export default {
       categorySel: {
         selected: [],
         autocompleteItems: this.categoriesItem,
+      },
+      editorConfig: {
+          ckfinder: {
+              uploadUrl: 'http://127.0.0.1:8000/ckeditor/upload/',
+
+              withCredentials: false,
+          }
       },
       eConfig: {
         ui: {

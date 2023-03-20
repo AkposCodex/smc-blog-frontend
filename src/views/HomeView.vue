@@ -17,45 +17,54 @@ export default {
       typedPosts: null,
       editorPosts: null,
       fall: false,
-      count: 0,
+      count: 1,
       loading: true,
       isMobile: false,
       isDark: isDark,
     };
   },
   methods: {
-    fetchTypedPost(slug) {
-      getAPI
+    async fetchTypedPost(slug, count) {
+      await getAPI
         .get("/posts?category=" + slug)
         .then((response) => {
           this.typedPosts = response.data;
         })
-        .catch((err) => {
-          
-        });
+        .catch((err) => {});
+      this.count = count;
+    },
+    navigate() {
+      switch (this.count) {
+        case 1:
+          this.$router.push("/eq");
+          break;
+        case 2:
+          this.$router.push("/bc");
+          break;
+        case 3:
+          this.$router.push("/geo");
+          break;
+        case 4:
+          this.$router.push("/eco");
+          break;
+      }
     },
   },
-  created() {
-    this.fetchTypedPost("bc");
-    getAPI
+  async created() {
+    this.fetchTypedPost("et", 1);
+    await getAPI
       .get("/posts")
       .then((response) => {
-
         this.blogPosts = response.data;
-
       })
-      .catch((err) => {
-        
-      });
+      .catch((err) => {});
 
-    getAPI
+    await getAPI
       .get("/posts" + "?editor=True")
       .then((response) => {
         this.editorPosts = response.data;
       })
-      .catch((err) => {
-        
-      });
+      .catch((err) => {});
   },
   components: {
     Placeholder,
@@ -78,7 +87,7 @@ export default {
     class="max-w-3xl mx-auto"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
-    <section class="py-4 w-full md:grid md:grid-cols-[1fr_180px] gap-10">
+    <section class="py-4 px-6 w-full md:grid md:grid-cols-[1fr_180px] gap-10">
       <router-link :to="`/post/${blogPosts[0].slug}`">
         <div class="flex flex-col mx-auto justify-end">
           <div class="">
@@ -114,10 +123,6 @@ export default {
         class="flex items-center justify-between mb-8 border-t border-b dark:border-white border-black p-2"
       >
         <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
-        <RouterLink to="/bc" class="text-sm font-semibold flex items-center">
-          <span>All</span>
-          <BaseIcon name="arrow-right" />
-        </RouterLink>
       </div>
       <div class="px-5">
         <BlogCardList v-if="editorPosts" :posts="editorPosts" />
@@ -129,7 +134,7 @@ export default {
         class="flex gap-4 py-2 mx-5 mb-8 border-b border-black dark:border-white overflow-y-auto scrollbar-hide"
       >
         <button
-          @click="fetchTypedPost('et')"
+          @click="fetchTypedPost('et', 1)"
           :class="{
             'text-blue-700 underline-offset-[10px] decoration-4 underline':
               count == 1,
@@ -139,7 +144,7 @@ export default {
           Equity
         </button>
         <button
-          @click="fetchTypedPost('bc')"
+          @click="fetchTypedPost('bc', 2)"
           :class="{
             'text-blue-700 underline-offset-[10px] decoration-4 underline':
               count == 2,
@@ -149,7 +154,7 @@ export default {
           Blockchain
         </button>
         <button
-          @click="fetchTypedPost('ge')"
+          @click="fetchTypedPost('ge', 3)"
           :class="{
             'text-blue-700 underline-offset-[10px] decoration-4 underline':
               count == 3,
@@ -159,7 +164,7 @@ export default {
           Geopolitical
         </button>
         <button
-          @click="fetchTypedPost('ec')"
+          @click="fetchTypedPost('ec', 4)"
           :class="{
             'text-blue-700 underline-offset-[10px] decoration-4 underline':
               count == 4,
@@ -175,7 +180,12 @@ export default {
           :posts="typedPosts"
           variant="secondary"
         />
-        <BaseButton class="w-2/4 mx-auto my-16"> Show more stories </BaseButton>
+        <button
+          @click="navigate"
+          class="block mx-auto p-3 text-xs mt-6 font-semibold bg-black text-white"
+        >
+          Show more stories
+        </button>
       </div>
     </section>
   </main>

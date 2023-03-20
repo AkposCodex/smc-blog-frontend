@@ -1,24 +1,24 @@
 <template>
   <div
-    class="absolute bg-black/50 backdrop-blur-xl flex justify-center items-center z-55 w-full h-full"
+    class="absolute bg-black/50 backdrop-blur-lg flex justify-center items-center  z-55 w-full md:h-full"
   >
     <!-- <img class="check" src="../assets/check-icon.png" alt="" /> -->
-    <form @submit.prevent="UpdateForm" class="bg-white w-3/5">
+    <form @submit.prevent="UpdateForm" class="bg-white dark:bg-[#1B1B1F] lg:w-3/5 w-4/5 mb-20 md:mb-0">
       <div
-        class="left w-full flex justify-end px-9"
+        class="left w-full flex justify-end px-9  md:pt-0"
         @click="$emit('close-modal')"
       >
         <p>X</p>
       </div>
       
       <div class="flex flex-col items-center">
-          <h1 class="font-serifFamily text-4xl">UPDATE PROFILE</h1>
-        <p class="uppercase m-0">Profile Picture</p>
+          <h1 class="font-serifFamily text-2xl md:text-4xl">UPDATE PROFILE</h1>
+        <p class="uppercase m-0 text-sm">Profile Picture</p>
         <input
           type="file"
-          @change="Changeimage"
+          @change="changeimage"
           required
-          class="border-dashed border-2 mb-12 py-[12%] px-[12%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center w-3/5 h-[12rem]"
+          class="border-dashed border-2 dark:bg-gray-700 mb-12 py-[12%] px-[12%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center lg:w-3/5 w-4/5 h-[12rem]"
           accept="image/*"
         />
       </div>
@@ -31,20 +31,20 @@
         />
         <br /><br /> -->
         <input
-          class="border-b border-black w-4/5"
+          class="border-b border-black w-4/5 dark:bg-gray-700 p-6"
           type="text"
           v-model="name"
           placeholder="Author Name"
         />
         <br /><br />
         <textarea
-          class="border-b border-black w-4/5"
+          class="border-b border-black w-4/5 dark:bg-gray-700 p-6"
           v-model="newBio"
           placeholder="Bio..."
           cols="23"
         ></textarea>
         <br />
-        <button class="bg-black text-white w-4/5 p-3 font-bold">Update</button>
+        <button class="bg-black dark:bg-white dark:text-black text-white w-4/5 p-3 font-bold">Update</button>
         <br /><br />
         {{ mssg }}
       </div>

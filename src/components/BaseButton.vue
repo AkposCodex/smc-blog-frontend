@@ -8,7 +8,6 @@
         variant === 'secondary',
     }"
   >
-    <slot />
   </button>
 </template>
 
