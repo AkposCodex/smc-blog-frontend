@@ -61,7 +61,7 @@
         type="text"
         name="title"
         v-model="title"
-        class="w-full border-b mb-8 bg-gray-200 h-[3rem] border-black"
+        class="w-full border-b mb-8 bg-gray-200 dark:bg-gray-700 h-[3rem] border-black"
         id=""
       />
       <br />
@@ -72,14 +72,14 @@
         id=""
         cols="30"
         rows="4"
-        class="w-full border-b mb-8 bg-gray-200 border-black"
+        class="w-full border-b mb-8 bg-gray-200 dark:bg-gray-700 border-black"
         v-model="summary"
       ></textarea>
       <input
         type="file"
         @change="Changeimage"
         required
-        class="border-dashed border-2 mb-12 lg:py-[10%] lg:px-[30%] py-[20%] px-[10%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center w-full h-[12rem]"
+        class="border-dashed border-2 mb-12 dark:bg-gray-700 lg:py-[10%] lg:px-[30%] py-[20%] px-[10%] before:content-['Upload Main Image'] before:inline-block border-black bg-gray-200 item-center justify-center w-full h-[12rem]"
         accept="image/*"
       />
 
@@ -136,7 +136,7 @@
 
       <div class="w-full flex justify-center mb-12">
         <button
-          class="bg-black text-white dark:bg-white p-3 uppercase w-4/5 mx-auto"
+          class="bg-black text-white dark:text-black dark:bg-white p-3 uppercase w-4/5 mx-auto"
           @click="postForm()"
         >
           Upload
