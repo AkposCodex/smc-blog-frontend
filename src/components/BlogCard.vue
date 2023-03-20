@@ -10,12 +10,9 @@
     <router-link :to="`/post/${post.slug}`">
       <div
         v-if="post.mainImage"
-        class="w-full"
-        :class="{
-          'md:h-full': mdShrink,
-        }"
+        class="w-full h-[12rem]"
       >
-        <img :src="post.mainImage" alt="blog post" class="" />
+        <img :src="post.mainImage" alt="blog post" class="w-full h-full object-cover" />
       </div>
       <div
         :class="{
@@ -23,8 +20,7 @@
         }"
       >
         <div
-          v-if="variant !== 'default'"
-          class="flex items-center text-[#919094] gap-2 p-3 text-xxs mb-2"
+          class="flex items-center text-[#919094] gap-2 pt-3 text-xxs mb-2"
         >
           <figure class="h-5 w-5">
             <img
@@ -46,27 +42,6 @@
         >
           {{ post.summary }}
         </p>
-        <div class="flex items-center text-[#919094] gap-2 text-xxs">
-          <div v-if="variant === 'default'" class="flex items-center gap-2">
-            <figure
-              class="h-5 w-5"
-              :class="{
-                hidden: !mdShrink,
-              }"
-            >
-              <img
-                :src="athmg"
-                alt="author image"
-                class="w-full h-full object-cover rounded-sm"
-              />
-            </figure>
-            by {{ ath }}
-          </div>
-          <span v-else>{{ post.publishedAt }}</span>
-          <p class="h-2 w-2 bg-current rounded-full"></p>
-          <span v-if="variant === 'default'"></span>
-          <span v-else>{{ post.timeToRead }}</span>
-        </div>
       </div>
     </router-link>
   </article>
@@ -105,6 +80,7 @@ export default {
         this.localVariable = response.data;
         this.ath = this.localVariable.name;
         this.athmg = this.localVariable.image;
+        console.log(response)
       })
       .catch((err) => {
         

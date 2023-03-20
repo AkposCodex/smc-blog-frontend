@@ -4,7 +4,7 @@
   <div class="pt-12 max-w-3xl px-6 mx-auto">
     <div class="flex lg:w-2/5 items-center mb-12 gap-4">
       <p
-        class="bg-black text-white text-2xl w-min p-3 font-bold dark:bg-white dark:text-black"
+        class="bg-black text-white text-lg w-min p-3 font-bold dark:bg-white dark:text-black"
       >
         EDITOR
       </p>
