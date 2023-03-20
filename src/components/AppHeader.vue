@@ -21,7 +21,7 @@ export default {
       isMenuOpen: false,
       searchWord: "",
       word: "",
-      results: [],
+      results: null,
     };
   },
   methods: {
@@ -32,13 +32,11 @@ export default {
     async search(e) {
       await getAPI.get(`/posts?name=${e}`).then((response) => {
         this.results = response.data;
-        console.log(this.results);
       });
     },
     async searchMini(e) {
       await getAPI.get(`/posts?name=${e}`).then((response) => {
         this.results = response.data;
-        console.log(this.results);
       });
     },
     navigate(e) {
@@ -153,7 +151,7 @@ export default {
       <!-- TODO: Refactor mobile menu dropdown -->
       <div
         v-if="isMenuOpen"
-        class="flex absolute bg-white dark:bg-[#272626] mt-[4rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
         <div
           class="flex gap-2 hidden items-center border-b border-[#004FE5] w-full px-6 py-3"
@@ -254,12 +252,18 @@ export default {
       </div>
     </div>
   </div>
-  <div class="shadow mx-auto w-3/5" v-show="results">
-    <div class="" v-for="res in results">
-      <button class="w-full text-left" @click="navigate(res.slug)">
-        <p class="p-3">{{ res.title }}</p>
-      </button>
-      <hr class="w-full" />
+  <a
+    @click="results = null"
+    class="shadow mx-auto h-[100vh] w-full z-50 bg-transparent absolute transition-all"
+    v-show="results"
+  >
+    <div class="h-min bg-white">
+      <div class="" v-for="res in results">
+        <button class="w-full text-left" @click="navigate(res.slug)">
+          <p class="p-3">{{ res.title }}</p>
+        </button>
+        <hr class="w-full" />
+      </div>
     </div>
-  </div>
+  </a>
 </template>

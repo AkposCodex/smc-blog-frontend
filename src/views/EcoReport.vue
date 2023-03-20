@@ -1,16 +1,13 @@
 <script>
 import Placeholder from "../components/BlogPost.vue";
-import { useDark, useToggle } from "@vueuse/core";
 import PriceMarqueeWidget from "../components/PriceMarqueeWidget.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { getAPI } from "../axios";
 
-const isDark = useDark();
 export default {
   name: 'Posts',
   data() {
     return {
-      isDark: isDark,
       blogPosts: null,
       fall: false,
       loading: true,
@@ -37,9 +34,12 @@ export default {
 </script>
 
 <template>
+  <head>
+    <title>SMC DESK | Economics Report</title>
+  </head>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
     <section class="py-4 max-w-4xl mx-auto w-full mb-12">
-      <p class="pb-8 text-2xl font-bold text-center">Latest Stories</p>
+      <p class="pb-8 text-2xl font-bold text-center">Economic Reports</p>
       <div
         class="font-baseFamily text-center font-bold text-4xl mt-32 mb-32"
         v-if="!blogPosts || !blogPosts.length"

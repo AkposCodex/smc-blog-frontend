@@ -1,4 +1,7 @@
 <template>
+  <head>
+    <title>SMC DESK | LOGIN</title>
+  </head>
   <div class="font-baseFamily pt-12">
     <img
       src="@/assets/icons/logo.png"
@@ -25,7 +28,7 @@
             v-model="email"
             required
             placeholder="Email"
-            class="rounded-xl border p-4 dark:border-white/50 border-black bg-transparent"
+            class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
           />
         </div>
         <div class="flex flex-col w-3/5 mx-auto">
@@ -36,7 +39,7 @@
             placeholder="Password"
             v-model="password"
             required
-            class="rounded-xl border p-4 dark:border-white/50 border-black bg-transparent"
+            class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
           />
         </div>
         <div class="flex justify-center">

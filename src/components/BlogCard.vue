@@ -1,7 +1,7 @@
 <template>
   <!-- TODO: Refactor dimensions, Fixed Height/Widths, tidy component -->
   <article
-    class="dark:text-white text-black max-w-sm lg:max-w-full py-2 gap-2 items-center"
+    class="dark:text-white text-black max-w-sm lg:max-w-full w-[100%] py-2 gap-2 items-center"
     :class="{
       'grid-cols-[1fr_130px]': variant !== 'default',
       ' ': mdShrink,
@@ -10,7 +10,7 @@
     <router-link :to="`/post/${post.slug}`">
       <div
         v-if="post.mainImage"
-        class="w-full h-[12rem]"
+        class=" h-[12rem]"
       >
         <img :src="post.mainImage" alt="blog post" class="w-full h-full object-cover" />
       </div>
@@ -80,7 +80,6 @@ export default {
         this.localVariable = response.data;
         this.ath = this.localVariable.name;
         this.athmg = this.localVariable.image;
-        console.log(response)
       })
       .catch((err) => {
         

@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: "/profile/:slug",
       name: "adminProfile",
-      component: () => import("../components/AdminPost.vue"),
+      component: () => import("../components/AdminProfile.vue"),
       props: true,
     },
     {
@@ -39,12 +39,6 @@ const router = createRouter({
       path: "/eq",
       name: "eqReport",
       component: () => import("../views/EqReport.vue"),
-    },
-    {
-      path: "/profil",
-      name: "profileView",
-      component: () => import("../views/profileView.vue"),
-      props: true,
     },
     {
       path: "/post/:slug",

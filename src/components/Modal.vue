@@ -97,10 +97,8 @@ export default {
           this.success = true;
           this.mssg = "Updated";
           this.$router.go();
-          console.log(response);
         })
         .catch((err) => {
-          console.log(err);
         });
     },
   },

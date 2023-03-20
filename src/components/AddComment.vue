@@ -13,7 +13,7 @@
           <input type="email" v-model="newMail" placeholder="Email" />
         </div>
         <br />
-        <button class="text-white">Comment</button>
+        <button class="text-white">Post Comment</button>
       </div>
     </form>
   </div>
@@ -71,7 +71,7 @@ input {
   padding: 6px;
   color: #000;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid black;
 }
 
@@ -81,14 +81,14 @@ textarea {
   margin-top: 0.5em;
   padding: 15px;
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 4px;
 }
 
 button {
   border: unset;
   background: #0086e3;
   font-weight: 700;
-  border-radius: 15px;
+  border-radius: 4px;
   padding: 0.5em 1.7em;
   margin-top: 1em;
 }
