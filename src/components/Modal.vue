@@ -65,6 +65,16 @@ export default {
       mssg: "",
     };
   },
+  created() {
+    getAPI
+      .get("/users/" + this.slug)
+      .then((response) => {
+        this.email = response.data.email;
+        this.name = response.data.name;
+        this.newBio = response.data.bio;
+      })
+      .catch((err) => {});
+  },
   methods: {
     changeimage(e) {
       let file = e.target.files[0];
@@ -73,9 +83,10 @@ export default {
     UpdateForm() {
       let data = new FormData();
       data.append("image", this.file);
-      //   data.append("email", this.email);
+      data.append("email", this.email);
       data.append("name", this.name);
       data.append("bio", this.newBio);
+      data.append("slug", this.slug);
       getAPI
         .patch("/users/" + this.slug, data, {
           headers: {

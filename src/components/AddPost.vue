@@ -9,6 +9,13 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
+      editorConfig: {
+          ckfinder: {
+              uploadUrl: 'http://127.0.0.1:8000/ckeditor/upload/',
+
+              withCredentials: false,
+          }
+      },
       categorySel: {
         selected: [],
         autocompleteItems: this.categoriesItem,
@@ -35,12 +42,14 @@ export default {
     },
     postForm() {
       let data = new FormData();
-      data.append("title", this.title);
-      data.append("picked", this.editorpost);
-      data.append("summary", this.summary);
-      data.append("body", this.editorData);
-      data.append("mainImage", this.file);
-      data.append("slug", this.title.split(" ").join("").toLowerCase());
+      data.append('title', this.title);
+      data.append('picked', this.editorpost);
+      data.append('summary', this.summary);
+      data.append('body', this.editorData);
+      data.append('mainImage', this.file);
+      data.append('author', this.$route.params.slug.toString(),);
+      data.append('categories', this.categorySel.selected);
+      data.append('slug', this.title.split(' ').join('').toLowerCase());
 
       getAPI
         .post(
@@ -51,13 +60,10 @@ export default {
             summary: this.summary,
             body: this.editorData,
             mainImage: this.file,
+            author: this.$route.params.slug.toString(),
+            categories: this.categorySel.selected,
             slug: this.title.split(" ").join("").toLowerCase(),
           },
-          {
-            headers: {
-              Authorization: `token 6e8cf68a4fc854801686530dcd0ec256e39a9e43`,
-            },
-          }
         )
         .then((response) => {
           this.success = true;
@@ -93,7 +99,7 @@ export default {
         <br /><br />
         <label class="editor">
           Article
-          <ckeditor required :editor="editor" v-model="editorData" />
+          <ckeditor id="editor" required :editor="editor" v-model="editorData" :config="editorConfig"/>
         </label>
         <br /><br />
         <label class="editor">
