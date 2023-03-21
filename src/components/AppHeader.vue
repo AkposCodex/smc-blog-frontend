@@ -44,7 +44,7 @@ export default {
         name: "post",
         params: { slug: e },
       });
-      this.$router.go();
+      // this.$router.go();
     },
   },
   mounted() {
@@ -259,9 +259,9 @@ export default {
   >
     <div class="h-min bg-white">
       <div class="" v-for="res in results">
-        <button class="w-full text-left" @click="navigate(res.slug)">
+        <a :href="`/post/${res.slug}`">
           <p class="p-3">{{ res.title }}</p>
-        </button>
+        </a>
         <hr class="w-full" />
       </div>
     </div>
