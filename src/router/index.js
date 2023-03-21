@@ -1,5 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import store from "../store/index";
+
+function guardMyroute(to, from, next) {
+  var isAuthenticated = false;
+  if (store.getters.isLoggedIn) isAuthenticated = true;
+  else isAuthenticated = false;
+  if (isAuthenticated) {
+    next();
+  } else {
+    router.push({ name: "admin" });
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,10 +27,11 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
-      path: "/profile/:slug",
+      path: "/profile",
       name: "adminProfile",
       component: () => import("../components/AdminProfile.vue"),
       props: true,
+      beforeEnter: guardMyroute,
     },
     {
       path: "/geo",

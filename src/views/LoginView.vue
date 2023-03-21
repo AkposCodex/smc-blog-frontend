@@ -15,7 +15,11 @@
     />
     <hr class="w-3/5 mx-auto" />
 
-    <form method="post" @submit.prevent="loginForm" class="w-4/5 mx-auto">
+    <form
+      method="post"
+      @submit.prevent="loginForm(email, password)"
+      class="w-4/5 mx-auto"
+    >
       <h1 class="uppercase font-bold text-xl m-6 w-max mx-auto">
         Login to dashboard
       </h1>
@@ -27,7 +31,7 @@
             name="text"
             v-model="email"
             required
-            placeholder="Email"
+            autocomplete="email"
             class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
           />
         </div>
@@ -36,7 +40,7 @@
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            autocomplete="password"
             v-model="password"
             required
             class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
@@ -62,7 +66,7 @@
 <style></style>
 
 <script>
-import { getAPI } from "../axios";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -75,29 +79,43 @@ export default {
       token: null,
     };
   },
+  computed: mapGetters({
+    user: "getUserState",
+  }),
   methods: {
-    loginForm() {
-      getAPI
-        .post("api/auth/token/login/", {
-          username: this.email,
-          password: this.password,
+    async loginForm(username, password) {
+      //   getAPI
+      //     .post("api/auth/token/login/", {
+      //       username: this.email,
+      //       password: this.password,
+      //     })
+      //     .then((response) => {
+      //       console.log(response)
+      //       this.success = true;
+      //       this.token = response.data;
+      //       getAPI
+      //         .get("/users?email=" + this.email)
+      //         .then((response) => {
+      //           console.log(response)
+      //           this.userslg = response.data[0].slug;
+      //           this.$router.push({ path: "profile/" + this.userslg });
+      //         })
+      //         .catch((err) => {});
+      //     })
+      //     .catch((err) => {
+      //       this.error = err;
+      //     });
+      await this.$store
+        .dispatch("userModule/login", {
+          username,
+          password,
         })
         .then((response) => {
-          this.success = true;
-          this.token = response.data;
-          getAPI
-            .get("/users?email=" + this.email)
-            .then((response) => {
-              this.userslg = response.data[0].slug;
-              this.$router.push({ path: "profile/" + this.userslg });
-            })
-            .catch((err) => {
-              
-            });
-        })
-        .catch((err) => {
-          
-          this.error = err;
+          this.$router.push({
+            name: "adminProfile",
+            params: { slug: this.user.slug },
+          });
+          console.log(this.user);
         });
     },
   },

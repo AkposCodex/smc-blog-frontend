@@ -1,6 +1,6 @@
 <template>
   <head>
-    <title>SMC DESK | {{ res.name + "'s Profile" }}</title>
+    <title>SMC DESK | {{ user.name + "'s Profile" }}</title>
   </head>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
 
@@ -13,58 +13,42 @@
       </p>
       <button
         class="bg-red-400 py-2 px-6 text-xxs font-bold rounded-full text-white"
-        @click="this.$router.push('/')"
+        @click="logout()"
       >
         LOG OUT
       </button>
     </div>
 
-    <div class="flex gap-2 hidden md:gap-6 mb-5">
-      <figure class="w-[90px]">
-        <img v-if="res.image" :src="res.image" alt="" class="rounded-full" />
-        <img v-else src="@/assets/icons/Ellipse.png" alt="" />
-      </figure>
-      <div class="">
-        <p class="font-bold text-xl font-serifFamilty">{{ res.name }}<br /></p>
-        <!-- <p v-else class="text-3xl font-bold font-serifFamilty">No Name</p> -->
-        <p>
-          <span class="text-gray-400 font-bold">Articles Written </span
-          >{{ blogPosts.length }}
-        </p>
-        <p v-if="res.bio">
-          <span class="text-gray-400 font-bold">Bio <br /> </span>{{ res.bio }}
-        </p>
-        <p v-else>No Bio</p>
-        <div class="save-btn">
-          <button class="savebtn" @click="showModal = true">
-            <i class="text-blue-400">Edit Profile</i>
-          </button>
-        </div>
-      </div>
-    </div>
-
     <div class="md:w-4/5 mx-auto">
       <div class="flex justify-center">
         <figure class="w-[120px]">
-          <img v-if="res.image" :src="res.image" alt="" class="rounded-full" />
+          <img
+            v-if="user.profileImage"
+            :src="user.profileImage"
+            alt=""
+            class="rounded-full"
+          />
           <img v-else src="@/assets/icons/Ellipse.png" alt="" />
         </figure>
       </div>
       <div class="save-btn flex justify-center items-center pt-5">
-        <button class="border border-gray-300 px-3 rounded-xl savebtn" @click="showModal = true">
+        <button
+          class="border border-gray-300 px-3 rounded-xl savebtn"
+          @click="showModal = true"
+        >
           Edit Profile
         </button>
       </div>
       <div class="flex justify-center md:gap-12 gap-6 items-center">
-        <p class="font-bold text-xl font-serifFamilty">{{ res.name }}</p>
+        <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
         <p>
           <span class="text-gray-400 font-bold">Articles Written </span
-          >{{ blogPosts.length }}
+          >{{ user.posts.length }}
         </p>
       </div>
       <div class="flex justify-center items-center">
-        <p v-if="res.bio">
-          <i>{{ res.bio }}</i>
+        <p v-if="user.bio">
+          <i>{{ user.bio }}</i>
         </p>
         <p v-else>No Bio</p>
       </div>
@@ -177,7 +161,7 @@
       </div>
     </section>
     <section class="px-5">
-      <BlogCardList v-if="blogPosts" :posts="blogPosts" v-show="showBlog" />
+      <BlogCardList v-if="user.posts" :posts="user.posts" v-show="showBlog" />
     </section>
   </div>
 </template>
@@ -185,31 +169,25 @@
 import BlogCardList from "./BlogCardList.vue";
 import { getAPI } from "../axios";
 import SavedModal from "./Modal.vue";
-import AddPost from "./AddPost.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-vue";
-import router from "../router";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     BlogCardList,
     SavedModal,
     ckeditor: CKEditor.component,
-    AddPost,
   },
   data() {
     return {
-      username: "",
-      slug: this.$route.params.slug.toString(),
-      res: [],
-      blogPosts: [],
       showModal: false,
       showBlog: false,
       showAddPost: false,
       title: "",
       summary: "",
       file: "",
-      editorpost: "",
+      editorpost: false,
       editorData: "",
       editor: ClassicEditor,
       categorySel: {
@@ -228,29 +206,24 @@ export default {
           viewportOffset: { top: 90, right: 10, bottom: 10, left: 10 },
         },
       },
-      categories: [],
     };
   },
+  computed: mapGetters({
+    user: "getUserState",
+  }),
   created() {
-    getAPI
-      .get("/users/" + this.slug)
-      .then((response) => {
-        this.res = response.data;
-      })
-      .catch((err) => {});
     this.showblog();
-    getAPI
-      .get("/categories")
-      .then((response) => {
-        this.categorySel.autocompleteItems = response.data;
-      })
-      .catch((err) => {});
   },
   methods: {
+    logout() {
+      this.$store
+        .dispatch("userModule/logout")
+        .then(this.$router.push("/admin"));
+    },
     postForm() {
       let data = new FormData();
       data.append("title", this.title);
-      data.append("author", this.res.slug);
+      data.append("author", this.user.slug);
       data.append("categories", this.categorySel.selected);
       data.append("picked", this.editorpost);
       data.append("summary", this.summary);
@@ -258,34 +231,27 @@ export default {
       data.append("mainImage", this.file);
       data.append("slug", this.title.split(" ").join("").toLowerCase());
 
-      getAPI
-        .post("/posts", data, {
-          headers: {
-            Authorization: `token 6e8cf68a4fc854801686530dcd0ec256e39a9e43`,
-            "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-          },
-        })
-        .then((response) => {
-          this.success = true;
-          this.$router.go();
-        })
-        .catch((err) => {});
+      this.$store.dispatch("userModule/createPost", {
+        formData: data,
+        slug: this.user.slug,
+      });
+      this.$router.go();
     },
     Changeimage(e) {
       let file = e.target.files[0];
       this.file = file;
     },
     showblog() {
-      getAPI
-        .get("/posts?user=" + this.slug)
-        .then((response) => {
-          this.blogPosts = response.data;
-        })
-        .catch((err) => {});
       this.showBlog = true;
       this.showAddPost = false;
     },
     showPost() {
+      getAPI
+        .get("/categories")
+        .then((response) => {
+          this.categorySel.autocompleteItems = response.data;
+        })
+        .catch((err) => {});
       this.showBlog = false;
       this.showAddPost = true;
     },

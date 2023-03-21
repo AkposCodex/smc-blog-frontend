@@ -37,7 +37,7 @@
   >
     <h3>No New Posts Here</h3>
   </div>
-  <div class="grid md:grid-cols-2 gap-5 place-items-center" v-else>
+  <div class="grid md:grid-cols-2 gap-5 md:place-items-stretch place-items-center" v-else>
     <BlogCard
       v-for="post in posts"
       :key="post.slug"

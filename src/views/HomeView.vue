@@ -87,7 +87,7 @@ export default {
     </div>
   </header>
   <main
-    class="max-w-3xl mx-auto"
+    class="max-w-4xl mx-auto"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
     <section class="py-4 px-6 w-full md:grid md:grid-cols-[1fr_180px] gap-10">
