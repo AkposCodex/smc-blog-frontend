@@ -3,6 +3,8 @@ import Placeholder from "../components/BlogPost.vue";
 import PriceMarqueeWidget from "../components/PriceMarqueeWidget.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { useDark, useToggle } from "@vueuse/core";
+import AppHeader from "../components/AppHeader.vue";
+import AppFooter from "../components/AppFooter.vue";
 import BlogCard from "../components/BlogCard.vue";
 import BaseButton from "../components/BaseButton.vue";
 import BaseIcon from "../components/BaseIcon.vue";
@@ -73,6 +75,8 @@ export default {
     BlogCard,
     BaseButton,
     BaseIcon,
+    AppHeader,
+    AppFooter,
   },
 };
 </script>
@@ -81,6 +85,8 @@ export default {
   <head>
     <title>SMC DESK | HOME</title>
   </head>
+  <AppHeader></AppHeader>
+
   <header class="pb-4 capitalize">
     <div class="h-max" id="stats">
       <PriceMarqueeWidget class="dark:text-black" />
@@ -139,8 +145,7 @@ export default {
         <button
           @click="fetchTypedPost('et', 1)"
           :class="{
-            'text-blue-700 ':
-              count == 1,
+            'text-blue-700 ': count == 1,
           }"
           class="font-bold"
         >
@@ -149,8 +154,7 @@ export default {
         <button
           @click="fetchTypedPost('bc', 2)"
           :class="{
-            'text-blue-700 ':
-              count == 2,
+            'text-blue-700 ': count == 2,
           }"
           class="font-bold"
         >
@@ -159,8 +163,7 @@ export default {
         <button
           @click="fetchTypedPost('ge', 3)"
           :class="{
-            'text-blue-700 ':
-              count == 3,
+            'text-blue-700 ': count == 3,
           }"
           class="font-bold"
         >
@@ -169,8 +172,7 @@ export default {
         <button
           @click="fetchTypedPost('ec', 4)"
           :class="{
-            'text-blue-700 ':
-              count == 4,
+            'text-blue-700 ': count == 4,
           }"
           class="font-bold"
         >
@@ -192,4 +194,5 @@ export default {
       </div>
     </section>
   </main>
+  <AppFooter />
 </template>

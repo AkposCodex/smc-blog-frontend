@@ -4,8 +4,10 @@ import { h } from "vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import BaseIcon from "./BaseIcon.vue";
 import { getAPI } from "../axios";
-import AddComment from '../components/AddComment.vue';
-import Comment from '../components/Comment.vue';
+import AddComment from "../components/AddComment.vue";
+import Comment from "../components/Comment.vue";
+import AppHeader from "../components/AppHeader.vue";
+import AppFooter from "../components/AppFooter.vue";
 
 const isDark = useDark();
 
@@ -20,56 +22,60 @@ export default {
       cat: null,
       auth_img: null,
       auth_name: null,
-      text: '',
+      text: "",
     };
   },
   created() {
-    getAPI.get('/posts/'+this.thsl)
-    .then(response => {
-      this.loading = false
-      this.posts = response.data
-      this.text = this.posts.body
-      this.cat = this.posts.categories
-      
-      getAPI.get('/categories/'+this.cat)
-      .then(response => {
-        this.cat = response.data.cat_title
-      })
-      .catch(err => {
-         
-      })
+    getAPI
+      .get("/posts/" + this.thsl)
+      .then((response) => {
+        this.loading = false;
+        this.posts = response.data;
+        this.text = this.posts.body;
+        this.cat = this.posts.categories;
 
-      getAPI.get('/users/'+this.posts.author)
-      .then(response => {
-        this.auth_name = response.data.name
-        this.auth_img = response.data.image
-      })
-      .catch(err => {
-         
-      })
+        getAPI
+          .get("/categories/" + this.cat)
+          .then((response) => {
+            this.cat = response.data.cat_title;
+          })
+          .catch((err) => {});
 
-      getAPI.get('/posts?category='+this.cat)
-      .then(response => {
-        for (let i = 0; i < response.data.length; i++) {
-          if (response.data[i].id == this.posts.id){
-            response.data.splice(i, 1);
-            this.similarposts = response.data;
-            break;
-          }
-        }
+        getAPI
+          .get("/users/" + this.posts.author)
+          .then((response) => {
+            this.auth_name = response.data.name;
+            this.auth_img = response.data.image;
+          })
+          .catch((err) => {});
+
+        getAPI
+          .get("/posts?category=" + this.cat)
+          .then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+              if (response.data[i].id == this.posts.id) {
+                response.data.splice(i, 1);
+                this.similarposts = response.data;
+                break;
+              }
+            }
+          })
+          .catch((err) => {});
       })
-      .catch(err => {
-         
-      })
-    })
-    .catch(err => {
-       
-    })
+      .catch((err) => {});
   },
-  components: { BlogCardList, BaseIcon, AddComment, Comment },
+  components: {
+    BlogCardList,
+    BaseIcon,
+    AddComment,
+    Comment,
+    AppHeader,
+    AppFooter,
+  },
 };
 </script>
 <template>
+  <AppHeader></AppHeader>
   <main class="lg:px-48">
     <section class="pb-6 mb-20 font-baseFamily mx-auto">
       <div>
@@ -93,7 +99,6 @@ export default {
           </svg>
         </div>
 
-
         <div v-if="posts" class="p-5">
           <h1
             class="font-bold bg-blue-600 w-max my-4 uppercase text-white p-2 text-sm text-center"
@@ -107,18 +112,14 @@ export default {
           </h1>
           <div class="flex items-center gap-2 my-6">
             <div class="w-8 h-8">
-              <img
-                class="w-full h-full rounded-full"
-                :src="auth_img"
-                alt=""
-              />
+              <img class="w-full h-full rounded-full" :src="auth_img" alt="" />
             </div>
             <div class="text-[#919094] text-xs">
               <h1 class="font-semibold text-sm text-[#a6a2b5]">
                 by {{ auth_name }}
               </h1>
               <div class="flex items-center gap-2">
-                <span>{{posts.publishedAt}}</span>
+                <span>{{ posts.publishedAt }}</span>
                 <p class="h-1 w-1 bg-current rounded-full"></p>
                 <!-- <span>{{ posts.timeToRead || "15 mins read" }}</span> -->
               </div>
@@ -128,7 +129,7 @@ export default {
           <div class="w-full">
             <img
               v-if="posts.mainImage"
-              class=" object-cover my-4"
+              class="object-cover my-4"
               :src="posts.mainImage"
             />
           </div>
@@ -145,7 +146,6 @@ export default {
                 <p class="font-bold text-xl uppercase">Key Points</p>
                 <h1>{{ posts.summary }}</h1>
               </div>
-             
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default {
         <div class="comment-space">
           <comment class="message" />
         </div>
-        <hr>
+        <hr />
         <add-comment />
       </div>
     </div>
@@ -185,10 +185,11 @@ export default {
       </div>
     </section>
   </main>
+  <AppFooter />
 </template>
 
 <style scoped>
-.comment-space{
+.comment-space {
   font-size: 0.9em;
 }
 
