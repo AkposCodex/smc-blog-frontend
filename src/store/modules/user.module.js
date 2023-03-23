@@ -97,6 +97,18 @@ export default {
         })
         .catch((err) => {});
     },
+    async loadPostsByGenre({ commit, dispatch }, payload) {
+      let res = await getAPI
+        .get(`/posts?user=${payload.slug}&category=${payload.category}`)
+        .then((response) => {
+          console.log(payload, response);
+          return response.data;
+          //   this.blogPosts = response.data;
+        })
+        .catch((err) => {});
+        console.log(res)
+        return res;
+      },
 
     logout({ commit }) {
       return commit("LOGOUT");

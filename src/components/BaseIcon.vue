@@ -1,5 +1,5 @@
 <template>
-  <component :is="iconComputed" role="img" class="" />
+  <component :is="iconComputed" role="img" class="w-[32px] mx-auto" />
 </template>
 
 <script setup>

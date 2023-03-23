@@ -1,43 +1,52 @@
 <script>
-  import BlogCard from "./BlogCard.vue";
-  
-  export default {
-    name: "BlogCardRow",
-    components: {
-      BlogCard,
+import BlogCard from "./BlogCard.vue";
+
+export default {
+  name: "BlogCardRow",
+  components: {
+    BlogCard,
+  },
+
+  props: {
+    posts: {
+      type: Array,
+      required: true,
     },
-  
-    props: {
-      posts: {
-        type: Array,
-        required: true,
-      },
-      variant: {
-        type: String,
-        default: "default",
-      },
+    variant: {
+      type: String,
+      default: "default",
     },
-    methods: {
-      scrollLeft() {
-        const scrollContainer = document.getElementById("scrollContainer");
-        scrollContainer.scrollLeft -= 100;
-      },
-      scrollRight() {
-        const scrollContainer = document.getElementById("scrollContainer");
-        scrollContainer.scrollLeft += 100;
-      },
+    message: {
+      type: String,
+      default: "No New Posts Here",
     },
-  };
-  </script>
+  },
+  created() {
+  },
+  methods: {
+    scrollLeft() {
+      const scrollContainer = document.getElementById("scrollContainer");
+      scrollContainer.scrollLeft -= 100;
+    },
+    scrollRight() {
+      const scrollContainer = document.getElementById("scrollContainer");
+      scrollContainer.scrollLeft += 100;
+    },
+  },
+};
+</script>
 
 <template>
   <div
     class="font-baseFamily text-center font-bold text-2xl mt-32 mb-32"
     v-if="!posts || !posts.length"
   >
-    <h3>No New Posts Here</h3>
+    <h3>{{ message }}</h3>
   </div>
-  <div class="grid md:grid-cols-2 gap-5 md:place-items-stretch place-items-center" v-else>
+  <div
+    class="grid md:grid-cols-2 gap-5 md:place-items-stretch place-items-center"
+    v-else
+  >
     <BlogCard
       v-for="post in posts"
       :key="post.slug"

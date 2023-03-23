@@ -62,7 +62,7 @@ export default {
       .catch((err) => {});
 
     await getAPI
-      .get("/posts" + "?editor=True")
+      .get("/posts?editor=True")
       .then((response) => {
         this.editorPosts = response.data;
       })
