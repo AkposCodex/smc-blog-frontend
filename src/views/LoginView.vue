@@ -2,29 +2,30 @@
   <head>
     <title>SMC DESK | LOGIN</title>
   </head>
-  <div class="font-baseFamily pt-12">
-    <img
-      src="@/assets/icons/logo.png"
-      class="p-9 w-[300px] mx-auto dark:hidden"
-      alt=""
-    />
-    <img
-      src="@/assets/icons/logo-dark.png"
-      class="p-9 w-[300px] mx-auto hidden dark:block"
-      alt=""
-    />
-    <hr class="w-3/5 mx-auto" />
-
+  <header class="md:flex justify-start hidden md:block shadow-md py-3 w-full">
+    <div class="flex md:w-4/5 items-center p-3">
+      <h1 class="text-xl font-bold h-min">LOG IN</h1>
+      <img src="@/assets/icons/logo.png" alt="" class="w-3/5" />
+    </div>
+  </header>
+  <div class="font-baseFamily md:h-full h-[100vh]">
+    <div
+      class="h-2/5 flex items-end md:bg-none bg-[url(@/assets/icons/admin/log-in/login-mobile-header.png)] bg-center bg-contain"
+    >
+      <!-- <img
+        src="@/assets/icons/logo.png"
+        class="md:p-9 md:w-[300px] mx-auto hidden md:block object-contain h-full"
+        alt=""
+      /> -->
+      <p class="md:hidden text-white h-min font-bold p-3 text-xl">Log In</p>
+    </div>
     <form
       method="post"
       @submit.prevent="loginForm(email, password)"
-      class="w-4/5 mx-auto"
+      class="w-full mx-auto px-5  pt-12"
     >
-      <h1 class="uppercase font-bold text-xl m-6 w-max mx-auto">
-        Login to dashboard
-      </h1>
       <div class="flex flex-col space-y-6">
-        <div class="flex flex-col w-3/5 mx-auto">
+        <div class="flex flex-col md:w-3/5 w-full mx-auto">
           <label for="name" class="font-semibold">Email</label>
           <input
             type="text"
@@ -32,10 +33,10 @@
             v-model="email"
             required
             autocomplete="email"
-            class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
+            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
           />
         </div>
-        <div class="flex flex-col w-3/5 mx-auto">
+        <div class="flex flex-col md:w-3/5 w-full mx-auto">
           <label for="email" class="font-semibold">Password</label>
           <input
             type="password"
@@ -43,12 +44,12 @@
             autocomplete="password"
             v-model="password"
             required
-            class="rounded-md border p-4 dark:border-white/50 border-black bg-transparent"
+            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
           />
         </div>
-        <div class="flex justify-center">
+        <div class="flex justify-center w-full">
           <button
-            class="bg-black dark:bg-white/10 px-10 py-3 text-white rounded-xl border border-white dark:border-black"
+            class="bg-black dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black"
           >
             LOGIN
           </button>
