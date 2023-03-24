@@ -29,7 +29,7 @@ const router = createRouter({
     {
       path: "/profile",
       name: "adminProfile",
-      component: () => import("../components/AdminProfile.vue"),
+      component: () => import("../views/AdminProfile.vue"),
       props: true,
       beforeEnter: guardMyroute,
     },

@@ -3,7 +3,7 @@
     <title>SMC DESK | LOGIN</title>
   </head>
   <header class="md:flex justify-start hidden md:block shadow-md py-3 w-full">
-    <div class="flex md:w-4/5 items-center p-3">
+    <div class="flex lg:w-4/5 justify-between items-center p-3">
       <h1 class="text-xl font-bold h-min">LOG IN</h1>
       <img src="@/assets/icons/logo.png" alt="" class="w-3/5" />
     </div>

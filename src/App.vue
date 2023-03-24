@@ -17,9 +17,6 @@ a {
   word-wrap: normal;
   height: min-content;
 }
-img {
-  margin: auto;
-}
 .dark {
   background: #1b1b1f;
   color: #e4e1e6;
