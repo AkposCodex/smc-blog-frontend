@@ -271,7 +271,7 @@
             pages = 3;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3"
+          class="font-bold w-max flex hidden gap-3"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
