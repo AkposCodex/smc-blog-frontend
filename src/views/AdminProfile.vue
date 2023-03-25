@@ -113,7 +113,6 @@
           ' text-blue-600 decoration-4': pages === 3,
         }"
       >
-        <img src="@/assets/icons/admin/File/Vector-1.png" alt="" />
         <p>Drafts</p>
       </a>
       <a
@@ -236,7 +235,6 @@
           }"
         >
           <BaseIcon name="user" class="text-gray-800" />
-
           <p>Profile</p>
         </a>
         <a
@@ -250,7 +248,6 @@
           }"
         >
           <BaseIcon name="plusButton" class="text-gray-800" />
-          <!-- <img src="@/assets/icons/svgs/admin/Edit/Vector.svg" alt="" /> -->
           <p>Create new article</p>
         </a>
         <a
@@ -276,7 +273,6 @@
             ' text-blue-600 decoration-4': pages === 3,
           }"
         >
-          <img src="@/assets/icons/admin/File/Vector-1.svg" alt="" />
           <p>Drafts</p>
         </a>
         <a
