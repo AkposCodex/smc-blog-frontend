@@ -9,6 +9,8 @@ import BlogCard from "../components/BlogCard.vue";
 import BaseButton from "../components/BaseButton.vue";
 import BaseIcon from "../components/BaseIcon.vue";
 import { getAPI } from "../axios";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 
 const isDark = useDark();
 
@@ -23,9 +25,29 @@ export default {
       loading: true,
       isMobile: false,
       isDark: isDark,
+      slides: [
+        { id: "1", title: "Vue 3 Introduction", content: "VueJS is a library" },
+        { id: "2", title: "Vue 3 Components", content: "Know the components" },
+        {
+          id: "3",
+          title: "Vue 3 Conditional",
+          content: "Rendering Conditionally",
+        },
+        { id: "4", title: "Vue 3 Reactivity", content: "VueJS is Reactive" },
+        {
+          id: "5",
+          title: "Vue 3 Compute",
+          content: "VueJS uses computed properties",
+        },
+      ],
+      // breakpoints are mobile first
+      // any settings not specified will fallback to the carousel settings
     };
   },
   methods: {
+    slideTo(val) {
+      this.currentSlide = val;
+    },
     async fetchTypedPost(slug, count) {
       await getAPI
         .get("/posts?category=" + slug)
@@ -77,6 +99,10 @@ export default {
     BaseIcon,
     AppHeader,
     AppFooter,
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
   },
 };
 </script>
@@ -96,33 +122,44 @@ export default {
     class="max-w-4xl mx-auto"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
-    <section class="py-4 px-6 w-full md:grid md:grid-cols-[1fr_180px] gap-10">
-      <router-link :to="`/post/${blogPosts[0].slug}`">
-        <div class="flex flex-col mx-auto justify-end">
-          <div class="">
-            <img
-              :src="blogPosts[0].mainImage"
-              class="object-contain w-full z-0"
-              alt=""
-            />
-          </div>
-          <div class="">
-            <h1 class="font-bold text-2xl font-serifFamily capitalize">
-              {{ blogPosts[0].title }}
-            </h1>
-            <p class="flex items-center gap-2 text-[#919094] text-[10px]">
-              by {{ blogPosts[0].author }}
-            </p>
-          </div>
-          <div class="flex space-x-2 hidden justify-center p-3">
-            <p class="h-2 w-2 rounded-full bg-[#668AFF]"></p>
-            <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
-            <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
-            <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
-          </div>
-        </div>
-      </router-link>
-      <div class="hidden lg:block">
+    <section class="py-4 w-full grid grid-cols-[700px_2fr] gap-1">
+      <div class="h-full">
+        <Carousel :wrap-around="true" :items-to-show="1">
+          <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
+          <Slide v-for="(slide, index) in blogPosts" :key="index">
+            <div class="w-full">
+              <div class="flex flex-col mx-auto justify-end">
+                <div class="w-full h-[600px]">
+                  <img
+                    :src="slide.mainImage"
+                    class="object-cover h-full w-full "
+                    alt=""
+                  />
+                </div>
+                <div class="">
+                  <h1 class="font-bold text-2xl w-max font-serifFamily capitalize">
+                    {{ slide.title }}
+                  </h1>
+                  <p class="flex items-center gap-2 text-[#919094] text-lg">
+                    by {{ slide.author }}
+                  </p>
+                </div>
+                <div class="flex space-x-2 hidden justify-center p-3">
+                  <p class="h-2 w-2 rounded-full bg-[#668AFF]"></p>
+                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
+                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
+                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
+                </div>
+              </div>
+            </div>
+          </Slide>
+          <template #addons>
+            <Navigation />
+            <Pagination />
+          </template>
+        </Carousel>
+      </div>
+      <div class="hidden lg:block" v-if="editorPosts">
         <BlogCard v-if="editorPosts[0]" :post="editorPosts[0]" md-shrink />
         <BlogCard v-if="editorPosts[1]" :post="editorPosts[1]" md-shrink />
       </div>
@@ -196,3 +233,26 @@ export default {
   </main>
   <AppFooter />
 </template>
+<style>
+.carousel__item {
+  min-height: 200px;
+  width: 100%;
+  background-color: var(--vc-clr-primary);
+  color: var(--vc-clr-white);
+  font-size: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel__slide {
+  padding: 10px;
+}
+
+.carousel__prev,
+.carousel__next {
+  box-sizing: content-box;
+  border: 5px solid white;
+}
+</style>

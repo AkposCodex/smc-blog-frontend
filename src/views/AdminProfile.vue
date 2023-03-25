@@ -69,7 +69,7 @@
           pages = 1;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3"
+        class="font-bold w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 1,
         }"
@@ -82,7 +82,7 @@
           pages = 4;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3"
+        class="font-bold w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 4,
         }"
@@ -95,7 +95,7 @@
           pages = 2;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3"
+        class="font-bold w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 2,
         }"
@@ -108,7 +108,7 @@
           pages = 3;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3"
+        class="font-bold w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
         }"
@@ -118,7 +118,7 @@
       </a>
       <a
         @click="logout()"
-        class="font-bold w-max flex gap-3"
+        class="font-bold w-max flex gap-3 items-center"
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
@@ -205,9 +205,7 @@
   </a>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
   <div class="lg:grid grid-cols-[1fr_3fr] h-[100vh] overflow-scroll">
-    <div
-      class="w-full  hidden lg:flex items-center flex-col bg-gray-100"
-    >
+    <div class="w-full hidden lg:flex items-center flex-col bg-gray-100">
       <div class="w-4/5 mt-9">
         <div class="w-4/5 flex pb-6 gap-6">
           <figure class="w-[70px]">
@@ -232,12 +230,13 @@
             pages = 1;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3"
+          class="font-bold w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 1,
           }"
         >
-          <img src="@/assets/icons/admin/User/Vector.png" alt="" />
+          <BaseIcon name="user" class="text-gray-800" />
+
           <p>Profile</p>
         </a>
         <a
@@ -245,12 +244,13 @@
             pages = 4;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3"
+          class="font-bold w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 4,
           }"
         >
-          <img src="@/assets/icons/admin/Edit/Vector.png" alt="" />
+          <BaseIcon name="plusButton" class="text-gray-800" />
+          <!-- <img src="@/assets/icons/svgs/admin/Edit/Vector.svg" alt="" /> -->
           <p>Create new article</p>
         </a>
         <a
@@ -258,12 +258,12 @@
             pages = 2;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3"
+          class="font-bold w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 2,
           }"
         >
-          <img src="@/assets/icons/admin/File/Vector.png" alt="" />
+          <BaseIcon name="articles" class="text-gray-800" />
           <p>Your articles</p>
         </a>
         <a
@@ -276,16 +276,17 @@
             ' text-blue-600 decoration-4': pages === 3,
           }"
         >
-          <img src="@/assets/icons/admin/File/Vector-1.png" alt="" />
+          <img src="@/assets/icons/admin/File/Vector-1.svg" alt="" />
           <p>Drafts</p>
         </a>
         <a
           @click="logout()"
-          class="font-bold w-max flex gap-3"
+          class="font-bold w-max flex gap-3 items-center"
           active-class="text-[#366bff]"
           exact-active-class="text-[#366bff]"
         >
-          <img src="@/assets/icons/admin/Interface/Vector.png" alt="" />
+          <BaseIcon name="logOut" class="text-gray-800" />
+
           <p>Log out</p>
         </a>
         <hr class="w-full border" />
@@ -403,7 +404,7 @@
         </div>
       </section>
       <section class="" v-if="pages == 2" id="articles">
-        <div class="flex md:flex-row flex-col  w-full" id="main-header">
+        <div class="flex md:flex-row flex-col w-full" id="main-header">
           <p class="text-xl font-bold p-5">Your Articles</p>
           <nav
             class="flex flex-row gap-4 p-5 dark:border-white overflow-y-auto scrollbar-hide"
@@ -456,7 +457,10 @@
             v-if="posts.length > 0"
             class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
-            <div v-if="post.mainImage" class=" sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]">
+            <div
+              v-if="post.mainImage"
+              class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+            >
               <img
                 :src="post.mainImage"
                 alt="blog post"
@@ -489,7 +493,9 @@
                 >
                   Read More
                 </button>
-                <button class="bg-white rounded-md border border-black px-3 py-1">
+                <button
+                  class="bg-white rounded-md border border-black px-3 py-1"
+                >
                   Edit
                 </button>
               </div>

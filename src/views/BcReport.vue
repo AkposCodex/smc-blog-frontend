@@ -1,6 +1,7 @@
 <script>
 import Placeholder from "../components/BlogPost.vue";
-
+import AppHeader from "../components/AppHeader.vue";
+import AppFooter from "../components/AppFooter.vue";
 import PriceMarqueeWidget from "../components/PriceMarqueeWidget.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { getAPI } from "../axios";
@@ -18,7 +19,8 @@ export default {
   components: {
     Placeholder,
     PriceMarqueeWidget,
-    BlogCardList,
+    BlogCardList,AppHeader,
+    AppFooter,
   },
   created() {
     getAPI
@@ -37,8 +39,9 @@ export default {
   <head>
     <title>SMC DESK | Blockchain Report</title>
   </head>
+  <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
-    <section class="py-4 max-w-4xl mx-auto w-full mb-12">
+    <section class="py-4 max-w-2xl mx-auto w-full mb-12">
       <p class="pb-8 text-2xl font-bold text-center">Blockchain Reports</p>
       <div
         class="font-baseFamily text-center font-bold text-4xl mt-32 mb-32"
@@ -51,4 +54,5 @@ export default {
       </template>
     </section>
   </main>
+  <AppFooter />
 </template>

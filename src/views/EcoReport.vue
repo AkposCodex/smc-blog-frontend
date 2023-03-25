@@ -3,42 +3,45 @@ import Placeholder from "../components/BlogPost.vue";
 import PriceMarqueeWidget from "../components/PriceMarqueeWidget.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { getAPI } from "../axios";
+import AppHeader from "../components/AppHeader.vue";
+import AppFooter from "../components/AppFooter.vue";
 
 export default {
-  name: 'Posts',
+  name: "Posts",
   data() {
     return {
       blogPosts: null,
       fall: false,
       loading: true,
       isMobile: false,
-    }
+    };
   },
   components: {
     Placeholder,
     PriceMarqueeWidget,
-    BlogCardList,
+    BlogCardList,AppHeader,
+    AppFooter,
   },
   created() {
-    getAPI.get('/posts?category='+'ec',)
-    .then(response => {
-      this.loading= false
-     ""
-      this.blogPosts = response.data
-    })
-    .catch(err => {
-       
-    })
+    getAPI
+      .get("/posts?category=" + "ec")
+      .then((response) => {
+        this.loading = false;
+        ("");
+        this.blogPosts = response.data;
+      })
+      .catch((err) => {});
   },
-}
+};
 </script>
 
 <template>
   <head>
     <title>SMC DESK | Economics Report</title>
   </head>
+  <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
-    <section class="py-4 max-w-4xl mx-auto w-full mb-12">
+    <section class="py-4 max-w-2xl mx-auto w-full mb-12">
       <p class="pb-8 text-2xl font-bold text-center">Economic Reports</p>
       <div
         class="font-baseFamily text-center font-bold text-4xl mt-32 mb-32"
@@ -51,4 +54,5 @@ export default {
       </template>
     </section>
   </main>
+  <AppFooter />
 </template>
