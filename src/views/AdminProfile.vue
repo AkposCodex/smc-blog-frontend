@@ -74,7 +74,7 @@
           ' text-blue-600 decoration-4': pages === 1,
         }"
       >
-        <img src="@/assets/icons/admin/User/Vector.png" alt="" />
+        <BaseIcon name="user" class="text-gray-800" />
         <p>Profile</p>
       </a>
       <a
@@ -87,7 +87,7 @@
           ' text-blue-600 decoration-4': pages === 4,
         }"
       >
-        <img src="@/assets/icons/admin/Edit/Vector.png" alt="" />
+        <BaseIcon name="plusButton" class="text-gray-800" />
         <p>Create new article</p>
       </a>
       <a
@@ -100,7 +100,7 @@
           ' text-blue-600 decoration-4': pages === 2,
         }"
       >
-        <img src="@/assets/icons/admin/File/Vector.png" alt="" />
+        <BaseIcon name="articles" class="text-gray-800" />
         <p>Your articles</p>
       </a>
       <a
@@ -108,7 +108,7 @@
           pages = 3;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3 items-center"
+        class="font-bold w-max flex gap-3 items-center hidden"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
         }"
@@ -122,7 +122,7 @@
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
-        <img src="@/assets/icons/admin/Interface/Vector.png" alt="" />
+        <BaseIcon name="logOut" class="text-gray-800" />
         <p>Log out</p>
       </a>
       <hr class="w-full border" />
