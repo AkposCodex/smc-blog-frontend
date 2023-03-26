@@ -10,7 +10,7 @@
   </header>
   <div class="font-baseFamily md:h-full h-[100vh]">
     <div
-      class="h-2/5 flex items-end md:bg-none bg-[url(@/assets/icons/admin/log-in/login-mobile-header.png)] bg-center bg-contain"
+      class="h-2/5 flex items-end md:bg-none bg-[url(@/assets/icons/svgs/admin/login-mobile-header.png)] bg-center bg-contain"
     >
       <!-- <img
         src="@/assets/icons/logo.png"
