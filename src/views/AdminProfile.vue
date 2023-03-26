@@ -331,7 +331,7 @@
           >
             <figure class="w-[150px]">
               <div
-                class="before:content-[url(@/assets/icons/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-[150px] before:h-[150px] before:rounded-full before:backdrop-brightness-50 before:absolute z-50"
+                class="before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-[150px] before:h-[150px] before:rounded-full before:backdrop-brightness-50 before:absolute z-50"
               >
                 <img
                   v-if="proFile"
@@ -520,7 +520,7 @@
             <label for="article image" class="font-bold">Main Image</label>
             <figure class="w-full relative" id="article-image">
               <div
-                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
+                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
               >
                 <img
                   v-if="file"
