@@ -63,7 +63,7 @@
       </div>
       <hr class="w-full border" />
     </div>
-    <div class="flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0">
+    <div class="flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0" id="dropMenu">
       <a
         @click="
           pages = 1;
@@ -105,14 +105,15 @@
       </a>
       <a
         @click="
-          pages = 3;
+          showDrafts();
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3 items-center hidden"
+        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
         }"
       >
+        <BaseIcon name="Vector-1" class="text-gray-800" />
         <p>Drafts</p>
       </a>
       <a
@@ -204,7 +205,10 @@
   </a>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
   <div class="lg:grid grid-cols-[1fr_3fr] h-[100vh] overflow-scroll">
-    <div class="w-full hidden lg:flex items-center flex-col bg-gray-100">
+    <div
+      class="w-full hidden lg:flex items-center flex-col bg-gray-100"
+      id="sidebar"
+    >
       <div class="w-4/5 mt-9">
         <div class="w-4/5 flex pb-6 gap-6">
           <figure class="w-[70px]">
@@ -268,11 +272,12 @@
             showDrafts();
             isMenuOpen = false;
           "
-          class="font-bold w-max flex hover:cursor-pointer gap-3"
+          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
         >
+          <BaseIcon name="Vector-1" class="text-gray-800" />
           <p>Drafts</p>
         </a>
         <a
@@ -345,7 +350,6 @@
                 />
               </div>
               <input
-                v-if="user.profileImage"
                 type="file"
                 @change="changeProfileImage"
                 required
@@ -353,7 +357,6 @@
                 class="w-[150px] opacity-0 absolute top-0 rounded-full h-[150px] bg-center bg-contain border-black bg-gray-200 item-center justify-center"
                 accept="image/*"
               />
-              <img v-else src="@/assets/icons/Ellipse.png" alt="" />
             </figure>
             <div class="flex flex-col gap-2">
               <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
@@ -501,6 +504,7 @@
         </main>
       </section>
       <section class="" v-if="pages == 3" id="drafts">
+        <p class="text-xl font-bold p-5">Drafts</p>
         <div
           v-for="post in drafts"
           v-if="posts.length > 0"
@@ -580,7 +584,6 @@
                 <div v-else class="w-full h-[12rem] orunded-xl"></div>
               </div>
               <input
-                v-if="user.profileImage"
                 type="file"
                 @change="Changeimage"
                 required
@@ -589,7 +592,6 @@
                 name="article image"
                 accept="image/*"
               />
-              <img v-else src="@/assets/icons/Ellipse.png" alt="" />
             </figure>
             <i class="font-[500] text-blue-400 text-xs"
               >recommended: images should be 1280px x 860px for best
@@ -836,7 +838,6 @@ export default {
       let file = e.target.files[0];
       let imageSRC = URL.createObjectURL(file);
       this.proFile = imageSRC;
-      this.image = imageSRC;
     },
     showblog() {
       this.showBlog = true;

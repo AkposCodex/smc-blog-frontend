@@ -31,7 +31,7 @@ const router = createRouter({
       name: "adminProfile",
       component: () => import("../views/AdminProfile.vue"),
       props: true,
-      beforeEnter: guardMyroute,
+      // beforeEnter: guardMyroute,
     },
     {
       path: "/geo",
