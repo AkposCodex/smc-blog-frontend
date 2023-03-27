@@ -35,7 +35,7 @@
     >
       <div class="">
         <p class="flex md:space-x-4 text-sm justify-center">
-          &copy;2023 SMC Desk &nbsp;|<span
+          &copy;2023 SMC Report &nbsp;|<span
             class="mx-3 flex justify-center items-center space-x-6"
           >
             <a href="https://twitter.com/smcdao"><img src="@/assets/icons/twitter.png" alt="" width="12" /></a>

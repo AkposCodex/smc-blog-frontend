@@ -109,7 +109,7 @@ export default {
 
 <template>
   <head>
-    <title>SMC DESK | HOME</title>
+    <title>SMC Report | HOME</title>
   </head>
   <AppHeader></AppHeader>
 

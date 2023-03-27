@@ -75,7 +75,11 @@ export default {
 };
 </script>
 <template>
+  <head>
+    <title class="capitalize">{{ posts.title }}</title>
+  </head>
   <AppHeader></AppHeader>
+
   <main class="lg:px-48">
     <section class="pb-6 mb-20 font-baseFamily mx-auto">
       <div>

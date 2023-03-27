@@ -37,7 +37,7 @@ export default {
 
 <template>
   <head>
-    <title>SMC DESK | Economics Report</title>
+    <title>SMC Report | Economics Report</title>
   </head>
   <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">

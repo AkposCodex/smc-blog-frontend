@@ -1,6 +1,6 @@
 <template>
   <head>
-    <title>SMC DESK | LOGIN</title>
+    <title>SMC Report | LOGIN</title>
   </head>
   <ToastError v-if="hasError" :code="errorCode"></ToastError>
 

@@ -37,7 +37,7 @@ export default {
 
 <template>
   <head>
-    <title>SMC DESK | Blockchain Report</title>
+    <title>SMC Report | Blockchain Report</title>
   </head>
   <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">

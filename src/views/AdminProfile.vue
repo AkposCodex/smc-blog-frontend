@@ -1,6 +1,6 @@
 <template>
   <head>
-    <title>SMC DESK | {{ user.name + "'s Profile" }}</title>
+    <title>SMC Report | {{ user.name + "'s Profile" }}</title>
   </head>
   <header class="md:flex justify-start shadow-md py-3 w-full px-12">
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
