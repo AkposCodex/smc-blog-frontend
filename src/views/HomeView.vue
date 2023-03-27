@@ -122,7 +122,7 @@ export default {
     class="max-w-4xl mx-auto"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
-    <section class="py-4 w-full grid grid-cols-[700px_2fr] gap-1">
+    <section class="py-4 w-full md:grid md:grid-cols-[700px_2fr] gap-1">
       <div class="h-full">
         <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
@@ -159,7 +159,7 @@ export default {
           </template>
         </Carousel>
       </div>
-      <div class="hidden lg:block" v-if="editorPosts">
+      <div class="hidden md:block" v-if="editorPosts">
         <BlogCard v-if="editorPosts[0]" :post="editorPosts[0]" md-shrink />
         <BlogCard v-if="editorPosts[1]" :post="editorPosts[1]" md-shrink />
       </div>
