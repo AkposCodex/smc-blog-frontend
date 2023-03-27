@@ -52,19 +52,28 @@ export default {
         response = await getAPI
           .post("api/auth/token/login/", req)
           .then(async (response) => {
-            await getAPI
-              .get(`/users?email=${payload.username}`)
-              .then((response) => {
-                console.log(response);
-                dispatch("updateUser", response.data[0]).then(commit("LOGIN"));
-                dispatch("loadPosts", response.data[0].slug);
-                return response;
-                // this.$router.push({ path: "profile/" + state.user.slug });
-              })
-              .catch((err) => {});
+            try {
+              await getAPI
+                .get(`/users?email=${payload.username}`)
+                .then((response) => {
+                  console.log(response);
+                  dispatch("updateUser", response.data[0]).then(
+                    commit("LOGIN")
+                  );
+                  dispatch("loadPosts", response.data[0].slug);
+                  return response;
+                  // this.$router.push({ path: "profile/" + state.user.slug });
+                });
+            } catch (err) {
+              throw err;
+            }
           })
-          .catch((err) => {});
-      } catch {}
+          .catch((err) => {
+            throw err;
+          });
+      } catch (err) {
+        throw err;
+      }
     },
 
     async updateUser({ commit, dispatch }, payload) {
@@ -106,9 +115,9 @@ export default {
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});
-        console.log(res)
-        return res;
-      },
+      console.log(res);
+      return res;
+    },
 
     logout({ commit }) {
       return commit("LOGOUT");

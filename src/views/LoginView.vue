@@ -2,6 +2,8 @@
   <head>
     <title>SMC DESK | LOGIN</title>
   </head>
+  <ToastError v-if="hasError" :code="errorCode"></ToastError>
+
   <header class="md:flex justify-start hidden md:block shadow-md py-3 w-full">
     <div class="flex lg:w-4/5 justify-between items-center p-3">
       <h1 class="text-xl font-bold h-min">LOG IN</h1>
@@ -22,7 +24,7 @@
     <form
       method="post"
       @submit.prevent="loginForm(email, password)"
-      class="w-full mx-auto px-5  pt-12"
+      class="w-full mx-auto px-5 pt-12"
     >
       <div class="flex flex-col space-y-6">
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
@@ -68,8 +70,17 @@
 
 <script>
 import { mapGetters } from "vuex";
+import ToastError from "../services/error.vue";
+import { useToast, POSITION } from "vue-toastification";
 
 export default {
+  setup(props) {
+    const toast = useToast();
+    return { toast };
+  },
+  components: {
+    ToastError,
+  },
   data() {
     return {
       email: "",
@@ -78,6 +89,8 @@ export default {
       success: null,
       error: null,
       token: null,
+      hasError: false,
+      errorCode: "",
     };
   },
   computed: mapGetters({
@@ -106,18 +119,35 @@ export default {
       //     .catch((err) => {
       //       this.error = err;
       //     });
-      await this.$store
-        .dispatch("userModule/login", {
-          username,
-          password,
-        })
-        .then((response) => {
-          this.$router.push({
-            name: "adminProfile",
-            params: { slug: this.user.slug },
-          });
-          console.log(this.user);
+      try {
+        this.toast.info("Logging In...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
         });
+        await this.$store
+          .dispatch("userModule/login", {
+            username,
+            password,
+          })
+          .then((response) => {
+            this.$router.push({
+              name: "adminProfile",
+              params: { slug: this.user.slug },
+            });
+            console.log(this.user, response);
+          });
+      } catch (error) {
+        console.log(error);
+        this.hasError = true;
+        console.log(this.hasError);
+        this.errorCode = error.response.status;
+        this.toast.dismiss("login");
+        setTimeout(() => {
+          this.hasError = false;
+          console.log(this.hasError);
+        }, 7000);
+      }
     },
   },
 };

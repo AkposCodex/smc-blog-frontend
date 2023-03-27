@@ -229,7 +229,7 @@
             pages = 1;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3 items-center"
+          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 1,
           }"
@@ -242,7 +242,7 @@
             pages = 4;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3 items-center"
+          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 4,
           }"
@@ -255,7 +255,7 @@
             pages = 2;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex gap-3 items-center"
+          class="font-bold w-max hover:cursor-pointer flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 2,
           }"
@@ -265,10 +265,10 @@
         </a>
         <a
           @click="
-            pages = 3;
+            showDrafts();
             isMenuOpen = false;
           "
-          class="font-bold w-max flex hidden gap-3"
+          class="font-bold w-max flex hover:cursor-pointer gap-3"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
@@ -277,9 +277,7 @@
         </a>
         <a
           @click="logout()"
-          class="font-bold w-max flex gap-3 items-center"
-          active-class="text-[#366bff]"
-          exact-active-class="text-[#366bff]"
+          class="font-bold w-max flex gap-3 hover:cursor-pointer items-center"
         >
           <BaseIcon name="logOut" class="text-gray-800" />
 
@@ -502,7 +500,58 @@
           </div>
         </main>
       </section>
-      <section class="" v-if="pages == 3" id="drafts"></section>
+      <section class="" v-if="pages == 3" id="drafts">
+        <div
+          v-for="post in drafts"
+          v-if="posts.length > 0"
+          class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
+        >
+          <div
+            v-if="post.mainImage"
+            class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+          >
+            <img
+              :src="post.mainImage"
+              alt="blog post"
+              class="lg:w-4/5 w-full rounded-lg h-full object-cover"
+            />
+          </div>
+          <div class="lg:w-[50%] w-full">
+            <div class="mb-5">
+              <h3 class="font-bold font-baseFamily uppercase leading-5">
+                {{ post.title }}
+              </h3>
+              <h3
+                class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
+              >
+                {{ post.publishedAt }}
+              </h3>
+              <p class="text-xs leading-4">
+                {{ post.summary }}
+              </p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 w-4/5">
+              <button
+                class="bg-black rounded-md text-white px-3 py-1"
+                @click="
+                  this.$router.push({
+                    name: 'post',
+                    params: { slug: post.slug },
+                  })
+                "
+              >
+                Read More
+              </button>
+              <button class="bg-white rounded-md border border-black px-3 py-1">
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="w-full flex justify-center items-center h-[50vh]" v-else>
+          <h1 class="font-bold text-black text-2xl">No Drafts</h1>
+        </div>
+      </section>
       <section class="px-5" v-if="pages == 4" id="createPosts">
         <p class="text-xl font-bold py-5">Create Post</p>
         <div class="flex flex-col gap-12">
@@ -794,10 +843,19 @@ export default {
       this.drafts = false;
       this.showAddPost = false;
     },
-    showDrafts() {
-      this.showBlog = false;
-      this.showAddPost = false;
-      this.drafts = true;
+    async showDrafts() {
+      await getAPI.get(`/post/review`).then((response) => {
+        let res = response.data.results;
+        for (let i = 0; i < response.data.count; i++) {
+          getAPI.get(`/post?slug=${res[i].post}`).then((r) => {
+            let res = r.data;
+            if (res.author === this.user.author) {
+              this.drafts.push(res);
+            }
+          });
+        }
+      });
+      this.pages = 3;
     },
     async showPost(e) {
       switch (e) {
