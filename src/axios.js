@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const getAPI = axios.create({
-    baseURL: 'https://prosperc40.pythonanywhere.com/',
+    baseURL: 'https://smc-blog-backend.herokuapp.com/',
 
     // headers: {
     //     "Content-Type": "FormData"

@@ -63,7 +63,7 @@
       </div>
       <hr class="w-full border" />
     </div>
-    <div class="flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0" id="dropMenu">
+    <div class="flex flex-col justify-center font-baseFamily gap-10 w-4/5 pt-5 !m-0" id="dropMenu">
       <a
         @click="
           pages = 1;
@@ -204,7 +204,7 @@
     <div class="w-2/5"></div>
   </a>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
-  <div class="lg:grid grid-cols-[1fr_3fr] h-[100vh] overflow-scroll">
+  <div class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh] overflow-scroll">
     <div
       class="w-full hidden lg:flex items-center flex-col bg-gray-100"
       id="sidebar"
@@ -451,7 +451,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="posts.length > 0"
+            v-if="posts"
             class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div

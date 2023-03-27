@@ -19,7 +19,7 @@ module.exports = {
         "marquee-scroll": "marquee-scroll 15.4s linear infinite",
       },
       fontFamily: {
-        baseFamily: ["Inter", "sans-serif"],
+        baseFamily: ["Sora", "sans-serif"],
         serifFamily: ["Crimson Pro", "serif"],
       },
     },
