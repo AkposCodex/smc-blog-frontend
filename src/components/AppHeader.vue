@@ -151,79 +151,67 @@ export default {
       <!-- TODO: Refactor mobile menu dropdown -->
       <div
         v-if="isMenuOpen"
-        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center justify-around text-left flex-col  w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <div
-          class="flex gap-2 hidden items-center border-b border-[#004FE5] w-full px-6 py-3"
-        >
-          <BaseIcon name="search" class="text-[#366BFF]" />
-          <input
-            type="text"
-            placeholder="search"
-            class="outline-none w-full"
-            v-model="word"
-          />
-          <button
-            @click="searchMini(word)"
-            class="bg-blue-600 uppercase text-white p-2 font-bold"
-          >
-            Search
-          </button>
+        <div class="flex flex-col gap-6">
+          <h1 class="text-4xl font-bold font-serifFamily">Navigation</h1>
+          <div class="flex flex-col justify-center gap-10 w-full font-baseFamily !m-0">
+            <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
+              home
+            </a>
+            <a
+              href="/bc"
+              class="font-bold"
+              active-class="text-[#366bff]"
+              exact-active-class="text-[#366bff]"
+              >blockchain report
+            </a>
+            <a
+              href="/eq"
+              class="font-bold"
+              active-class="text-[#366bff]"
+              exact-active-class="text-[#366bff]"
+            >
+              equity report</a
+            >
+            <a
+              href="/eco"
+              class="font-bold"
+              active-class="text-[#366bff]"
+              exact-active-class="text-[#366bff]"
+            >
+              economics report</a
+            >
+            <a
+              href="/geo"
+              class="font-bold"
+              active-class="text-[#366bff]"
+              exact-active-class="text-[#366bff]"
+            >
+              geopolitical report</a
+            >
+            <hr class="border w-full" />
+          </div>
         </div>
-        <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
-          <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
-            home
+        <div class="pb-12">
+          <a
+            href="#footer"
+            class="block mx-auto mb-6 p-3 text-xs font-semibold bg-black text-white"
+            @click="openMenu"
+          >
+            Subscribe to our Newsletter
           </a>
-          <a
-            href="/bc"
-            class="font-bold"
-            active-class="text-[#366bff]"
-            exact-active-class="text-[#366bff]"
-            >blockchain report
-          </a>
-          <a
-            href="/eq"
-            class="font-bold"
-            active-class="text-[#366bff]"
-            exact-active-class="text-[#366bff]"
-          >
-            equity report</a
-          >
-          <a
-            href="/eco"
-            class="font-bold"
-            active-class="text-[#366bff]"
-            exact-active-class="text-[#366bff]"
-          >
-            economics report</a
-          >
-          <a
-            href="/geo"
-            class="font-bold"
-            active-class="text-[#366bff]"
-            exact-active-class="text-[#366bff]"
-          >
-            geopolitical report</a
-          >
-        </div>
-        <hr class="border w-full" />
-        <a
-          href="#footer"
-          class="block mx-auto p-3 text-xs font-semibold bg-black text-white"
-          @click="openMenu"
-        >
-          Subscribe to our Newsletter
-        </a>
-        <div class="flex justify-center space-x-6">
-          <a href="https://twitter.com/smcdao"
-            ><img src="@/assets/icons/twitter.png" alt="" width="20"
-          /></a>
-          <a href="https://youtube.com/@smcdao"
-            ><img src="@/assets/icons/youtube.png" alt="" width="20"
-          /></a>
-          <a href="https://t.me/smcnewdesk"
-            ><img src="@/assets/icons/telegram.png" alt="" width="20"
-          /></a>
+          <div class="flex justify-center space-x-6">
+            <a href="https://twitter.com/smcdao"
+              ><img src="@/assets/icons/twitter.png" alt="" width="20"
+            /></a>
+            <a href="https://youtube.com/@smcdao"
+              ><img src="@/assets/icons/youtube.png" alt="" width="20"
+            /></a>
+            <a href="https://t.me/smcnewdesk"
+              ><img src="@/assets/icons/telegram.png" alt="" width="20"
+            /></a>
+          </div>
         </div>
       </div>
     </nav>

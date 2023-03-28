@@ -3,11 +3,15 @@ import sanityClient from "../../services/sanity";
 const getInitialState = () => {
   return {
     post: {
-      author: "",
-      date: "",
-      content: "",
       title: "",
-      image: null
+      slug: "",
+      picked: true,
+      publishedAt: "",
+      summary: "",
+      body: "",
+      mainImage: "",
+      categories: "",
+      author: "",
     },
   };
 };
@@ -20,17 +24,20 @@ export default {
   mutations: {
     ADD_POST: function (state, payload) {
       state.post.author = payload.data.result.author.name;
-      state.post.date = payload.data.result._createdAt;
+      state.post.publishedAt = payload.data.result._createdAt;
       state.post.title = payload.data.result.title;
-      state.post.image = payload.data.result.mainImage;
-      state.post.content = payload.data.result.body.children.text;
+      state.post.mainImage = payload.data.result.mainImage;
+      state.post.body = payload.data.result.body.children.text;
+      state.post.slug = payload.data.result.slug;
+      state.post.picked = payload.data.result.picked;
+      state.post.summary = payload.data.result.summary;
+      state.post.categories = payload.data.result.categories;
     },
   },
   actions: {
     async addPost({ commit }, payload) {
       const post = await sanityClient.loadPost(payload).then((response) => {
         commit("ADD_POST", response);
-         
       });
     },
   },

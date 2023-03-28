@@ -8,6 +8,7 @@ const getInitialState = () => {
       bio: "",
       name: "",
       email: "",
+      password: "",
       posts: [],
       isLoggedIn: false,
     },
@@ -29,6 +30,7 @@ export default {
       state.user.bio = payload.bio;
       state.user.slug = payload.slug;
       state.user.email = payload.email;
+      state.user.password = payload.password;
     },
 
     CREATE_POST: function (state, payload) {},
@@ -101,7 +103,7 @@ export default {
         .get("/posts?user=" + payload)
         .then((response) => {
           console.log(payload, response);
-          commit("LOAD_POST", response.data);
+          commit("LOAD_POST", response.data.results);
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});
@@ -111,7 +113,7 @@ export default {
         .get(`/posts?user=${payload.slug}&category=${payload.category}`)
         .then((response) => {
           console.log(payload, response);
-          return response.data;
+          return response.data.results;
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});

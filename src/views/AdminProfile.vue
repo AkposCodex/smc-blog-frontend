@@ -63,7 +63,10 @@
       </div>
       <hr class="w-full border" />
     </div>
-    <div class="flex flex-col justify-center font-baseFamily gap-10 w-4/5 pt-5 !m-0" id="dropMenu">
+    <div
+      class="flex flex-col justify-center font-baseFamily gap-10 w-4/5 pt-5 !m-0"
+      id="dropMenu"
+    >
       <a
         @click="
           pages = 1;
@@ -204,7 +207,9 @@
     <div class="w-2/5"></div>
   </a>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
-  <div class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh] overflow-scroll">
+  <div
+    class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh] overflow-scroll"
+  >
     <div
       class="w-full hidden lg:flex items-center flex-col bg-gray-100"
       id="sidebar"
@@ -374,7 +379,7 @@
           </div>
           <div class="">
             <p class="pb-9 font-bold text-xl">Edit Profile</p>
-            <div class="pb-9">
+            <div class="pb-9" id="userName">
               <p class="font-bold">Name</p>
               <input
                 v-model="user.name"
@@ -382,7 +387,7 @@
                 class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               />
             </div>
-            <div class="pb-9">
+            <div class="pb-9" id="bio">
               <p class="font-bold">Bio</p>
               <textarea
                 cols="30"
@@ -390,6 +395,15 @@
                 rows="5"
                 class="bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               ></textarea>
+            </div>
+            <div class="pb-9" id="userName">
+              <p class="font-bold">Password</p>
+              <input
+                v-model="user.password"
+                type="text"
+                autocomplete="current-password"
+                class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              />
             </div>
             <button
               @click="UpdateProfile"
@@ -407,7 +421,7 @@
             class="flex flex-row gap-4 p-5 dark:border-white overflow-y-auto scrollbar-hide"
           >
             <button
-              @click="showPost('et')"
+              @click="showPost('equity')"
               class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
@@ -417,7 +431,7 @@
               Equity
             </button>
             <button
-              @click="showPost('bc')"
+              @click="showPost('blockchain')"
               class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
@@ -427,7 +441,7 @@
               Blockchain
             </button>
             <button
-              @click="showPost('ge')"
+              @click="showPost('geopolitics')"
               class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
@@ -437,7 +451,7 @@
               Geopolitical
             </button>
             <button
-              @click="showPost('ec')"
+              @click="showPost('economic')"
               class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
@@ -451,7 +465,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="posts"
+            v-if="posts.length > 0"
             class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -749,7 +763,7 @@ export default {
     user: "getUserState",
   }),
   created() {
-    this.showPost("et");
+    this.showPost("equity");
     getAPI
       .get("/categories")
       .then((response) => {
@@ -815,6 +829,8 @@ export default {
       data.append("name", this.user.name);
       data.append("bio", this.user.bio);
       data.append("slug", this.user.slug);
+      data.append("slug", this.user.password);
+      c;
       getAPI
         .patch("/users/" + this.user.slug, data, {
           headers: {
@@ -860,25 +876,25 @@ export default {
     },
     async showPost(e) {
       switch (e) {
-        case "et":
+        case "equity":
           this.ge = false;
           this.bc = false;
           this.ec = false;
           this.et = true;
           break;
-        case "bc":
+        case "blockchain":
           this.ge = false;
           this.et = false;
           this.ec = false;
           this.bc = true;
           break;
-        case "ge":
+        case "geopolitics":
           this.et = false;
           this.bc = false;
           this.ec = false;
           this.ge = true;
           break;
-        case "ec":
+        case "economic":
           this.ge = false;
           this.et = false;
           this.bc = false;

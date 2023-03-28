@@ -17,7 +17,7 @@ const isDark = useDark();
 export default {
   data() {
     return {
-      blogPosts: null,
+      blogPosts: [],
       typedPosts: null,
       editorPosts: null,
       fall: false,
@@ -52,7 +52,7 @@ export default {
       await getAPI
         .get("/posts?category=" + slug)
         .then((response) => {
-          this.typedPosts = response.data;
+          this.typedPosts = response.data.results;
         })
         .catch((err) => {});
       this.count = count;
@@ -75,18 +75,107 @@ export default {
     },
   },
   async created() {
-    this.fetchTypedPost("et", 1);
+    this.fetchTypedPost("equity", 1);
     await getAPI
       .get("/posts")
       .then((response) => {
-        this.blogPosts = response.data;
+        response.data.results.forEach(async (e) => {
+          let arr = [];
+          let email;
+          console.log("here");
+          if (e.author === "sir-mapy") {
+            email = e.author.replaceAll("-", "");
+            console.log(email);
+            await getAPI
+              .get(`/users?email=${email}@gmail.com`)
+              .then((response) => {
+                console.log(email, response.data[0].name);
+                this.blogPosts.push({
+                  title: e.title,
+                  slug: e.slug,
+                  picked: e.picked,
+                  publishedAt: e.publishedAt,
+                  summary: e.summary,
+                  body: e.body,
+                  mainImage: e.mainImage,
+                  categories: e.categories,
+                  author: response.data[0].name,
+                });
+                console.log(this.blogPosts);
+              });
+          } else {
+            email = e.author.replaceAll("-", ".");
+            await getAPI
+              .get(`/users?email=${email}@smcreport.com`)
+              .then((response) => {
+                console.log(email, response.data[0].name);
+                this.blogPosts.push({
+                  title: e.title,
+                  slug: e.slug,
+                  picked: e.picked,
+                  publishedAt: e.publishedAt,
+                  summary: e.summary,
+                  body: e.body,
+                  mainImage: e.mainImage,
+                  categories: e.categories,
+                  author: response.data[0].name,
+                });
+                console.log(this.blogPosts);
+              });
+          }
+          return arr;
+        });
+        // this.blogPosts = response.data.results;
+        function loadPosts(e) {
+          let arr = [];
+          let email;
+          if (e.author === "sir-mapy") {
+            email = e.author.replaceAll("-", "");
+            console.log(email);
+            getAPI.get(`/users?email=${email}@gmail.com`).then((response) => {
+              console.log(email, response);
+              arr.push({
+                title: e.title,
+                slug: e.slug,
+                picked: e.picked,
+                publishedAt: e.publishedAt,
+                summary: e.summary,
+                body: e.body,
+                mainImage: e.mainImage,
+                categories: e.categories,
+                author: e.author,
+              });
+              console.log(arr);
+            });
+          } else {
+            email = e.author.replaceAll("-", ".");
+            getAPI
+              .get(`/users?email=${email}@smcreport.com`)
+              .then((response) => {
+                console.log(email, response);
+                arr.push({
+                  title: e.title,
+                  slug: e.slug,
+                  picked: e.picked,
+                  publishedAt: e.publishedAt,
+                  summary: e.summary,
+                  body: e.body,
+                  mainImage: e.mainImage,
+                  categories: e.categories,
+                  author: e.author,
+                });
+                console.log(arr);
+              });
+          }
+          return arr;
+        }
       })
       .catch((err) => {});
 
     await getAPI
       .get("/posts?editor=True")
       .then((response) => {
-        this.editorPosts = response.data;
+        this.editorPosts = response.data.results;
       })
       .catch((err) => {});
   },
@@ -122,22 +211,26 @@ export default {
     class="max-w-4xl mx-auto font-baseFamily"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
-    <section class="py-4 w-full md:grid md:grid-cols-[700px_2fr] gap-1">
-      <div class="h-full">
+    <section
+      class="py-4 w-full md:grid lg:grid-cols-[700px_2fr] md:grid-cols-[500px_1fr] gap-4"
+    >
+      <div class="lg:h-full h-3/5">
         <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
-            <div class="w-full">
+            <a :href="`/post/${slide.slug}`" class="w-full">
               <div class="flex flex-col mx-auto justify-end">
-                <div class="w-full h-[600px]">
+                <div class="w-full lg:h-[600px] h-[400px]">
                   <img
                     :src="slide.mainImage"
-                    class="object-cover h-full w-full "
+                    class="object-cover h-full w-full"
                     alt=""
                   />
                 </div>
                 <div class="">
-                  <h1 class="font-bold text-2xl w-max font-serifFamily capitalize">
+                  <h1
+                    class="font-bold text-2xl w-max font-serifFamily capitalize"
+                  >
                     {{ slide.title }}
                   </h1>
                   <p class="flex items-center gap-2 text-[#919094] text-lg">
@@ -151,17 +244,36 @@ export default {
                   <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
                 </div>
               </div>
-            </div>
+            </a>
           </Slide>
           <template #addons>
             <Navigation />
             <Pagination />
           </template>
         </Carousel>
+        <free-style-shimmer
+          :is-loading="!blogPosts"
+          height="480px"
+          width="500px"
+          color="#bdbdbd"
+        />
       </div>
       <div class="hidden md:block" v-if="editorPosts">
         <BlogCard v-if="editorPosts[0]" :post="editorPosts[0]" md-shrink />
         <BlogCard v-if="editorPosts[1]" :post="editorPosts[1]" md-shrink />
+        <div class="flex flex-col gap-16" v-if="!editorPosts">
+          <free-style-shimmer
+            :is-loading="true"
+            height="200px"
+            width="380px"
+            color="#bdbdbd"
+          /><free-style-shimmer
+            :is-loading="true"
+            height="200px"
+            width="380px"
+            color="#bdbdbd"
+          />
+        </div>
       </div>
     </section>
     <section class="py-4 w-full">
@@ -172,6 +284,12 @@ export default {
       </div>
       <div class="px-5">
         <BlogCardList v-if="editorPosts" :posts="editorPosts" />
+        <div
+          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+        >
+          <card-shimmer :is-loading="!editorPosts" />
+          <card-shimmer :is-loading="!editorPosts" />
+        </div>
       </div>
     </section>
 
@@ -180,7 +298,7 @@ export default {
         class="flex gap-4 py-2 mx-5 mb-8 border-b border-black dark:border-white overflow-y-auto scrollbar-hide"
       >
         <button
-          @click="fetchTypedPost('et', 1)"
+          @click="fetchTypedPost('equity', 1)"
           :class="{
             'text-blue-700 ': count == 1,
           }"
@@ -189,7 +307,7 @@ export default {
           Equity
         </button>
         <button
-          @click="fetchTypedPost('bc', 2)"
+          @click="fetchTypedPost('blockchain', 2)"
           :class="{
             'text-blue-700 ': count == 2,
           }"
@@ -198,7 +316,7 @@ export default {
           Blockchain
         </button>
         <button
-          @click="fetchTypedPost('ge', 3)"
+          @click="fetchTypedPost('geopolitics', 3)"
           :class="{
             'text-blue-700 ': count == 3,
           }"
@@ -207,7 +325,7 @@ export default {
           Geopolitical
         </button>
         <button
-          @click="fetchTypedPost('ec', 4)"
+          @click="fetchTypedPost('economic', 4)"
           :class="{
             'text-blue-700 ': count == 4,
           }"
@@ -222,6 +340,13 @@ export default {
           :posts="typedPosts"
           variant="secondary"
         />
+
+        <div
+          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+        >
+          <card-shimmer :is-loading="!typedPosts" />
+          <card-shimmer :is-loading="!typedPosts" />
+        </div>
         <button
           @click="navigate"
           class="block mx-auto p-3 text-xs mt-6 font-semibold bg-black text-white"

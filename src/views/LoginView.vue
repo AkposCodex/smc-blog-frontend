@@ -9,7 +9,7 @@
   >
     <div class="flex w-full h-full justify-between items-center p-3">
       <h1 class="text-xl font-bold font-serifFamily">LOG IN</h1>
-      <BaseIcon name="logo" class="text-black w-[300px]"/>
+      <BaseIcon name="logo" class="text-black w-[300px]" />
       <h1 class="text-xl font-bold opacity-0">LOG IN</h1>
     </div>
   </header>
@@ -66,6 +66,13 @@
       </div>
     </form>
     <br /><br /><br />
+
+    <!-- <button
+      @click="generateUsers"
+      class="bg-black dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black"
+    >
+      GENERATE USERS
+    </button> -->
   </div>
 </template>
 
@@ -76,6 +83,7 @@ import { mapGetters } from "vuex";
 import ToastError from "../services/error.vue";
 import { useToast, POSITION } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
+import { getAPI } from "../axios";
 export default {
   setup(props) {
     const toast = useToast();
@@ -87,6 +95,106 @@ export default {
   },
   data() {
     return {
+      users: [
+        {
+          email: "abimbola.hammed@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Abimbola Hammed",
+          slug: "abimbola-hammed",
+          username: "Abimbola",
+        },
+        {
+          email: "birima.ibrahim@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Birima Ibrahim",
+          slug: "birima-ibrahim",
+          username: "Birima",
+        },
+        {
+          email: "adebowale.odunoren@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Adebowale Odunoren",
+          slug: "adebowale-odunoren",
+          username: "Adebowale",
+        },
+        {
+          email: "adeoye.imisioluwa@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Adeoye Imisioluwa",
+          slug: "adeoye-imisioluwa",
+          username: "Adeoye",
+        },
+        {
+          email: "osigwe.michael@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Osigwe Michael",
+          slug: "osigwe-michael",
+          username: "Osigwe",
+        },
+        {
+          email: "opeyemi.oladepo@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Opeyemi Oladepo",
+          slug: "opeyemi-oladepo",
+          username: "Opeyemi",
+        },
+        {
+          email: "oladepo.johnson@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Oladepo Johnson",
+          slug: "oladepo-johnson",
+          username: "Oladepo",
+        },
+        {
+          email: "akunna.chiamaka@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Akunna Chiamaka",
+          slug: "akunna-chiamaka",
+          username: "Akunna",
+        },
+        {
+          email: "idheme.wisdom@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Idheme Wisdom",
+          slug: "idheme-wisdom",
+          username: "Idheme",
+        },
+        {
+          email: "idisi.hope@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Idisi Hope",
+          slug: "idisi-hope",
+          username: "Idisi",
+        },
+        {
+          email: "ogbuinya.winifred@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Ogbuinya Winifred",
+          slug: "ogbuinya-winifred",
+          username: "Ogbuinya",
+        },
+        {
+          email: "enojo.grace@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Enojo Grace",
+          slug: "enojo-grace",
+          username: "Enojo",
+        },
+        {
+          email: "ebuka.ifeanyichukwu@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Ebuka Ifeanyichukwu",
+          slug: "ebuka-ifeanyichukwu",
+          username: "Ebuka",
+        },
+        {
+          email: "adeyemo.samuel@smcreport.com",
+          password: "@4SmcDesk",
+          name: "Adeyemo Samuel",
+          slug: "adeyemo-samuel",
+          username: "Adeyemo",
+        },
+      ],
       email: "",
       password: "",
       userslg: "",
@@ -150,7 +258,14 @@ export default {
         setTimeout(() => {
           this.hasError = false;
           console.log(this.hasError);
-        }, 7000);
+        }, 4000);
+      }
+    },
+    async generateUsers() {
+      this.users.forEach(generate);
+
+      async function generate(e) {
+        await getAPI.patch(`/users/${e.slug}`, e);
       }
     },
   },
