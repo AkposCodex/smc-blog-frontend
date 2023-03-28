@@ -4,10 +4,13 @@
   </head>
   <ToastError v-if="hasError" :code="errorCode"></ToastError>
 
-  <header class="md:flex justify-start hidden md:block shadow-md py-3 w-full">
-    <div class="flex lg:w-4/5 justify-between items-center p-3">
-      <h1 class="text-xl font-bold h-min">LOG IN</h1>
-      <img src="@/assets/icons/logo.png" alt="" class="w-3/5" />
+  <header
+    class="md:flex justify-start hidden md:block shadow-md h-[6rem] py-3 w-full"
+  >
+    <div class="flex w-full h-full justify-between items-center p-3">
+      <h1 class="text-xl font-bold font-serifFamily">LOG IN</h1>
+      <BaseIcon name="logo" class="text-black w-[300px]"/>
+      <h1 class="text-xl font-bold opacity-0">LOG IN</h1>
     </div>
   </header>
   <div class="font-baseFamily md:h-full h-[100vh]">
@@ -72,7 +75,7 @@
 import { mapGetters } from "vuex";
 import ToastError from "../services/error.vue";
 import { useToast, POSITION } from "vue-toastification";
-
+import BaseIcon from "../components/BaseIcon.vue";
 export default {
   setup(props) {
     const toast = useToast();
@@ -80,6 +83,7 @@ export default {
   },
   components: {
     ToastError,
+    BaseIcon,
   },
   data() {
     return {
