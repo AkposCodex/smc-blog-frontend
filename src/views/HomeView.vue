@@ -220,7 +220,7 @@ export default {
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <a :href="`/post/${slide.slug}`" class="w-full">
               <div class="flex flex-col mx-auto justify-end">
-                <div class="w-full lg:h-[600px] h-[400px]">
+                <div class="w-full lg:h-[400px] h-[400px]">
                   <img
                     :src="slide.mainImage"
                     class="object-cover h-full w-full"
