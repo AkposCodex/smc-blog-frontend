@@ -24,11 +24,11 @@ export default {
   },
   created() {
     getAPI
-      .get("/posts?category=" + "et")
+      .get("/posts?category=equity")
       .then((response) => {
         this.loading = false;
         ("");
-        this.blogPosts = response.data;
+        this.blogPosts = response.data.results;
       })
       .catch((err) => {});
   },

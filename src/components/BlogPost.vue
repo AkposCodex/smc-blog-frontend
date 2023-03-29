@@ -96,7 +96,12 @@ export default {
           </h1>
           <div class="flex items-center gap-2 my-6">
             <div class="w-8 h-8">
-              <img class="w-full h-full rounded-full" v-if="!loading" :src="auth_img" alt="" />
+              <img
+                class="w-full h-full rounded-full"
+                v-if="!loading"
+                :src="auth_img"
+                alt=""
+              />
               <free-style-shimmer
                 :is-loading="loading"
                 height="35px"
@@ -115,7 +120,11 @@ export default {
                 :random-size="true"
               />
               <div class="flex items-center gap-2" v-if="!loading">
-                <span>{{ posts.publishedAt }}</span>
+                <span>{{
+                  Date(posts.publishedAt)
+                    .replace("GMT+0100 (West Africa Standard Time)", " ")
+                    .trim()
+                }}</span>
                 <p class="h-1 w-1 bg-current rounded-full"></p>
                 <!-- <span>{{ posts.timeToRead || "15 mins read" }}</span> -->
               </div>

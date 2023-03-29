@@ -9,7 +9,7 @@ export default {
   },
   methods: {
     async toastError() {
-      console.log(this.code);
+      // console.log(this.code);
       var desc = "";
       switch (this.code) {
         case 0:

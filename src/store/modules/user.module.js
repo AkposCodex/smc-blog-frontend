@@ -11,6 +11,7 @@ const getInitialState = () => {
       password: "",
       posts: [],
       isLoggedIn: false,
+      drafts: [],
     },
   };
 };
@@ -33,6 +34,10 @@ export default {
       state.user.password = payload.password;
     },
 
+    REVIEW_POST: function (state, payload) {
+      state.user.drafts.push(payload)
+    },
+
     CREATE_POST: function (state, payload) {},
 
     LOAD_POST: function (state, payload) {
@@ -50,15 +55,17 @@ export default {
         username: payload.username,
         password: payload.password,
       };
+      // console.log(req);
       try {
-        response = await getAPI
+        let response = await getAPI
           .post("api/auth/token/login/", req)
           .then(async (response) => {
+            // console.log(response);
             try {
               await getAPI
                 .get(`/users?email=${payload.username}`)
                 .then((response) => {
-                  console.log(response);
+                  // console.log(response);
                   dispatch("updateUser", response.data[0]).then(
                     commit("LOGIN")
                   );
@@ -91,18 +98,21 @@ export default {
           },
         })
         .then((response) => {
+          getAPI.post("/post/review", { post: payload.postSlug });
           dispatch("loadPosts", payload.slug);
           //   this.success = true;
           //   this.$router.go();
         })
         .catch((err) => {});
     },
-
+    async reviewPost({ commit, dispatch }, payload) {
+        dispatch("createPost", e);
+    },
     async loadPosts({ commit, dispatch }, payload) {
       getAPI
         .get("/posts?user=" + payload)
         .then((response) => {
-          console.log(payload, response);
+          // console.log(payload, response);
           commit("LOAD_POST", response.data.results);
           //   this.blogPosts = response.data;
         })
@@ -112,12 +122,12 @@ export default {
       let res = await getAPI
         .get(`/posts?user=${payload.slug}&category=${payload.category}`)
         .then((response) => {
-          console.log(payload, response);
+          // console.log(payload, response);
           return response.data.results;
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});
-      console.log(res);
+      // console.log(res);
       return res;
     },
 

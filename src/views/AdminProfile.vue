@@ -47,12 +47,12 @@
   >
     <div class="w-4/5 mt-9">
       <div class="w-4/5 flex pb-6 gap-6">
-        <figure class="w-[70px]">
+        <figure class="w-[70px] h-[70px]">
           <img
             v-if="user.profileImage"
             :src="user.profileImage"
             alt=""
-            class="rounded-full"
+            class="rounded-full object-cover w-[70px] h-[70px]"
           />
           <img v-else src="@/assets/icons/Ellipse.png" alt="" />
         </figure>
@@ -108,7 +108,7 @@
       </a>
       <a
         @click="
-          showDrafts();
+          pages = 3;
           isMenuOpen = false;
         "
         class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
@@ -207,9 +207,7 @@
     <div class="w-2/5"></div>
   </a>
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
-  <div
-    class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh] overflow-scroll"
-  >
+  <div class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh]">
     <div
       class="w-full hidden lg:flex items-center flex-col bg-gray-100"
       id="sidebar"
@@ -396,10 +394,10 @@
                 class="bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               ></textarea>
             </div>
-            <div class="pb-9" id="userName">
+            <div class="pb-9 hidden" id="password">
               <p class="font-bold">Password</p>
               <input
-                v-model="user.password"
+                v-model="password"
                 type="text"
                 autocomplete="current-password"
                 class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
@@ -466,7 +464,7 @@
           <div
             v-for="post in posts"
             v-if="posts.length > 0"
-            class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
+            class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
               v-if="post.mainImage"
@@ -486,7 +484,11 @@
                 <h3
                   class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
                 >
-                  {{ post.publishedAt }}
+                  {{
+                    Date(post.publishedAt)
+                      .replace("GMT+0100 (West Africa Standard Time)", " ")
+                      .trim()
+                  }}
                 </h3>
                 <p class="text-xs leading-4">
                   {{ post.summary }}
@@ -505,7 +507,7 @@
                   Read More
                 </button>
                 <button
-                  class="bg-white rounded-md border border-black px-3 py-1"
+                  class="bg-white rounded-md hidden border border-black px-3 py-1"
                 >
                   Edit
                 </button>
@@ -519,62 +521,62 @@
       </section>
       <section class="" v-if="pages == 3" id="drafts">
         <p class="text-xl font-bold p-5">Drafts</p>
-        <div
-          v-for="post in drafts"
-          v-if="posts.length > 0"
-          class="flex flex-col lg:flex-row gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
-        >
+        <div class="bg-gray-100 p-5">
           <div
-            v-if="post.mainImage"
-            class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+            v-for="post in drafts"
+            v-if="drafts.length > 0"
+            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
-            <img
-              :src="post.mainImage"
-              alt="blog post"
-              class="lg:w-4/5 w-full rounded-lg h-full object-cover"
-            />
-          </div>
-          <div class="lg:w-[50%] w-full">
-            <div class="mb-5">
-              <h3 class="font-bold font-baseFamily uppercase leading-5">
-                {{ post.title }}
-              </h3>
-              <h3
-                class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
-              >
-                {{ post.publishedAt }}
-              </h3>
-              <p class="text-xs leading-4">
-                {{ post.summary }}
-              </p>
+            <div
+              v-if="post.mainImage"
+              class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+            >
+              <img
+                :src="post.mainImage"
+                alt="blog post"
+                class="lg:w-4/5 w-full rounded-lg h-full object-cover"
+              />
             </div>
-            <div class="grid grid-cols-2 gap-4 w-4/5">
-              <button
-                class="bg-black rounded-md text-white px-3 py-1"
-                @click="
-                  this.$router.push({
-                    name: 'post',
-                    params: { slug: post.slug },
-                  })
-                "
-              >
-                Read More
-              </button>
-              <button class="bg-white rounded-md border border-black px-3 py-1">
-                Edit
-              </button>
+            <div class="lg:w-[50%] w-full">
+              <div class="mb-5">
+                <h3 class="font-bold font-baseFamily uppercase leading-5">
+                  {{ post.title }}
+                </h3>
+                <h3
+                  class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
+                >
+                  {{
+                    Date(post.publishedAt)
+                      .replace("GMT+0100 (West Africa Standard Time)", " ")
+                      .trim()
+                  }}
+                </h3>
+                <p class="text-xs leading-4">
+                  {{ post.summary }}
+                </p>
+              </div>
+              <div class="grid grid-cols-2 hidden gap-4 w-4/5">
+                <button class="bg-black rounded-md text-white px-3 py-1">
+                  Post
+                </button>
+                <button
+                  class="bg-white rounded-md border border-black px-3 py-1"
+                >
+                  Edit
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="w-full flex justify-center items-center h-[50vh]" v-else>
-          <h1 class="font-bold text-black text-2xl">No Drafts</h1>
+          <div class="w-full flex justify-center items-center h-[50vh]" v-else>
+            <h1 class="font-bold text-black text-2xl">No Drafts</h1>
+          </div>
         </div>
       </section>
       <section class="px-5" v-if="pages == 4" id="createPosts">
         <p class="text-xl font-bold py-5">Create Post</p>
         <div class="flex flex-col gap-12">
           <div class="" id="title">
-            <label for="" class="font-bold">Title</label><br />
+            <label for="" class="font-bold">Title*</label><br />
             <input
               type="text"
               name="title"
@@ -584,7 +586,7 @@
             />
           </div>
           <div class="" id="mainImage">
-            <label for="article image" class="font-bold">Main Image</label>
+            <label for="article image" class="font-bold">Main Image*</label>
             <figure class="w-full relative" id="article-image">
               <div
                 class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
@@ -613,7 +615,7 @@
             >
           </div>
           <div class="" id="body">
-            <label for="article image" class="font-bold">Body</label>
+            <label for="article image" class="font-bold">Body*</label>
             <div class="-z-50">
               <ckeditor
                 required
@@ -625,7 +627,7 @@
             </div>
           </div>
           <div class="" id="keyNotes">
-            <label for="summary" class="font-bold">Key Notes</label>
+            <label for="summary" class="font-bold">Key Notes*</label>
             <textarea
               name="summary"
               id=""
@@ -637,7 +639,7 @@
           </div>
           <div class="grid grid-rows-2 lg:gap-12 gap-6" id="metadata">
             <div class="border border-gray-400 rounded-lg capitalize">
-              <p class="p-3 font-bold">Add to a Category</p>
+              <p class="p-3 font-bold">Add to a Category*</p>
               <hr class="w-full border-gray-400" />
               <div class="lg:p-8 p-2 lg:text-md text-sm">
                 <div
@@ -678,16 +680,16 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex flex-col gap-4" id="buttons">
+          <div class="w-full flex flex-col gap-4 mb-6" id="buttons">
             <div class="w-full flex justify-center">
               <button
                 class="bg-black text-white p-3 uppercase w-full rounded-lg mx-auto"
                 @click="publishPost()"
               >
-                Upload
+                Submit for Review
               </button>
             </div>
-            <div class="w-full flex justify-center mb-12">
+            <div class="w-full hidden flex justify-center mb-12">
               <button
                 class="bg-white text-black border-2 border border-black rounded-lg p-3 uppercase w-full mx-auto"
                 @click="savePost()"
@@ -733,8 +735,10 @@ export default {
       summary: "",
       image: "",
       drafts: [],
+      showDrafts: false,
       posts: [],
       file: "",
+      password: "",
       proFile: "",
       editorpost: false,
       editorData: "",
@@ -763,11 +767,12 @@ export default {
     user: "getUserState",
   }),
   created() {
+    this.loadDraftPosts();
     this.showPost("equity");
     getAPI
       .get("/categories")
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.categorySel.autocompleteItems = response.data;
       })
       .catch((err) => {});
@@ -787,6 +792,7 @@ export default {
     },
     publishPost() {
       let data = new FormData();
+      let postSlug = this.title.split(" ").join("").toLowerCase();
       data.append("title", this.title);
       data.append("author", this.user.slug);
       data.append("categories", this.categorySel.selected);
@@ -794,13 +800,22 @@ export default {
       data.append("summary", this.summary);
       data.append("body", this.editorData);
       data.append("mainImage", this.file);
-      data.append("slug", this.title.split(" ").join("").toLowerCase());
+      data.append("slug", postSlug);
+      // console.log(data);
 
-      this.$store.dispatch("userModule/createPost", {
-        formData: data,
-        slug: this.user.slug,
-      });
-      this.$router.go();
+      this.$store
+        .dispatch("userModule/createPost", {
+          formData: data,
+          slug: this.user.slug,
+          postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
+        })
+        .then((e) => {
+          this.loadDraftPosts();
+          this.$router.go();
+        })
+        .catch((e) => {
+          // console.log(e);
+        });
     },
     savePost() {
       let data = new FormData();
@@ -816,9 +831,11 @@ export default {
       let post = {
         formData: data,
         slug: this.user.slug,
+        postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
       };
-      this.drafts = post;
-      console.log(this.drafts);
+      this.drafts.push(post);
+      this.$store.dispatch("userModule/reviewPost", post);
+      // console.log(this.drafts);
 
       // this.$router.go();
     },
@@ -829,8 +846,8 @@ export default {
       data.append("name", this.user.name);
       data.append("bio", this.user.bio);
       data.append("slug", this.user.slug);
-      data.append("slug", this.user.password);
-      c;
+      // data.append("slug", this.password);
+
       getAPI
         .patch("/users/" + this.user.slug, data, {
           headers: {
@@ -860,18 +877,25 @@ export default {
       this.drafts = false;
       this.showAddPost = false;
     },
-    async showDrafts() {
+    async loadDraftPosts() {
       await getAPI.get(`/post/review`).then((response) => {
         let res = response.data.results;
-        for (let i = 0; i < response.data.count; i++) {
-          getAPI.get(`/post?slug=${res[i].post}`).then((r) => {
+        let count = response.data.count;
+        // console.log(res, count);
+        while (count > 0) {
+          getAPI.get(`/posts/${res[count - 1].post}`).then((r) => {
             let res = r.data;
-            if (res.author === this.user.author) {
+            // console.log(res);
+            if (res.author === this.user.slug) {
               this.drafts.push(res);
             }
           });
+          // console.log(this.drafts);
+          count--;
         }
       });
+    },
+    async showDraftPosts() {
       this.pages = 3;
     },
     async showPost(e) {
@@ -908,12 +932,12 @@ export default {
         slug: this.user.slug,
         category: e,
       });
-      console.log(res);
+      // console.log(res);
       this.posts = res;
-      console.log(this.posts);
+      // console.log(this.posts);
       // blog;
       this.showBlog = false;
-      this.drafts = false;
+      this.showDrafts = false;
       this.showAddPost = true;
     },
   },

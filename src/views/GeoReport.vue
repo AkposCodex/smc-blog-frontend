@@ -24,11 +24,11 @@ export default {
   },
   created() {
     getAPI
-      .get("/posts?category=" + "ge")
+      .get("/posts?category=geopolitics")
       .then((response) => {
         this.loading = false;
         ("");
-        this.blogPosts = response.data;
+        this.blogPosts = response.data.results;
       })
       .catch((err) => {});
   },

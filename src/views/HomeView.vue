@@ -77,53 +77,60 @@ export default {
   async created() {
     this.fetchTypedPost("equity", 1);
     await getAPI
-      .get("/posts")
+      .get("/post/review")
       .then((response) => {
         response.data.results.forEach(async (e) => {
-          let arr = [];
-          let email;
-          console.log("here");
-          if (e.author === "sir-mapy") {
-            email = e.author.replaceAll("-", "");
-            console.log(email);
-            await getAPI
-              .get(`/users?email=${email}@gmail.com`)
-              .then((response) => {
-                console.log(email, response.data[0].name);
-                this.blogPosts.push({
-                  title: e.title,
-                  slug: e.slug,
-                  picked: e.picked,
-                  publishedAt: e.publishedAt,
-                  summary: e.summary,
-                  body: e.body,
-                  mainImage: e.mainImage,
-                  categories: e.categories,
-                  author: response.data[0].name,
-                });
-                console.log(this.blogPosts);
+          // console.log(e)
+          if (e.review === "reviewed") {
+            getAPI.get(`/posts/${e.post}`).then((response) => {
+              response.data.results.forEach(async (e) => {
+                let arr = [];
+                let email;
+                // console.log("here");
+                if (e.author === "sir-mapy") {
+                  email = e.author.replaceAll("-", "");
+                  // console.log(email);
+                  await getAPI
+                    .get(`/users?email=${email}@gmail.com`)
+                    .then((response) => {
+                      // console.log(email, response.data[0].name);
+                      this.blogPosts.push({
+                        title: e.title,
+                        slug: e.slug,
+                        picked: e.picked,
+                        publishedAt: e.publishedAt,
+                        summary: e.summary,
+                        body: e.body,
+                        mainImage: e.mainImage,
+                        categories: e.categories,
+                        author: response.data[0].name,
+                      });
+                      // console.log(this.blogPosts);
+                    });
+                } else {
+                  email = e.author.replaceAll("-", ".");
+                  await getAPI
+                    .get(`/users?email=${email}@smcreport.com`)
+                    .then((response) => {
+                      // console.log(email, response.data[0].name);
+                      this.blogPosts.push({
+                        title: e.title,
+                        slug: e.slug,
+                        picked: e.picked,
+                        publishedAt: e.publishedAt,
+                        summary: e.summary,
+                        body: e.body,
+                        mainImage: e.mainImage,
+                        categories: e.categories,
+                        author: response.data[0].name,
+                      });
+                      // console.log(this.blogPosts);
+                    });
+                }
+                return arr;
               });
-          } else {
-            email = e.author.replaceAll("-", ".");
-            await getAPI
-              .get(`/users?email=${email}@smcreport.com`)
-              .then((response) => {
-                console.log(email, response.data[0].name);
-                this.blogPosts.push({
-                  title: e.title,
-                  slug: e.slug,
-                  picked: e.picked,
-                  publishedAt: e.publishedAt,
-                  summary: e.summary,
-                  body: e.body,
-                  mainImage: e.mainImage,
-                  categories: e.categories,
-                  author: response.data[0].name,
-                });
-                console.log(this.blogPosts);
-              });
+            })();
           }
-          return arr;
         });
         // this.blogPosts = response.data.results;
         function loadPosts(e) {
@@ -131,9 +138,9 @@ export default {
           let email;
           if (e.author === "sir-mapy") {
             email = e.author.replaceAll("-", "");
-            console.log(email);
+            // console.log(email);
             getAPI.get(`/users?email=${email}@gmail.com`).then((response) => {
-              console.log(email, response);
+              // console.log(email, response);
               arr.push({
                 title: e.title,
                 slug: e.slug,
@@ -145,14 +152,14 @@ export default {
                 categories: e.categories,
                 author: e.author,
               });
-              console.log(arr);
+              // console.log(arr);
             });
           } else {
             email = e.author.replaceAll("-", ".");
             getAPI
               .get(`/users?email=${email}@smcreport.com`)
               .then((response) => {
-                console.log(email, response);
+                // console.log(email, response);
                 arr.push({
                   title: e.title,
                   slug: e.slug,
@@ -164,7 +171,7 @@ export default {
                   categories: e.categories,
                   author: e.author,
                 });
-                console.log(arr);
+                // console.log(arr);
               });
           }
           return arr;
@@ -212,10 +219,14 @@ export default {
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
     <section
-      class="py-4 w-full md:grid lg:grid-cols-[700px_2fr] md:grid-cols-[500px_1fr] gap-4"
+      class="py-4 w-full md:grid lg:grid-cols-[700px_2fr] md:grid-cols-[400px_1fr] gap-4"
     >
       <div class="lg:h-full h-3/5">
-        <Carousel :wrap-around="true" :items-to-show="1">
+        <Carousel
+          :wrap-around="true"
+          :items-to-show="1"
+          v-if="blogPosts.length > 0"
+        >
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <a :href="`/post/${slide.slug}`" class="w-full">
@@ -251,29 +262,31 @@ export default {
             <Pagination />
           </template>
         </Carousel>
-        <free-style-shimmer
-          :is-loading="!blogPosts"
-          height="480px"
-          width="500px"
-          color="#bdbdbd"
-        />
+        <div class="w-[400px] mx-auto">
+          <free-style-shimmer
+            :is-loading="blogPosts.length <= 0"
+            height="400px"
+            width="400px"
+            color="#bdbdbd"
+          />
+        </div>
       </div>
       <div class="hidden md:block" v-if="editorPosts">
         <BlogCard v-if="editorPosts[0]" :post="editorPosts[0]" md-shrink />
         <BlogCard v-if="editorPosts[1]" :post="editorPosts[1]" md-shrink />
-        <div class="flex flex-col gap-16" v-if="!editorPosts">
-          <free-style-shimmer
-            :is-loading="true"
-            height="200px"
-            width="380px"
-            color="#bdbdbd"
-          /><free-style-shimmer
-            :is-loading="true"
-            height="200px"
-            width="380px"
-            color="#bdbdbd"
-          />
-        </div>
+      </div>
+      <div class="flex flex-col gap-16 hidden md:block" v-if="!editorPosts">
+        <free-style-shimmer
+          :is-loading="true"
+          height="200px"
+          width="200px"
+          color="#bdbdbd"
+        /><free-style-shimmer
+          :is-loading="true"
+          height="200px"
+          width="200px"
+          color="#bdbdbd"
+        />
       </div>
     </section>
     <section class="py-4 w-full">

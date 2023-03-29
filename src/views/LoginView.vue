@@ -216,13 +216,13 @@ export default {
       //       password: this.password,
       //     })
       //     .then((response) => {
-      //       console.log(response)
+      //       // console.log(response)
       //       this.success = true;
       //       this.token = response.data;
       //       getAPI
       //         .get("/users?email=" + this.email)
       //         .then((response) => {
-      //           console.log(response)
+      //           // console.log(response)
       //           this.userslg = response.data[0].slug;
       //           this.$router.push({ path: "profile/" + this.userslg });
       //         })
@@ -247,17 +247,17 @@ export default {
               name: "adminProfile",
               params: { slug: this.user.slug },
             });
-            console.log(this.user, response);
+            // console.log(this.user, response);
           });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         this.hasError = true;
-        console.log(this.hasError);
+        // console.log(this.hasError);
         this.errorCode = error.response.status;
         this.toast.dismiss("login");
         setTimeout(() => {
           this.hasError = false;
-          console.log(this.hasError);
+          // console.log(this.hasError);
         }, 4000);
       }
     },
