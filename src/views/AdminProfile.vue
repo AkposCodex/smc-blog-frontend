@@ -219,7 +219,7 @@
               v-if="user.profileImage"
               :src="user.profileImage"
               alt=""
-              class="rounded-full"
+              class="rounded-full w-[70px] h-[70px] object-cover"
             />
             <img v-else src="@/assets/icons/Ellipse.png" alt="" />
           </figure>

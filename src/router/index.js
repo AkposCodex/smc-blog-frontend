@@ -12,6 +12,16 @@ function guardMyroute(to, from, next) {
     router.push({ name: "admin" });
   }
 }
+function openMyroute(to, from, next) {
+  var isAuthenticated = false;
+  if (store.getters.isLoggedIn) isAuthenticated = true;
+  else isAuthenticated = false;
+  if (isAuthenticated) {
+    router.push({ name: "adminProfile" });
+  } else {
+    next();
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,13 +35,14 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: () => import("../views/LoginView.vue"),
+      beforeEnter: openMyroute,
     },
     {
       path: "/profile",
       name: "adminProfile",
       component: () => import("../views/AdminProfile.vue"),
       props: true,
-      // beforeEnter: guardMyroute,
+      beforeEnter: guardMyroute,
     },
     {
       path: "/geo",

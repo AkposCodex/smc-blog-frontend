@@ -58,7 +58,7 @@ export default {
 </script>
 <template>
   <div
-    class="flex flex-col sticky top-0 z-50 shadow"
+    class="flex flex-col sticky font-baseFamily top-0 z-50 shadow"
     :class="{
       'h-screen': isMenuOpen,
     }"
@@ -119,12 +119,13 @@ export default {
         </div>
       </div>
       <div class="hidden lg:block">
-        <div
+        <form
+          @submit.prevent="search(searchWord)"
           class="flex gap-2 transition-all items-center border-b border-[#004FE5] w-full text-sm group"
         >
           <BaseIcon
             name="search"
-            class="group-focus-within:text-[#00E0B1] transition-all t text-[#366BFF]"
+            class="group-focus-within:text-[#00E0B1] transition-all w-min text-[#366BFF]"
           />
           <input
             type="text"
@@ -134,11 +135,11 @@ export default {
           />
           <button
             @click="search(searchWord)"
-            class="bg-blue-600 uppercase text-white p-2 font-bold"
+            class="bg-blue-600 hidden uppercase text-white p-2 font-bold"
           >
             Search
           </button>
-        </div>
+        </form>
       </div>
       <div class="lg:hidden">
         <button @click="openMenu" v-if="!isMenuOpen">
