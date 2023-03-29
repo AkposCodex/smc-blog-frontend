@@ -77,60 +77,62 @@ export default {
   async created() {
     this.fetchTypedPost("equity", 1);
     await getAPI
-      .get("/post/review")
+      .get("/post/review?state=InReview")
       .then((response) => {
+        console.log(response);
         response.data.results.forEach(async (e) => {
-          // console.log(e)
-          if (e.review === "reviewed") {
-            getAPI.get(`/posts/${e.post}`).then((response) => {
-              response.data.results.forEach(async (e) => {
-                let arr = [];
-                let email;
-                // console.log("here");
-                if (e.author === "sir-mapy") {
-                  email = e.author.replaceAll("-", "");
-                  // console.log(email);
-                  await getAPI
-                    .get(`/users?email=${email}@gmail.com`)
-                    .then((response) => {
-                      // console.log(email, response.data[0].name);
-                      this.blogPosts.push({
-                        title: e.title,
-                        slug: e.slug,
-                        picked: e.picked,
-                        publishedAt: e.publishedAt,
-                        summary: e.summary,
-                        body: e.body,
-                        mainImage: e.mainImage,
-                        categories: e.categories,
-                        author: response.data[0].name,
-                      });
-                      // console.log(this.blogPosts);
-                    });
-                } else {
-                  email = e.author.replaceAll("-", ".");
-                  await getAPI
-                    .get(`/users?email=${email}@smcreport.com`)
-                    .then((response) => {
-                      // console.log(email, response.data[0].name);
-                      this.blogPosts.push({
-                        title: e.title,
-                        slug: e.slug,
-                        picked: e.picked,
-                        publishedAt: e.publishedAt,
-                        summary: e.summary,
-                        body: e.body,
-                        mainImage: e.mainImage,
-                        categories: e.categories,
-                        author: response.data[0].name,
-                      });
-                      // console.log(this.blogPosts);
-                    });
-                }
-                return arr;
-              });
-            })();
-          }
+          console.log(e);
+          getAPI.get(`/posts/${e.post}`).then(async (r) => {
+            console.log(r);
+            let repo = r
+            if (r.data.author === "sir-mapy") {
+              email = response.data.author.replaceAll("-", "");
+              // console.log(email);
+              await getAPI
+                .get(`/users?email=${email}@gmail.com`)
+                .then((response) => {
+                  // console.log(email, response.data[0].name);
+                  this.blogPosts.push({
+                    title: repo.data.title,
+                    slug: repo.data.slug,
+                    picked: repo.data.picked,
+                    publishedAt: repo.data.publishedAt,
+                    summary: repo.data.summary,
+                    body: repo.data.body,
+                    mainImage: repo.data.mainImage,
+                    categories: repo.data.categories,
+                    author: response.data[0].name,
+                  });
+                  // console.log(this.blogPosts);
+                });
+            } else {
+              let email = r.data.author.replaceAll("-", ".");
+              await getAPI
+                .get(`/users?email=${email}@smcreport.com`)
+                .then((response) => {
+                  // console.log(email, response.data[0].name);
+                  this.blogPosts.push({
+                    title: repo.data.title,
+                    slug: repo.data.slug,
+                    picked: repo.data.picked,
+                    publishedAt: repo.data.publishedAt,
+                    summary: repo.data.summary,
+                    body: repo.data.body,
+                    mainImage: repo.data.mainImage,
+                    categories: repo.data.categories,
+                    author: response.data[0].name,
+                  });
+                  console.log(this.blogPosts);
+                });
+            }
+            // response.data.results.forEach(async (e) => {
+            //   let arr = [];
+            //   let email;
+            //   // console.log("here");
+
+            //   return arr;
+            // });
+          });
         });
         // this.blogPosts = response.data.results;
         function loadPosts(e) {
@@ -222,11 +224,7 @@ export default {
       class="py-4 w-full md:grid lg:grid-cols-[700px_2fr] md:grid-cols-[400px_1fr] gap-4"
     >
       <div class="lg:h-full h-3/5">
-        <Carousel
-          :wrap-around="true"
-          :items-to-show="1"
-          v-if="blogPosts.length > 0"
-        >
+        <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <a :href="`/post/${slide.slug}`" class="w-full">
@@ -264,7 +262,7 @@ export default {
         </Carousel>
         <div class="w-[400px] mx-auto">
           <free-style-shimmer
-            :is-loading="blogPosts.length <= 0"
+            :is-loading="false"
             height="400px"
             width="400px"
             color="#bdbdbd"
