@@ -766,7 +766,9 @@ export default {
   computed: mapGetters({
     user: "getUserState",
   }),
-  created() {
+  async created() {
+    this.file = this.user.profileImage;
+    console.log(this.user);
     this.loadDraftPosts();
     this.showPost("equity");
     getAPI
@@ -776,6 +778,10 @@ export default {
         this.categorySel.autocompleteItems = response.data;
       })
       .catch((err) => {});
+    await getAPI.get(`/users?email=${this.user.email}`).then((response) => {
+      // console.log(response);
+      this.$store.dispatch("userModule/updateUser", response.data[0]);
+    });
   },
   methods: {
     logout() {
@@ -841,11 +847,16 @@ export default {
     },
     UpdateProfile() {
       let data = new FormData();
-      data.append("image", this.proFile);
-      data.append("email", this.user.email);
-      data.append("name", this.user.name);
-      data.append("bio", this.user.bio);
-      data.append("slug", this.user.slug);
+      if (!this.file == "") {
+        data.append("email", this.user.email);
+        data.append("name", this.user.name);
+        data.append("bio", this.user.bio);
+      } else {
+        data.append("image", this.file);
+        data.append("email", this.user.email);
+        data.append("name", this.user.name);
+        data.append("bio", this.user.bio);
+      }
       // data.append("slug", this.password);
 
       getAPI
@@ -869,6 +880,7 @@ export default {
     },
     changeProfileImage(e) {
       let file = e.target.files[0];
+      this.file = file;
       let imageSRC = URL.createObjectURL(file);
       this.proFile = imageSRC;
     },
