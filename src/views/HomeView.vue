@@ -206,9 +206,6 @@ export default {
 </script>
 
 <template>
-  <head>
-    <title>SMC Report | HOME</title>
-  </head>
   <AppHeader></AppHeader>
 
   <header class="pb-4 capitalize">

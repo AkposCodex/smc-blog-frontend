@@ -36,9 +36,6 @@ export default {
 </script>
 
 <template>
-  <head>
-    <title>SMC Report | Economics Report</title>
-  </head>
   <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
     <section class="py-4 max-w-2xl mx-auto w-full mb-12">

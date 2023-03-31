@@ -30,12 +30,18 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      meta: {
+        title: "SMC REPORT",
+      },
     },
     {
       path: "/admin",
       name: "admin",
       component: () => import("../views/LoginView.vue"),
       beforeEnter: openMyroute,
+      meta: {
+        title: "SMC Report | LOGIN",
+      },
     },
     {
       path: "/profile",
@@ -43,34 +49,56 @@ const router = createRouter({
       component: () => import("../views/AdminProfile.vue"),
       props: true,
       beforeEnter: guardMyroute,
+      meta: {
+        title: "SMC Report | Admin Profile",
+      },
     },
     {
       path: "/geo",
       name: "geoReport",
       component: () => import("../views/GeoReport.vue"),
+      meta: {
+        title: "SMC Report | Geopolitics Reports",
+      },
     },
     {
       path: "/eco",
       name: "ecoReport",
       component: () => import("../views/EcoReport.vue"),
+      meta: {
+        title: "SMC Report | Economic Reports",
+      },
     },
     {
       path: "/bc",
       name: "bcReport",
       component: () => import("../views/BcReport.vue"),
+      meta: {
+        title: "SMC Report | Blockchain Reports",
+      },
     },
     {
       path: "/eq",
       name: "eqReport",
       component: () => import("../views/EqReport.vue"),
+      meta: {
+        title: "SMC Report | Equity Reports",
+      },
     },
     {
       path: "/post/:slug",
       name: "post",
       component: () => import("../components/BlogPost.vue"),
       props: true,
+      meta: {
+        title: `SMC Report | :slug`,
+      },
     },
   ],
+});
+
+router.beforeEach((to) => {
+  document.title = to.meta.title;
 });
 
 export default router;

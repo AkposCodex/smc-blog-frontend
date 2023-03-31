@@ -75,9 +75,6 @@ export default {
 };
 </script>
 <template>
-  <head>
-    <title class="capitalize">{{ posts.title }}</title>
-  </head>
   <AppHeader></AppHeader>
 
   <main class="max-w-4xl mx-auto">

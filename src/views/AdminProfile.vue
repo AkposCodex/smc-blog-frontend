@@ -1,7 +1,4 @@
 <template>
-  <head>
-    <title>SMC Report | {{ user.name + "'s Profile" }}</title>
-  </head>
   <header class="md:flex justify-start shadow-md py-3 w-full px-12">
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
       <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
