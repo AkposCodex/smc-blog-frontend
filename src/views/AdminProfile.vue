@@ -6,7 +6,7 @@
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
       <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
         <BaseIcon name="hamburger" v-if="!isMenuOpen" />
-        <BaseIcon name="close" v-if="isMenuOpen" />
+        <!-- <BaseIcon name="close" v-if="isMenuOpen" /> -->
       </button>
       <div class="w-3/5 md:w-2/5 flex justify-start m-0">
         <img src="@/assets/icons/logo.png" alt="" class="w-min" />
@@ -363,9 +363,9 @@
             </figure>
             <div class="flex flex-col gap-2">
               <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-              <p class="bg-gray-200 px-4 py-1 text-xs rounded-md">
-                Articles Written
+              <p class="bg-gray-200 px-4 w-max py-1 text-xs rounded-md">
                 {{ user.posts.length }}
+                Articles Written
               </p>
               <div class="flex justify-center items-center">
                 <p v-if="user.bio" class="md:text-left text-center w-full">
@@ -405,7 +405,7 @@
             </div>
             <button
               @click="UpdateProfile"
-              class="bg-black w-full h-[3rem] text-white rounded-md"
+              class="bg-black md:w-3/5 w-full h-[3rem] text-white rounded-md"
             >
               Save
             </button>
@@ -712,14 +712,21 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import { mapGetters } from "vuex";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseButton from "../components/BaseButton.vue";
+import { useToast, POSITION } from "vue-toastification";
+import ToastError from "../services/error.vue";
 
 export default {
+  setup(props) {
+    const toast = useToast();
+    return { toast };
+  },
   components: {
     BlogCardList,
     SavedModal,
     BaseIcon,
     ckeditor: CKEditor.component,
     BaseButton,
+    ToastError,
   },
   data() {
     return {
@@ -741,6 +748,7 @@ export default {
       password: "",
       proFile: "",
       editorpost: false,
+      hasError: false,
       editorData: "",
       editor: ClassicEditor,
       categorySel: {
@@ -809,19 +817,30 @@ export default {
       data.append("slug", postSlug);
       // console.log(data);
 
-      this.$store
-        .dispatch("userModule/createPost", {
-          formData: data,
-          slug: this.user.slug,
-          postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
-        })
-        .then((e) => {
-          this.loadDraftPosts();
-          this.$router.go();
-        })
-        .catch((e) => {
-          // console.log(e);
-        });
+      try {
+        this.$store
+          .dispatch("userModule/createPost", {
+            formData: data,
+            slug: this.user.slug,
+            postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
+          })
+          .then((e) => {
+            this.loadDraftPosts();
+            this.$router.go();
+          })
+          .catch((e) => {
+            // console.log(e);
+          });
+      } catch (error) {
+        this.hasError = true;
+        // console.log(this.hasError);
+        this.errorCode = error.response.status;
+        this.toast.dismiss("login");
+        setTimeout(() => {
+          this.hasError = false;
+          // console.log(this.hasError);
+        }, 4000);
+      }
     },
     savePost() {
       let data = new FormData();
