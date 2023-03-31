@@ -496,7 +496,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="posts.length > 0"
+            v-if="!posts === []"
             class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -830,6 +830,7 @@ export default {
       password: "",
       proFile: "",
       editorpost: false,
+      errorCode: "",
       hasError: false,
       editorData: "",
       editor: ClassicEditor,
@@ -974,7 +975,7 @@ export default {
         .catch((err) => {
           this.hasError = true;
           // console.log(this.hasError);
-          this.errorCode = error.response.status;
+          this.errorCode = err.response.status;
         });
     },
     Changeimage(e) {
