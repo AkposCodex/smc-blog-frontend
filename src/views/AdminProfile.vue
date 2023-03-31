@@ -869,7 +869,7 @@ export default {
     },
     UpdateProfile() {
       let data = new FormData();
-      if (!this.file == "") {
+      if (!this.file === "") {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
@@ -899,12 +899,14 @@ export default {
       let imageSRC = URL.createObjectURL(file);
       this.file = file;
       this.image = imageSRC;
+      console.log(this.file, this.image);
     },
     changeProfileImage(e) {
       let file = e.target.files[0];
       this.file = file;
       let imageSRC = URL.createObjectURL(file);
       this.proFile = imageSRC;
+      console.log(this.file, this.proFile);
     },
     showblog() {
       this.showBlog = true;
