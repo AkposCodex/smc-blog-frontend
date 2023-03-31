@@ -170,6 +170,7 @@
       <BaseIcon name="search" class="text-gray-800" />
       <input
         type="text"
+        required
         placeholder="search posts"
         class="outline-none w-full bg-gray-200"
         v-model="word"

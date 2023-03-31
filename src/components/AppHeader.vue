@@ -130,6 +130,7 @@ export default {
           <input
             type="text"
             placeholder="search"
+            required
             class="outline-none w-12 group-focus-within:w-full transition-all"
             v-model="searchWord"
           />
@@ -161,6 +162,7 @@ export default {
           <input
             type="text"
             placeholder="search"
+            required
             class="outline-none w-full"
             v-model="word"
           />
