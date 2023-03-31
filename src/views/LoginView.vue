@@ -210,27 +210,6 @@ export default {
   }),
   methods: {
     async loginForm(username, password) {
-      //   getAPI
-      //     .post("api/auth/token/login/", {
-      //       username: this.email,
-      //       password: this.password,
-      //     })
-      //     .then((response) => {
-      //       // console.log(response)
-      //       this.success = true;
-      //       this.token = response.data;
-      //       getAPI
-      //         .get("/users?email=" + this.email)
-      //         .then((response) => {
-      //           // console.log(response)
-      //           this.userslg = response.data[0].slug;
-      //           this.$router.push({ path: "profile/" + this.userslg });
-      //         })
-      //         .catch((err) => {});
-      //     })
-      //     .catch((err) => {
-      //       this.error = err;
-      //     });
       try {
         this.toast.info("Logging In...", {
           timeout: false,
