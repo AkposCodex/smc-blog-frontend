@@ -226,6 +226,7 @@ export default {
               name: "adminProfile",
               params: { slug: this.user.slug },
             });
+            this.toast.dismiss("login");
             // console.log(this.user, response);
           });
       } catch (error) {

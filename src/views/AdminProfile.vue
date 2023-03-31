@@ -215,13 +215,15 @@
       <div class="w-4/5 mt-9">
         <div class="w-4/5 flex pb-6 gap-6">
           <figure class="w-[70px]">
-            <img
-              v-if="user.profileImage"
-              :src="user.profileImage"
-              alt=""
-              class="rounded-full w-[70px] h-[70px] object-cover"
-            />
-            <img v-else src="@/assets/icons/Ellipse.png" alt="" />
+            <div class="w-[70px]">
+              <img
+                v-if="user.profileImage"
+                :src="user.profileImage"
+                alt=""
+                class="rounded-full w-[70px] h-[70px] object-cover"
+              />
+              <img v-else src="@/assets/icons/Ellipse.png" alt="" />
+            </div>
           </figure>
           <div class="flex flex-col justify-center w-min items-start">
             <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
@@ -272,7 +274,8 @@
         </a>
         <a
           @click="
-            showDrafts();
+            loadDraftPosts();
+            pages = 3;
             isMenuOpen = false;
           "
           class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
