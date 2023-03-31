@@ -337,7 +337,7 @@
           >
             <figure class="w-[150px]">
               <div
-                class="before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-[150px] before:h-[150px] before:rounded-full before:backdrop-brightness-50 before:absolute z-50"
+                class="before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] w-[150px] before:flex before:justify-center before:items-center before:w-[150px] before:h-[150px] before:rounded-full before:backdrop-brightness-50 before:absolute z-50"
               >
                 <img
                   v-if="proFile"
