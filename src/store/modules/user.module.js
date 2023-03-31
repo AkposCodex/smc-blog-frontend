@@ -12,6 +12,7 @@ const getInitialState = () => {
       posts: [],
       isLoggedIn: false,
       drafts: [],
+      isSuper: false,
     },
   };
 };
@@ -32,10 +33,11 @@ export default {
       state.user.slug = payload.slug;
       state.user.email = payload.email;
       state.user.password = payload.password;
+      state.user.isSuper = payload.is_superuser;
     },
 
     REVIEW_POST: function (state, payload) {
-      state.user.drafts.push(payload)
+      state.user.drafts.push(payload);
     },
 
     CREATE_POST: function (state, payload) {},
@@ -106,7 +108,7 @@ export default {
         .catch((err) => {});
     },
     async reviewPost({ commit, dispatch }, payload) {
-        dispatch("createPost", e);
+      dispatch("createPost", payload);
     },
     async loadPosts({ commit, dispatch }, payload) {
       getAPI

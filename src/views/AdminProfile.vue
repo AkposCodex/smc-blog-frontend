@@ -1,4 +1,6 @@
 <template>
+  <ToastError v-if="hasError" :code="errorCode"></ToastError>
+
   <header class="md:flex justify-start shadow-md py-3 w-full px-12">
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
       <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
@@ -115,6 +117,21 @@
       >
         <BaseIcon name="Vector-1" class="text-gray-800" />
         <p>Drafts</p>
+      </a>
+      <a
+        v-if="user.isSuper"
+        @click="
+          loadAdminPosts();
+          pages = 5;
+          isMenuOpen = false;
+        "
+        class="font-bold w-max hidden flex hover:cursor-pointer gap-3 items-center"
+        :class="{
+          ' text-blue-600 decoration-4': pages === 3,
+        }"
+      >
+        <BaseIcon name="Vector-1" class="text-gray-800" />
+        <p>Review</p>
       </a>
       <a
         @click="logout()"
@@ -283,6 +300,21 @@
         >
           <BaseIcon name="Vector-1" class="text-gray-800" />
           <p>Drafts</p>
+        </a>
+        <a
+          v-if="user.isSuper"
+          @click="
+            loadAdminPosts();
+            pages = 5;
+            isMenuOpen = false;
+          "
+          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          :class="{
+            ' text-blue-600 decoration-4': pages === 3,
+          }"
+        >
+          <BaseIcon name="Vector-1" class="text-gray-800" />
+          <p>Review</p>
         </a>
         <a
           @click="logout()"
@@ -573,6 +605,54 @@
           </div>
         </div>
       </section>
+      <section class="" v-if="pages == 5" id="review">
+        <p class="text-xl font-bold p-5">Pending Posts</p>
+        <div class="bg-gray-100 p-5">
+          <div
+            v-for="post in reviewPosts"
+            v-if="reviewPosts.length > 0"
+            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
+          >
+            <div
+              v-if="post.mainImage"
+              class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+            >
+              <img
+                :src="post.mainImage"
+                alt="blog post"
+                class="lg:w-4/5 w-full rounded-lg h-full object-cover"
+              />
+            </div>
+            <div class="lg:w-[50%] w-full">
+              <div class="mb-5">
+                <h3 class="font-bold font-baseFamily uppercase leading-5">
+                  {{ post.title }}
+                </h3>
+                <h3
+                  class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
+                >
+                  {{
+                    Date(post.publishedAt)
+                      .replace("GMT+0100 (West Africa Standard Time)", " ")
+                      .trim()
+                  }}
+                </h3>
+                <p class="text-xs leading-4">
+                  {{ post.summary }}
+                </p>
+              </div>
+              <div class="grid grid-cols-2 gap-4 w-4/5">
+                <button class="bg-black rounded-md text-white px-3 py-1">
+                  Post
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="w-full flex justify-center items-center h-[50vh]" v-else>
+            <h1 class="font-bold text-black text-2xl">No Drafts</h1>
+          </div>
+        </div>
+      </section>
       <section class="px-5" v-if="pages == 4" id="createPosts">
         <p class="text-xl font-bold py-5">Create Post</p>
         <div class="flex flex-col gap-12">
@@ -685,7 +765,7 @@
             <div class="w-full flex justify-center">
               <button
                 class="bg-black text-white p-3 uppercase w-full rounded-lg mx-auto"
-                @click="publishPost()"
+                @click="savePost()"
               >
                 Submit for Review
               </button>
@@ -745,6 +825,7 @@ export default {
       drafts: [],
       showDrafts: false,
       posts: [],
+      reviewPosts: [],
       file: "",
       password: "",
       proFile: "",
@@ -890,7 +971,11 @@ export default {
           this.mssg = "Updated";
           this.$router.go();
         })
-        .catch((err) => {});
+        .catch((err) => {
+          this.hasError = true;
+          // console.log(this.hasError);
+          this.errorCode = error.response.status;
+        });
     },
     Changeimage(e) {
       let file = e.target.files[0];
@@ -927,6 +1012,11 @@ export default {
           // console.log(this.drafts);
           count--;
         }
+      });
+    },
+    async loadAdminPosts() {
+      await getAPI.get(`/post/review`).then((response) => {
+        this.reviewPosts = response.data.results;
       });
     },
     async showDraftPosts() {
