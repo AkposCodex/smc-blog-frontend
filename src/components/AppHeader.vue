@@ -30,14 +30,17 @@ export default {
       document.body.classList.toggle("overflow-hidden");
     },
     async search(e) {
-      await getAPI.get(`/posts?name=${e}`).then((response) => {
-        this.results = response.data;
-      });
+      await getAPI
+        .get(`/posts?name=${e}`)
+        .then((response) => {
+          this.results = response.data;
+        })
+        .catch((e) => {});
     },
     async searchMini(e) {
       await getAPI.get(`/posts?name=${e}`).then((response) => {
         this.results = response.data;
-      });
+      }).catch((e) => {});
     },
     navigate(e) {
       this.$router.push({
@@ -120,7 +123,6 @@ export default {
       </div>
       <div class="hidden lg:block">
         <form
-          @submit.prevent="search(searchWord)"
           class="flex gap-2 transition-all items-center border-b border-[#004FE5] w-full text-sm group"
         >
           <BaseIcon
@@ -136,7 +138,7 @@ export default {
           />
           <button
             @click="search(searchWord)"
-            class="bg-blue-600 hidden uppercase text-white p-2 font-bold"
+            class="bg-blue-600 uppercase text-white p-2 font-bold"
           >
             Search
           </button>

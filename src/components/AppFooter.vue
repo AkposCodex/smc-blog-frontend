@@ -4,7 +4,7 @@
     class="text-center bg-[#1B1B1F] dark:bg-black text-white py-9 text-xs"
   >
     <div class="md:w-1/2 mx-auto">
-      <h1 class="text-3xl font-bold font-serifFamily capitalize">
+      <h1 class="text-3xl font-bold font-baseFamily capitalize">
         Sign up for daily report in your inbox
       </h1>
       <div class="mt-4 my-6">

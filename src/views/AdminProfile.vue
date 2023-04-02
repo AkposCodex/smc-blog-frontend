@@ -828,7 +828,7 @@ export default {
       reviewPosts: [],
       file: "",
       password: "",
-      proFile: "",
+      proFile: null,
       editorpost: false,
       errorCode: "",
       hasError: false,
@@ -949,16 +949,19 @@ export default {
     },
     UpdateProfile() {
       let data = new FormData();
-      if (!this.file === "") {
+      if (this.proFile !=null) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
-      } else {
         data.append("image", this.file);
+        console.log("image absent");
+      } else if (this.proFile =null && this.user.profileImage != null) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
+        console.log("image present");
       }
+
       // data.append("slug", this.password);
 
       getAPI
@@ -974,7 +977,7 @@ export default {
         })
         .catch((err) => {
           this.hasError = true;
-          // console.log(this.hasError);
+          console.log(err);
           this.errorCode = err.response.status;
         });
     },

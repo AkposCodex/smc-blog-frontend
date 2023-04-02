@@ -84,7 +84,7 @@ export default {
           console.log(e);
           getAPI.get(`/posts/${e.post}`).then(async (r) => {
             console.log(r);
-            let repo = r
+            let repo = r;
             if (r.data.author === "sir-mapy") {
               email = response.data.author.replaceAll("-", "");
               // console.log(email);
@@ -386,6 +386,17 @@ export default {
 .carousel__prev,
 .carousel__next {
   box-sizing: content-box;
-  border: 5px solid white;
+  color: black;
+}
+.dark .carousel__prev {
+  box-sizing: content-box;
+  color: white;
+}
+.dark .carousel__next {
+  box-sizing: content-box;
+  color: white;
+}
+.dark .carousel__pagination-button--active::after {
+  background-color: white;
 }
 </style>

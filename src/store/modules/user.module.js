@@ -4,7 +4,7 @@ const getInitialState = () => {
   return {
     user: {
       slug: "",
-      profileImage: "",
+      profileImage: null,
       bio: "",
       name: "",
       email: "",
