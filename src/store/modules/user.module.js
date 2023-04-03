@@ -129,7 +129,7 @@ export default {
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});
-      // console.log(res);
+      console.log(res);
       return res;
     },
 

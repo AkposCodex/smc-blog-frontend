@@ -7,8 +7,8 @@
         <BaseIcon name="hamburger" v-if="!isMenuOpen" />
         <!-- <BaseIcon name="close" v-if="isMenuOpen" /> -->
       </button>
-      <div class="w-3/5 md:w-2/5 flex justify-start m-0">
-        <img src="@/assets/icons/logo.png" alt="" class="w-min" />
+      <div class="flex justify-start m-0">
+        <AppLogo class="text-black dark:text-white" />
       </div>
       <div class="hidden lg:block" id="search" z-50>
         <form
@@ -42,8 +42,16 @@
   </header>
   <a
     v-if="isMenuOpen"
-    class="flex absolute bg-white dark:bg-[#272626] md:mt-[4.4rem] mt-[3.5rem] h-[100%] overflow-scroll md:mt-[3.5rem] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+    class="flex absolute bg-white dark:bg-[#272626] mt-[3rem] h-[100%] overflow-scroll z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
   >
+    <div class="p-6">
+      <button class="flex gap-2 items-center" @click="toggleDark()">
+        <BaseIcon name="mode" />
+        <span class="text-sm whitespace-nowrap font-semibold"
+          >{{ isDark ? "Dark" : "Light" }} Mode</span
+        >
+      </button>
+    </div>
     <div class="w-4/5 mt-9">
       <div class="w-4/5 flex pb-6 gap-6">
         <figure class="w-[70px] h-[70px]">
@@ -76,7 +84,7 @@
           ' text-blue-600 decoration-4': pages === 1,
         }"
       >
-        <BaseIcon name="user" class="text-gray-800" />
+        <BaseIcon name="user" class="" />
         <p>Profile</p>
       </a>
       <a
@@ -89,7 +97,7 @@
           ' text-blue-600 decoration-4': pages === 4,
         }"
       >
-        <BaseIcon name="plusButton" class="text-gray-800" />
+        <BaseIcon name="plusButton" class="" />
         <p>Create new article</p>
       </a>
       <a
@@ -102,7 +110,7 @@
           ' text-blue-600 decoration-4': pages === 2,
         }"
       >
-        <BaseIcon name="articles" class="text-gray-800" />
+        <BaseIcon name="articles" class="" />
         <p>Your articles</p>
       </a>
       <a
@@ -115,22 +123,21 @@
           ' text-blue-600 decoration-4': pages === 3,
         }"
       >
-        <BaseIcon name="Vector-1" class="text-gray-800" />
+        <BaseIcon name="Vector-1" class="" />
         <p>Drafts</p>
       </a>
       <a
         v-if="user.isSuper"
         @click="
-          loadAdminPosts();
           pages = 5;
           isMenuOpen = false;
         "
-        class="font-bold w-max hidden flex hover:cursor-pointer gap-3 items-center"
+        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
         :class="{
-          ' text-blue-600 decoration-4': pages === 3,
+          ' text-blue-600 decoration-4': pages === 5,
         }"
       >
-        <BaseIcon name="Vector-1" class="text-gray-800" />
+        <BaseIcon name="Vector-1" class="" />
         <p>Review</p>
       </a>
       <a
@@ -139,7 +146,7 @@
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
-        <BaseIcon name="logOut" class="text-gray-800" />
+        <BaseIcon name="logOut" class="" />
         <p>Log out</p>
       </a>
       <hr class="w-full border" />
@@ -224,9 +231,17 @@
   <SavedModal v-show="showModal" @close-modal="showModal = false" />
   <div class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh]">
     <div
-      class="w-full hidden lg:flex items-center flex-col bg-gray-100"
+      class="w-full hidden lg:flex dark:text-white items-center flex-col bg-gray-100 dark:bg-[#1b1b1f]"
       id="sidebar"
     >
+      <div class="p-6">
+        <button class="flex gap-2 items-center" @click="toggleDark()">
+          <BaseIcon name="mode" />
+          <span class="hidden lg:block text-sm whitespace-nowrap font-semibold"
+            >{{ isDark ? "Dark" : "Light" }} Mode</span
+          >
+        </button>
+      </div>
       <div class="w-4/5 mt-9">
         <div class="w-4/5 flex pb-6 gap-6">
           <figure class="w-[70px]">
@@ -258,7 +273,7 @@
             ' text-blue-600 decoration-4': pages === 1,
           }"
         >
-          <BaseIcon name="user" class="text-gray-800" />
+          <BaseIcon name="user" class="" />
           <p>Profile</p>
         </a>
         <a
@@ -271,7 +286,7 @@
             ' text-blue-600 decoration-4': pages === 4,
           }"
         >
-          <BaseIcon name="plusButton" class="text-gray-800" />
+          <BaseIcon name="plusButton" class="" />
           <p>Create new article</p>
         </a>
         <a
@@ -284,7 +299,7 @@
             ' text-blue-600 decoration-4': pages === 2,
           }"
         >
-          <BaseIcon name="articles" class="text-gray-800" />
+          <BaseIcon name="articles" class="" />
           <p>Your articles</p>
         </a>
         <a
@@ -298,29 +313,28 @@
             ' text-blue-600 decoration-4': pages === 3,
           }"
         >
-          <BaseIcon name="Vector-1" class="text-gray-800" />
+          <BaseIcon name="Vector-1" class="" />
           <p>Drafts</p>
         </a>
         <a
           v-if="user.isSuper"
           @click="
-            loadAdminPosts();
             pages = 5;
             isMenuOpen = false;
           "
           class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
-            ' text-blue-600 decoration-4': pages === 3,
+            ' text-blue-600 decoration-4': pages === 5,
           }"
         >
-          <BaseIcon name="Vector-1" class="text-gray-800" />
+          <BaseIcon name="Vector-1" class="" />
           <p>Review</p>
         </a>
         <a
           @click="logout()"
           class="font-bold w-max flex gap-3 hover:cursor-pointer items-center"
         >
-          <BaseIcon name="logOut" class="text-gray-800" />
+          <BaseIcon name="logOut" class="" />
 
           <p>Log out</p>
         </a>
@@ -364,7 +378,7 @@
     <div class="w-full">
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
         <p class="text-xl font-bold p-5 mb-9">Profile</p>
-        <div class="lg:w-3/5 mx-auto">
+        <div class="lg:w-4/5 mx-auto">
           <div
             class="flex flex-col lg:flex-row gap-4 mb-9 relative items-center"
           >
@@ -382,7 +396,7 @@
                   v-else
                   :src="user.profileImage"
                   alt=""
-                  class="rounded-full h-[150px] w-[150px]"
+                  class="rounded-full object-cover h-[150px] w-[150px]"
                 />
               </div>
               <input
@@ -396,12 +410,17 @@
             </figure>
             <div class="flex flex-col gap-2">
               <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-              <p class="bg-gray-200 px-4 w-max py-1 text-xs rounded-md">
+              <p
+                class="bg-gray-200 px-4 w-max py-1 font-bold dark:text-black text-xs rounded-md"
+              >
                 {{ user.posts.length }}
                 Articles Written
               </p>
               <div class="flex justify-center items-center">
-                <p v-if="user.bio" class="md:text-left text-center w-full">
+                <p
+                  v-if="user.bio"
+                  class="md:text-left font-bold text-center w-full"
+                >
                   {{ user.bio }}
                 </p>
                 <p v-else>No Bio</p>
@@ -424,7 +443,7 @@
                 cols="30"
                 v-model="user.bio"
                 rows="5"
-                class="bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+                class="bg-gray-200 dark:bg-transparent p-1 font-bold focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               ></textarea>
             </div>
             <div class="pb-9 hidden" id="password">
@@ -438,7 +457,7 @@
             </div>
             <button
               @click="UpdateProfile"
-              class="bg-black md:w-3/5 w-full h-[3rem] text-white rounded-md"
+              class="bg-black dark:bg-white/60 md:w-3/5 w-full h-[3rem] text-white dark:text-black font-bold rounded-md"
             >
               Save
             </button>
@@ -496,7 +515,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="!posts === []"
+            v-if="posts.length >0"
             class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -511,19 +530,22 @@
             </div>
             <div class="lg:w-[50%] w-full">
               <div class="mb-5">
-                <h3 class="font-bold font-baseFamily uppercase leading-5">
+                <h3
+                  class="font-bold font-baseFamily text-black uppercase leading-5"
+                >
                   {{ post.title }}
                 </h3>
                 <h3
                   class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
                 >
                   {{
-                    Date(post.publishedAt)
+                    new Date(post.publishedAt)
+                      .toString()
                       .replace("GMT+0100 (West Africa Standard Time)", " ")
                       .trim()
                   }}
                 </h3>
-                <p class="text-xs leading-4">
+                <p class="text-xs text-black leading-4">
                   {{ post.summary }}
                 </p>
               </div>
@@ -579,7 +601,8 @@
                   class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
                 >
                   {{
-                    Date(post.publishedAt)
+                    new Date(post.publishedAt)
+                      .toString()
                       .replace("GMT+0100 (West Africa Standard Time)", " ")
                       .trim()
                   }}
@@ -607,7 +630,7 @@
       </section>
       <section class="" v-if="pages == 5" id="review">
         <p class="text-xl font-bold p-5">Pending Posts</p>
-        <div class="bg-gray-100 p-5">
+        <div class="bg-gray-100 dark:bg-transparent p-5">
           <div
             v-for="post in reviewPosts"
             v-if="reviewPosts.length > 0"
@@ -625,25 +648,56 @@
             </div>
             <div class="lg:w-[50%] w-full">
               <div class="mb-5">
-                <h3 class="font-bold font-baseFamily uppercase leading-5">
-                  {{ post.title }}
-                </h3>
+                <div class="flex gap-4">
+                  <h3
+                    class="font-bold w-max text-black font-baseFamily uppercase leading-5"
+                  >
+                    {{ post.title }}
+                    <span
+                      ><p class="capitalize text-sm text-black/40">
+                        by {{ post.author }}
+                      </p></span
+                    >
+                  </h3>
+                  <h3 class="bg-gray-200 rounded-md p-1 text-black h-min">
+                    {{ post.review }}
+                  </h3>
+                </div>
                 <h3
                   class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
                 >
                   {{
-                    Date(post.publishedAt)
+                    new Date(post.publishedAt)
+                      .toString()
                       .replace("GMT+0100 (West Africa Standard Time)", " ")
                       .trim()
                   }}
                 </h3>
-                <p class="text-xs leading-4">
+                <hr class="my-3" />
+                <p class="font-bold text-black">Post summary</p>
+                <p class="px-4 leading-4 text-black">
                   {{ post.summary }}
                 </p>
               </div>
-              <div class="grid grid-cols-2 gap-4 w-4/5">
-                <button class="bg-black rounded-md text-white px-3 py-1">
-                  Post
+              <div
+                class="flex mt-10 gap-4 w-4/5"
+                v-if="post.review === 'InReview'"
+              >
+                <button
+                  @click="
+                    review({ id: post.id, slug: post.slug, review: `Approved` })
+                  "
+                  class="bg-green-600 rounded-md text-white px-3 py-1"
+                >
+                  Approve
+                </button>
+                <button
+                  @click="
+                    review({ id: post.id, slug: post.slug, review: `Rejected` })
+                  "
+                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
+                >
+                  Reject
                 </button>
               </div>
             </div>
@@ -714,7 +768,7 @@
               id=""
               cols="30"
               rows="4"
-              class="bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              class="bg-gray-200 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               v-model="summary"
             ></textarea>
           </div>
@@ -764,8 +818,8 @@
           <div class="w-full flex flex-col gap-4 mb-6" id="buttons">
             <div class="w-full flex justify-center">
               <button
-                class="bg-black text-white p-3 uppercase w-full rounded-lg mx-auto"
-                @click="savePost()"
+                class="bg-black dark:bg-white/60 text-white dark:text-black font-bold p-3 uppercase w-full rounded-lg mx-auto"
+                @click="publishPost()"
               >
                 Submit for Review
               </button>
@@ -785,6 +839,7 @@
   </div>
 </template>
 <script>
+import AppLogo from "../components/AppLogo.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { getAPI } from "../axios";
 import SavedModal from "../components/Modal.vue";
@@ -795,11 +850,14 @@ import BaseIcon from "../components/BaseIcon.vue";
 import BaseButton from "../components/BaseButton.vue";
 import { useToast, POSITION } from "vue-toastification";
 import ToastError from "../services/error.vue";
+import { useDark, useToggle } from "@vueuse/core";
 
 export default {
-  setup(props) {
+  setup() {
     const toast = useToast();
-    return { toast };
+    const isDark = useDark();
+    const toggleDark = useToggle(isDark);
+    return { toast, isDark, toggleDark };
   },
   components: {
     BlogCardList,
@@ -808,6 +866,7 @@ export default {
     ckeditor: CKEditor.component,
     BaseButton,
     ToastError,
+    AppLogo,
   },
   data() {
     return {
@@ -858,6 +917,7 @@ export default {
     user: "getUserState",
   }),
   async created() {
+    this.loadAdminPosts();
     this.file = this.user.profileImage;
     console.log(this.user);
     this.loadDraftPosts();
@@ -898,7 +958,7 @@ export default {
       data.append("body", this.editorData);
       data.append("mainImage", this.file);
       data.append("slug", postSlug);
-      // console.log(data);
+      console.log(data);
 
       try {
         this.$store
@@ -909,7 +969,7 @@ export default {
           })
           .then((e) => {
             this.loadDraftPosts();
-            this.$router.go();
+            // this.$router.go();
           })
           .catch((e) => {
             // console.log(e);
@@ -949,13 +1009,13 @@ export default {
     },
     UpdateProfile() {
       let data = new FormData();
-      if (this.proFile !=null) {
+      if (this.proFile != null) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
         console.log("image absent");
-      } else if (this.proFile =null && this.user.profileImage != null) {
+      } else if ((this.proFile = null && this.user.profileImage != null)) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
@@ -1019,9 +1079,48 @@ export default {
       });
     },
     async loadAdminPosts() {
-      await getAPI.get(`/post/review`).then((response) => {
-        this.reviewPosts = response.data.results;
+      let result;
+      await getAPI.get(`/post/review`).then(async (response) => {
+        result = response.data.results;
+        let count = response.data.count;
+        console.log(result, count - 1);
+        while (count > 0) {
+          await getAPI
+            .get(`/posts/${result[count - 1].post}`)
+            .then((r) => {
+              let res = r.data;
+              let pos = count;
+              console.log(res, pos);
+              // this.reviewPosts.push(res);
+              this.reviewPosts.push({
+                id: result[0].id,
+                title: res.title,
+                slug: res.slug,
+                picked: res.picked,
+                publishedAt: res.publishedAt,
+                summary: res.summary,
+                body: res.body,
+                mainImage: res.mainImage,
+                categories: res.categories,
+                author: res.author,
+                review: result[pos].review,
+              });
+            })
+            .then(count--);
+          console.log(this.reviewPosts);
+        }
       });
+    },
+    async review(e) {
+      let res = await getAPI
+        .put(`/post/review/${e.id}`, {
+          post: e.slug,
+          review: e.review,
+        })
+        .then((r) => {
+          this.$router.go();
+        })
+        .catch((e) => {});
     },
     async showDraftPosts() {
       this.pages = 3;
@@ -1060,7 +1159,7 @@ export default {
         slug: this.user.slug,
         category: e,
       });
-      // console.log(res);
+      console.log(res);
       this.posts = res;
       // console.log(this.posts);
       // blog;
