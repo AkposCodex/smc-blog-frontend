@@ -951,7 +951,7 @@ export default {
       let data = new FormData();
       let postSlug = this.title.split(" ").join("").toLowerCase();
       data.append("title", this.title);
-      data.append("author", this.user.slug);
+      data.append("author", this.user.email);
       data.append("categories", this.categorySel.selected);
       data.append("picked", this.editorpost);
       data.append("summary", this.summary);

@@ -76,108 +76,49 @@ export default {
   },
   async created() {
     this.fetchTypedPost("equity", 1);
+
     await getAPI
-      .get("/post/review?state=InReview")
+      .get("/posts")
       .then((response) => {
         console.log(response);
         response.data.results.forEach(async (e) => {
           console.log(e);
-          getAPI.get(`/posts/${e.post}`).then(async (r) => {
-            console.log(r);
-            let repo = r;
-            if (r.data.author === "sir-mapy") {
-              email = response.data.author.replaceAll("-", "");
-              // console.log(email);
-              await getAPI
-                .get(`/users?email=${email}@gmail.com`)
-                .then((response) => {
-                  // console.log(email, response.data[0].name);
-                  this.blogPosts.push({
-                    title: repo.data.title,
-                    slug: repo.data.slug,
-                    picked: repo.data.picked,
-                    publishedAt: repo.data.publishedAt,
-                    summary: repo.data.summary,
-                    body: repo.data.body,
-                    mainImage: repo.data.mainImage,
-                    categories: repo.data.categories,
-                    author: response.data[0].name,
-                  });
-                  // console.log(this.blogPosts);
-                });
-            } else {
-              let email = r.data.author.replaceAll("-", ".");
-              await getAPI
-                .get(`/users?email=${email}@smcreport.com`)
-                .then((response) => {
-                  // console.log(email, response.data[0].name);
-                  this.blogPosts.push({
-                    title: repo.data.title,
-                    slug: repo.data.slug,
-                    picked: repo.data.picked,
-                    publishedAt: repo.data.publishedAt,
-                    summary: repo.data.summary,
-                    body: repo.data.body,
-                    mainImage: repo.data.mainImage,
-                    categories: repo.data.categories,
-                    author: response.data[0].name,
-                  });
-                  console.log(this.blogPosts);
-                });
-            }
-            // response.data.results.forEach(async (e) => {
-            //   let arr = [];
-            //   let email;
-            //   // console.log("here");
-
-            //   return arr;
-            // });
-          });
-        });
-        // this.blogPosts = response.data.results;
-        function loadPosts(e) {
-          let arr = [];
-          let email;
+          let repo = e;
           if (e.author === "sir-mapy") {
-            email = e.author.replaceAll("-", "");
-            // console.log(email);
-            getAPI.get(`/users?email=${email}@gmail.com`).then((response) => {
-              // console.log(email, response);
-              arr.push({
-                title: e.title,
-                slug: e.slug,
-                picked: e.picked,
-                publishedAt: e.publishedAt,
-                summary: e.summary,
-                body: e.body,
-                mainImage: e.mainImage,
-                categories: e.categories,
-                author: e.author,
+            await getAPI.get(`/users?slug=${e.author}`).then((response) => {
+              // console.log(email, response.data[0].name);
+              this.blogPosts.push({
+                title: repo.title,
+                slug: repo.slug,
+                picked: repo.picked,
+                publishedAt: repo.publishedAt,
+                summary: repo.summary,
+                body: repo.body,
+                mainImage: repo.mainImage,
+                categories: repo.categories,
+                author: response.data[0].name,
               });
-              // console.log(arr);
+              // console.log(this.blogPosts);
             });
           } else {
-            email = e.author.replaceAll("-", ".");
-            getAPI
-              .get(`/users?email=${email}@smcreport.com`)
-              .then((response) => {
-                // console.log(email, response);
-                arr.push({
-                  title: e.title,
-                  slug: e.slug,
-                  picked: e.picked,
-                  publishedAt: e.publishedAt,
-                  summary: e.summary,
-                  body: e.body,
-                  mainImage: e.mainImage,
-                  categories: e.categories,
-                  author: e.author,
-                });
-                // console.log(arr);
+            await getAPI.get(`/users?slug=${e.author}`).then((response) => {
+              // console.log(email, response.data[0].name);
+              this.blogPosts.push({
+                title: repo.title,
+                slug: repo.slug,
+                picked: repo.picked,
+                publishedAt: repo.publishedAt,
+                summary: repo.summary,
+                body: repo.body,
+                mainImage: repo.mainImage,
+                categories: repo.categories,
+                author: response.data[0].name,
               });
+              console.log(response);
+              console.log(this.blogPosts);
+            });
           }
-          return arr;
-        }
+        });
       })
       .catch((err) => {});
 
@@ -214,43 +155,51 @@ export default {
     </div>
   </header>
   <main
-    class="max-w-4xl mx-auto font-baseFamily"
+    class="mx-auto font-baseFamily"
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
-    <section
-      class="py-4 w-full md:grid lg:grid-cols-[700px_2fr] md:grid-cols-[400px_1fr] gap-4"
-    >
-      <div class="lg:h-full h-3/5">
+    <section class="py-4 px-5 w-full">
+      <div class="lg:h-full h-3/5 max-w-5xl w-full mx-auto">
         <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
-            <a :href="`/post/${slide.slug}`" class="w-full">
-              <div class="flex flex-col mx-auto justify-end">
-                <div class="w-full lg:h-[400px] h-[400px]">
+            <div class="w-full">
+              <div
+                class="grid grid-cols-2 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
+              >
+                <div class="w-full lg:h-[400px] h-[400px] rounded-l-[14px]">
                   <img
                     :src="slide.mainImage"
-                    class="object-cover h-full w-full"
+                    class="object-cover h-full w-full rounded-l-[14px] -z-20"
                     alt=""
                   />
                 </div>
-                <div class="">
+                <div class="p-10">
+                  <p
+                    class="bg-black capitalize p-1 mb-3 w-min text-white text-xl"
+                  >
+                    {{ slide.categories }}
+                  </p>
                   <h1
-                    class="font-bold text-2xl w-max font-serifFamily capitalize"
+                    class="font-bold text-2xl w-max mb-1 font-baseFamily capitalize"
                   >
                     {{ slide.title }}
                   </h1>
-                  <p class="flex items-center gap-2 text-[#919094] text-lg">
-                    by {{ slide.author }}
-                  </p>
-                </div>
-                <div class="flex space-x-2 hidden justify-center p-3">
-                  <p class="h-2 w-2 rounded-full bg-[#668AFF]"></p>
-                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
-                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
-                  <p class="h-2 w-2 bg-[#FEFBFF] rounded-full"></p>
+                  <h1
+                    class="text-lg text-gray-300 w-max mb-12 font-baseFamily capitalize"
+                  >
+                    {{ slide.summary }}
+                  </h1>
+                  <div class="flex w-full justify-start">
+                    <button
+                      class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
+                    >
+                      Read More &rangle;
+                    </button>
+                  </div>
                 </div>
               </div>
-            </a>
+            </div>
           </Slide>
           <template #addons>
             <Navigation />
@@ -266,42 +215,92 @@ export default {
           />
         </div>
       </div>
-      <div class="hidden md:block" v-if="editorPosts">
-        <BlogCard v-if="editorPosts[0]" :post="editorPosts[0]" md-shrink />
-        <BlogCard v-if="editorPosts[1]" :post="editorPosts[1]" md-shrink />
-      </div>
-      <div class="flex flex-col gap-16 hidden md:block" v-if="!editorPosts">
-        <free-style-shimmer
-          :is-loading="true"
-          height="200px"
-          width="200px"
-          color="#bdbdbd"
-        /><free-style-shimmer
-          :is-loading="true"
-          height="200px"
-          width="200px"
-          color="#bdbdbd"
-        />
-      </div>
     </section>
-    <section class="py-4 w-full">
-      <div
-        class="flex items-center justify-between mb-8 border-t border-b dark:border-white border-black p-2"
-      >
-        <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
-      </div>
-      <div class="px-5">
-        <BlogCardList v-if="editorPosts" :posts="editorPosts" />
-        <div
-          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
-        >
-          <card-shimmer :is-loading="!editorPosts" />
-          <card-shimmer :is-loading="!editorPosts" />
+    <section class="mb-12 px-5" id="latest-posts">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex items-center w-4/5 mx-auto justify-between mb-8 p-2">
+          <h2 class="text-xl font-bold text-left">Latest Updates</h2>
+          <div class="flex font-bold">All &Rightarrow;</div>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="" v-for="post in blogPosts">
+            <div class="h-[200px] w-full">
+              <img
+                :src="post.mainImage"
+                alt="blog post"
+                class="w-full rounded-md h-full object-cover"
+              />
+            </div>
+            <p class="bg-black capitalize p-1 my-4 w-min text-white text-xl">
+              {{ post.categories }}
+            </p>
+            <h1 class="font-bold text-xl w-max mb-1 font-baseFamily capitalize">
+              {{ post.title }}
+            </h1>
+            <h1
+              class="text-md text-gray-700 w-max mb-4 font-baseFamily capitalize"
+            >
+              {{ post.summary }}
+            </h1>
+            <div class="flex gap-4">
+              <h1 class="text-xs text-black w-max font-baseFamily capitalize">
+                By {{ post.author }}
+              </h1>
+              <h1
+                class="text-xs text-gray-500 w-max font-baseFamily capitalize"
+              >
+                {{
+                  new Date(post.publishedAt)
+                    .toString()
+                    .replace("GMT+0100 (West Africa Standard Time)", " ")
+                    .trim()
+                }}
+              </h1>
+            </div>
+            <div class="flex w-full justify-start">
+              <button
+                class="text-black bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111]"
+              >
+                Read More &rangle;
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-
-    <section class="mt-16 py-4 w-full">
+    <section
+      class="bg-gradient-to-b from-black to-black/40 px-5"
+      id="video-posts"
+    >
+      <div class="max-w-4xl mx-auto pb-10">
+        <div
+          class="flex items-center text-white w-4/5 mx-auto justify-between mb-8 p-2"
+        >
+          <h2 class="text-xl font-bold text-left mt-2">Video Headlines</h2>
+          <div class="flex font-bold">All &Rightarrow;</div>
+        </div>
+        <div class="grid grid-cols-3 gap-6">
+          <div class="bg-white rounded-md" v-for="post in blogPosts">
+            <div class="h-[160px] w-full">
+              <img
+                :src="post.mainImage"
+                alt="blog post"
+                class="w-full rounded-t-md h-full object-cover"
+              />
+            </div>
+            <div class="p-3">
+              <p class="bg-black capitalize p-1 my-1 w-min text-white text-lg">
+                {{ post.categories }}
+              </p>
+              <h1 class="text-md w-max mb-1 font-baseFamily capitalize">
+                {{ post.title }}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="all-posts" class="mt-16 py-4 px-5 w-full">
       <nav
         class="flex gap-4 py-2 mx-5 mb-8 border-b border-black dark:border-white overflow-y-auto scrollbar-hide"
       >
@@ -361,6 +360,21 @@ export default {
         >
           Show more stories
         </button>
+      </div>
+    </section>
+    <section id="editor-posts" class="py-4 px-5 w-full">
+      <div class="flex items-center justify-between mb-3 p-2">
+        <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
+      </div>
+      <p>Post specially selected by our editors for your</p>
+      <div class="px-5">
+        <BlogCardList v-if="editorPosts" :posts="editorPosts" />
+        <div
+          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+        >
+          <card-shimmer :is-loading="!editorPosts" />
+          <card-shimmer :is-loading="!editorPosts" />
+        </div>
       </div>
     </section>
   </main>

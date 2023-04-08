@@ -19,16 +19,54 @@ export default {
   components: {
     Placeholder,
     PriceMarqueeWidget,
-    BlogCardList,AppHeader,
+    BlogCardList,
+    AppHeader,
     AppFooter,
   },
-  created() {
-    getAPI
+  async created() {
+    await getAPI
       .get("/posts?category=equity")
       .then((response) => {
-        this.loading = false;
-        ("");
-        this.blogPosts = response.data.results;
+        console.log(response);
+        response.data.results.forEach(async (e) => {
+          console.log(e);
+          let repo = e;
+          if (e.author === "sir-mapy") {
+            await getAPI.get(`/users/${e.author}`).then((response) => {
+              console.log(response.data.name);
+              this.blogPosts.push({
+                title: repo.title,
+                slug: repo.slug,
+                picked: repo.picked,
+                publishedAt: repo.publishedAt,
+                summary: repo.summary,
+                body: repo.body,
+                mainImage: repo.mainImage,
+                categories: repo.categories,
+                author: response.data.name,
+              });
+              // console.log(this.blogPosts);
+            });
+          } else {
+            await getAPI.get(`/users/${e.author}`).then((response) => {
+              console.log(response.data);
+              this.blogPosts.push({
+                title: repo.title,
+                slug: repo.slug,
+                picked: repo.picked,
+                publishedAt: repo.publishedAt,
+                summary: repo.summary,
+                body: repo.body,
+                mainImage: repo.mainImage,
+                categories: repo.categories,
+                author: response.data.name,
+                authmg: response.data.image,
+              });
+              console.log(response);
+              console.log(this.blogPosts);
+            });
+          }
+        });
       })
       .catch((err) => {});
   },
@@ -47,7 +85,91 @@ export default {
         <h1>No New Posts Here</h1>
       </div>
       <template v-else>
-        <BlogCardList v-if="blogPosts" :posts="blogPosts" />
+        <div class="w-full mb-20">
+          <div
+            class="grid grid-cols-2 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
+          >
+            <div class="w-full lg:h-[400px] h-[400px] rounded-l-[14px]">
+              <img
+                :src="blogPosts[0].mainImage"
+                class="object-cover h-full w-full rounded-l-[14px] -z-20"
+                alt=""
+              />
+            </div>
+            <div class="p-10">
+              <p class="bg-black capitalize p-1 mb-4 w-min text-white text-xl">
+                {{ blogPosts[0].categories }}
+              </p>
+              <h1
+                class="font-bold text-2xl w-max mb-1 font-baseFamily capitalize"
+              >
+                {{ blogPosts[0].title }}
+              </h1>
+              <h1
+                class="text-lg text-gray-500 w-max mb-12 font-baseFamily capitalize"
+              >
+                {{ blogPosts[0].summary }}
+              </h1>
+              <div class="flex w-full justify-start">
+                <button
+                  class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
+                >
+                  Read More &rangle;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+          <div class="" v-for="post in blogPosts">
+            <div class="h-[200px] w-full">
+              <img
+                :src="post.mainImage"
+                alt="blog post"
+                class="w-full rounded-md h-full object-cover"
+              />
+            </div>
+            <div
+              class="flex items-center w-full text-[#919094] gap-2 pt-3 px-2 text-xxs mb-2"
+            >
+              <figure class="h-[16px] w-[16px]">
+                <img
+                  :src="post.authmg"
+                  alt="author image"
+                  class="w-full h-full object-cover rounded-full"
+                />
+              </figure>
+              <p
+                class="text-black font-bold w-full capitalize flex justify-between"
+              >
+                by {{ post.author }}
+                <span class="text-black/40">{{
+                  new Date(post.publishedAt)
+                    .toString()
+                    .replace("GMT+0100 (West Africa Standard Time)", " ")
+                    .trim()
+                }}</span>
+              </p>
+            </div>
+            <h1 class="font-bold text-lg w-max mb-1 font-baseFamily capitalize">
+              {{ post.title }}
+            </h1>
+            <h1
+              class="text-md text-gray-700 w-max mb-4 font-baseFamily capitalize"
+            >
+              {{ post.summary }}
+            </h1>
+
+            <div class="flex w-full justify-start">
+              <button
+                class="text-black bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111]"
+              >
+                Read More &rangle;
+              </button>
+            </div>
+          </div>
+        </div>
       </template>
     </section>
   </main>

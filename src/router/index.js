@@ -86,6 +86,14 @@ const router = createRouter({
       },
     },
     {
+      path: "/videos",
+      name: "video",
+      component: () => import("../views/Videos.vue"),
+      meta: {
+        title: "SMC Report | Video Headlines",
+      },
+    },
+    {
       path: "/post/:slug",
       name: "post",
       component: () => import("../components/BlogPost.vue"),
