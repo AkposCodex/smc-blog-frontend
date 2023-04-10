@@ -1,61 +1,53 @@
 <template>
   <ToastError v-if="hasError" :code="errorCode"></ToastError>
-
-  <header
-    class="md:flex justify-start hidden md:block shadow-md h-[6rem] py-3 w-full"
-  >
-    <div class="flex w-full h-full justify-between items-center p-3">
-      <h1 class="text-xl font-bold font-serifFamily">LOG IN</h1>
-      <BaseIcon name="logo" class="text-black w-[300px]" />
-      <h1 class="text-xl font-bold opacity-0">LOG IN</h1>
-    </div>
-  </header>
   <div class="font-baseFamily md:h-full h-[100vh]">
+    <div class="mb-16"></div>
     <div
-      class="h-2/5 flex items-end md:bg-none bg-[url(@/assets/icons/svgs/admin/login-mobile-header.png)] bg-center bg-contain"
+      class="flex flex-col justify-start max-w-xl mx-auto items-start md:bg-none mb-10 bg-center bg-contain"
     >
-      <!-- <img
-        src="@/assets/icons/logo.png"
-        class="md:p-9 md:w-[300px] mx-auto hidden md:block object-contain h-full"
-        alt=""
-      /> -->
-      <p class="md:hidden text-white h-min font-bold p-3 text-xl">Log In</p>
+      <p class="h-min font-bold p-3 text-3xl">Welcome!</p>
+      <p class="h-min font-bold p-3 text-xl">Sign in to continue</p>
     </div>
     <form
       method="post"
       @submit.prevent="loginForm(email, password)"
-      class="w-full mx-auto px-5 pt-12"
+      class="mx-auto max-w-xl px-5 pt-12"
     >
       <div class="flex flex-col space-y-6">
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
-          <label for="name" class="font-semibold">Email</label>
           <input
-            type="text"
-            name="text"
+            type="email"
+            name="email"
             v-model="email"
             required
+            placeholder="Email"
             autocomplete="email"
-            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
           />
         </div>
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
-          <label for="email" class="font-semibold">Password</label>
           <input
             type="password"
             name="password"
             autocomplete="password"
             v-model="password"
+            placeholder="Password"
             required
-            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
           />
         </div>
-        <div class="flex justify-center w-full">
+        <div class="flex flex-col items-center justify-center w-full">
           <button
-            class="bg-black dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black"
+            class="bg-blue-600 dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black rounded-lg"
           >
             LOGIN
           </button>
+          <a class="text-blue-600 font-bold" href="">forgot password?</a>
         </div>
+        <div class="flex flex-col items-center justify-center w-full">
+          <BaseIcon name="powered" class="text-black w-[150px]"/>
+        </div>
+
         <div class="flex justify-center">
           <br />
           <p style="color: rgb(255, 0, 0)">{{ error }}</p>

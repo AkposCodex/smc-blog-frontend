@@ -222,7 +222,7 @@ export default {
           <h2 class="text-xl font-bold text-left">Latest Updates</h2>
           <div class="flex font-bold">All &Rightarrow;</div>
         </div>
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
           <div class="" v-for="post in blogPosts">
             <div class="h-[200px] w-full">
               <img
@@ -279,7 +279,7 @@ export default {
           <h2 class="text-xl font-bold text-left mt-2">Video Headlines</h2>
           <div class="flex font-bold">All &Rightarrow;</div>
         </div>
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
           <div class="bg-white rounded-md" v-for="post in blogPosts">
             <div class="h-[160px] w-full">
               <img

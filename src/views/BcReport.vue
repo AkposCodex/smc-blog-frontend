@@ -138,7 +138,7 @@ export default {
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
           <div class="" v-for="post in blogPosts">
             <div class="h-[200px] w-full">
               <img

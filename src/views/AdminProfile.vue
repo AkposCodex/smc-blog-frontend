@@ -687,7 +687,7 @@
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Approved` })
                   "
-                  class="bg-green-600 rounded-md text-white px-3 py-1"
+                  class="bg-white border-2 border-green-600 rounded-md text-white px-3 py-1"
                 >
                   Approve
                 </button>
@@ -695,9 +695,17 @@
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Rejected` })
                   "
-                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
+                  class="bg-white border-black border-2 rounded-md text-red-600 px-3 py-1"
                 >
                   Reject
+                </button>
+                <button
+                  @click="
+                    review({ id: post.id, slug: post.slug, review: `Rejected` })
+                  "
+                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
+                >
+                  Delete
                 </button>
               </div>
             </div>
