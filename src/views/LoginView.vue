@@ -22,7 +22,7 @@
             required
             placeholder="Email"
             autocomplete="email"
-            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
+            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
           />
         </div>
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
@@ -33,7 +33,7 @@
             v-model="password"
             placeholder="Password"
             required
-            class="p-1 h-[4rem] focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
           />
         </div>
         <div class="flex flex-col items-center justify-center w-full">
