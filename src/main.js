@@ -13,8 +13,11 @@ app.use(router);
 app.use(Shimmer);
 app.use(store);
 app.use(Toast);
-app.use(VueGtag, {
-  id: "G-CJ5J8LVHJD",
-  router,
-});
+app.use(
+  VueGtag,
+  {
+    config: { id: "G-CJ5J8LVHJD" },
+  },
+  router
+);
 app.mount("#app");
