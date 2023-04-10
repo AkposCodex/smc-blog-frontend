@@ -192,6 +192,9 @@ export default {
                   </h1>
                   <div class="flex w-full justify-start">
                     <button
+                      @click="
+                        this.$router.push({ name: 'post', params: slide.slug })
+                      "
                       class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
                     >
                       Read More &rangle;
