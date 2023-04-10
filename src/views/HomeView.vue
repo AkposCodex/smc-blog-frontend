@@ -159,18 +159,18 @@ export default {
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
     <section class="py-4 px-5 w-full">
-      <div class="lg:h-full h-3/5 max-w-5xl w-full mx-auto">
+      <div class="lg:h-full md:h-3/5 h-min max-w-5xl w-full mx-auto">
         <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <div class="w-full">
               <div
-                class="grid grid-cols-2 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
+                class="grid md:grid-cols-2 grid-rows-2 md:grid-rows-1 grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
               >
-                <div class="w-full lg:h-[400px] h-[400px] rounded-l-[14px]">
+                <div class="w-full lg:h-[400px] h-full rounded-l-[14px]">
                   <img
                     :src="slide.mainImage"
-                    class="object-cover h-full w-full rounded-l-[14px] -z-20"
+                    class="object-cover h-full w-full md:rounded-l-[14px] rounded-t-[14px] -z-20"
                     alt=""
                   />
                 </div>

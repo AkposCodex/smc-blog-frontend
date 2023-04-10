@@ -38,9 +38,12 @@ export default {
         .catch((e) => {});
     },
     async searchMini(e) {
-      await getAPI.get(`/posts?name=${e}`).then((response) => {
-        this.results = response.data;
-      }).catch((e) => {});
+      await getAPI
+        .get(`/posts?name=${e}`)
+        .then((response) => {
+          this.results = response.data;
+        })
+        .catch((e) => {});
     },
     navigate(e) {
       this.$router.push({
@@ -123,25 +126,16 @@ export default {
       </div>
       <div class="hidden lg:block">
         <form
-          class="flex gap-2 transition-all items-center border-b border-[#004FE5] w-full text-sm group"
+          @submit.prevent="search(searchWord)"
+          class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-200 px-6 py-1"
         >
-          <BaseIcon
-            name="search"
-            class="group-focus-within:text-[#00E0B1] transition-all w-min text-[#366BFF]"
-          />
+          <BaseIcon name="search" class="text-gray-800" />
           <input
             type="text"
-            placeholder="search"
-            required
-            class="outline-none w-12 group-focus-within:w-full transition-all"
+            placeholder="search posts"
+            class="outline-none w-full bg-gray-200"
             v-model="searchWord"
           />
-          <button
-            @click="search(searchWord)"
-            class="bg-blue-600 uppercase text-white p-2 font-bold"
-          >
-            Search
-          </button>
         </form>
       </div>
       <div class="lg:hidden">
@@ -157,24 +151,18 @@ export default {
         v-if="isMenuOpen"
         class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <div
-          class="flex gap-2 hidden items-center border-b border-[#004FE5] w-full px-6 py-3"
+        <form
+          @submit.prevent="search(searchWord)"
+          class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-200 px-6 py-1"
         >
-          <BaseIcon name="search" class="text-[#366BFF]" />
+          <BaseIcon name="search" class="text-gray-800" />
           <input
             type="text"
-            placeholder="search"
-            required
-            class="outline-none w-full"
-            v-model="word"
+            placeholder="search posts"
+            class="outline-none w-full bg-gray-200"
+            v-model="searchWord"
           />
-          <button
-            @click="searchMini(word)"
-            class="bg-blue-600 uppercase text-white p-2 font-bold"
-          >
-            Search
-          </button>
-        </div>
+        </form>
         <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
           <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
             home
@@ -236,24 +224,18 @@ export default {
       <div
         class="flex gap-2 bg-white dark:bg-[#1B1B1F] transition-all items-center justify-center w-full text-sm group"
       >
-        <div class="border-b border-[#004FE5] items-center flex gap-2">
-          <BaseIcon
-            name="search"
-            class="group-focus-within:text-[#00E0B1] transition-all t text-[#366BFF]"
-          />
+        <form
+          @submit.prevent="search(searchWord)"
+          class="flex  gap-0 items-center rounded-lg w-[5%] group-focus-within:w-3/5 transition-all mx-auto bg-gray-200 p-2"
+        >
+          <BaseIcon name="search" class="text-gray-800" />
           <input
             type="text"
-            placeholder="search"
-            class="outline-none w-12 group-focus-within:w-full transition-all"
+
+            class="outline-none w-full bg-gray-200"
             v-model="searchWord"
           />
-          <button
-            @click="search(searchWord)"
-            class="bg-blue-600 uppercase text-white p-2 font-bold"
-          >
-            Search
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   </div>
