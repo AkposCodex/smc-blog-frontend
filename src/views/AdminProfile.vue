@@ -47,9 +47,6 @@
     <div class="p-6">
       <button class="flex gap-2 items-center" @click="toggleDark()">
         <BaseIcon name="mode" />
-        <span class="text-sm whitespace-nowrap font-semibold"
-          >{{ isDark ? "Dark" : "Light" }} Mode</span
-        >
       </button>
     </div>
     <div class="w-4/5 mt-9">
@@ -237,9 +234,6 @@
       <div class="p-6">
         <button class="flex gap-2 items-center" @click="toggleDark()">
           <BaseIcon name="mode" />
-          <span class="hidden lg:block text-sm whitespace-nowrap font-semibold"
-            >{{ isDark ? "Dark" : "Light" }} Mode</span
-          >
         </button>
       </div>
       <div class="w-4/5 mt-9">
@@ -437,6 +431,14 @@
                 class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               />
             </div>
+            <div class="pb-9" id="userName">
+              <p class="font-bold">Role</p>
+              <input
+                v-model="user.name"
+                type="text"
+                class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              />
+            </div>
             <div class="pb-9" id="bio">
               <p class="font-bold">Bio</p>
               <textarea
@@ -515,7 +517,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="posts.length >0"
+            v-if="posts.length > 0"
             class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -634,7 +636,7 @@
           <div
             v-for="post in reviewPosts"
             v-if="reviewPosts.length > 0"
-            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
+            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 items-end lg:flex-row-reverse"
           >
             <div
               v-if="post.mainImage"
@@ -647,7 +649,7 @@
               />
             </div>
             <div class="lg:w-[50%] w-full">
-              <div class="mb-5">
+              <div class="">
                 <div class="flex gap-4">
                   <h3
                     class="font-bold w-max text-black font-baseFamily uppercase leading-5"
@@ -664,7 +666,7 @@
                   </h3>
                 </div>
                 <h3
-                  class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
+                  class="font-serifFamily text-gray-500 text-[11px] leading-5"
                 >
                   {{
                     new Date(post.publishedAt)
@@ -673,6 +675,12 @@
                       .trim()
                   }}
                 </h3>
+                <a
+                  :href="`/post/${post.slug}`"
+                  class="font-baseFamily underline text-black font-bold text-[11px] mb-3 leading-5"
+                >
+                  Go to post &rangle;
+                </a>
                 <hr class="my-3" />
                 <p class="font-bold text-black">Post summary</p>
                 <p class="px-4 leading-4 text-black">
@@ -680,14 +688,14 @@
                 </p>
               </div>
               <div
-                class="flex mt-10 gap-4 w-4/5"
+                class="flex mt-4 gap-4 w-4/5"
                 v-if="post.review === 'InReview'"
               >
                 <button
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Approved` })
                   "
-                  class="bg-white border-2 border-green-600 rounded-md text-white px-3 py-1"
+                  class="bg-white border-2 border-green-600 rounded-md text-green-600 px-3 py-1"
                 >
                   Approve
                 </button>
@@ -700,9 +708,7 @@
                   Reject
                 </button>
                 <button
-                  @click="
-                    review({ id: post.id, slug: post.slug, review: `Rejected` })
-                  "
+                  @click="deletePost({ slug: post.slug })"
                   class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
                 >
                   Delete
@@ -728,11 +734,22 @@
               id=""
             />
           </div>
+          <div class="" id="subtitle">
+            <label for="" class="font-bold">Sub Topic</label><br />
+            <input
+              type="text"
+              name="title"
+              v-model="subtitle"
+              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              id=""
+            />
+          </div>
           <div class="" id="mainImage">
             <label for="article image" class="font-bold">Main Image*</label>
             <figure class="w-full relative" id="article-image">
               <div
-                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
+                after="Drag and drop images here or select from your device"
+                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] after:content-[attr(after)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
               >
                 <img
                   v-if="file"
@@ -853,12 +870,60 @@ import { getAPI } from "../axios";
 import SavedModal from "../components/Modal.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-vue";
+// import SimpleUploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter";
 import { mapGetters } from "vuex";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseButton from "../components/BaseButton.vue";
 import { useToast, POSITION } from "vue-toastification";
 import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
+
+ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
+  plugins: [
+    // SimpleUploadAdapter
+  ],
+  toolbar: {
+    items: [
+      "undo",
+      "redo",
+      "|",
+      "heading",
+      "|",
+      "bold",
+      "italic",
+      "|",
+      "link",
+      "uploadImage",
+      "insertTable",
+      "mediaEmbed",
+      "|",
+      "bulletedList",
+      "numberedList",
+      "outdent",
+      "indent",
+    ],
+  },
+  simpleUpload: {
+    uploadUrl: "http://127.0.0.1:8000/ckeditor/upload/",
+    withCredentials: false,
+    error: {
+      message:
+        "The image upload failed because the image was too big (max 1.5MB).",
+    },
+  },
+  // cloudServices: {
+  //   // All predefined builds include the Easy Image feature.
+  //   // Provide correct configuration values to use it.
+  //   // Read more about Easy Image - https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/easy-image.html.
+  //   // For other image upload methods see the guide - https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html.
+  // },
+})
+  .then((editor) => {
+    window.editor = editor;
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 export default {
   setup() {
@@ -886,6 +951,7 @@ export default {
       ge: false,
       showAddPost: false,
       title: "",
+      subtitle: "",
       isMenuOpen: false,
       summary: "",
       image: "",
@@ -906,11 +972,14 @@ export default {
         autocompleteItems: this.categoriesItem,
       },
       editorConfig: {
+        // toolbar: ["bold", "italic", "|", "link"],
         ckfinder: {
-          uploadUrl: "http://127.0.0.1:8000/ckeditor/upload/",
-
+          uploadUrl: "/editor",
           withCredentials: false,
         },
+        // image: {
+        //   toolbar: ["toggleImageCaption", "imageTextAlternative"],
+        // },
       },
       eConfig: {
         ui: {
@@ -959,14 +1028,19 @@ export default {
       let data = new FormData();
       let postSlug = this.title.split(" ").join("").toLowerCase();
       data.append("title", this.title);
-      data.append("author", this.user.email);
+      data.append("author", this.user.slug);
       data.append("categories", this.categorySel.selected);
       data.append("picked", this.editorpost);
       data.append("summary", this.summary);
       data.append("body", this.editorData);
       data.append("mainImage", this.file);
       data.append("slug", postSlug);
-      console.log(data);
+      data.append("sub_topic", this.subtitle);
+      console.log(
+        postSlug,
+        data,
+        this.title.replaceAll(" ", "-").toLowerCase()
+      );
 
       try {
         this.$store
@@ -976,8 +1050,9 @@ export default {
             postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
           })
           .then((e) => {
-            this.loadDraftPosts();
-            // this.$router.go();
+            this.loadDraftPosts().then((e) => {
+              // this.$router.go();
+            });
           })
           .catch((e) => {
             // console.log(e);
@@ -1126,6 +1201,14 @@ export default {
           review: e.review,
         })
         .then((r) => {
+          this.$router.go();
+        })
+        .catch((e) => {});
+    },
+    async deletePost(e) {
+      let res = await getAPI
+        .delete(`/posts/${e.slug}`)
+        .then((e) => {
           this.$router.go();
         })
         .catch((e) => {});

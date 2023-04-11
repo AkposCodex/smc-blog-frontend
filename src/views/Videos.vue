@@ -4,12 +4,12 @@
     <section>
       <p class="pb-8 text-2xl font-bold text-center">Video Headlines</p>
     </section>
-    <div class="lg:h-full h-3/5 w-full mx-auto">
+    <div class="lg:h-full mb-12 h-3/5 w-full mx-auto">
       <Carousel :wrap-around="true" :items-to-show="1">
         <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
         <Slide v-for="(slide, index) in blogPosts" :key="index">
           <div
-            class="w-full bg-center"
+            class="w-full bg-center lg:h-[400px] flex items-end"
             :style="`background:url(${slide.mainImage});background-size: cover;`"
           >
             <div class="p-10">
@@ -27,10 +27,8 @@
                 {{ slide.summary }}
               </h1>
               <div class="flex w-full justify-start">
-                <button
-                  class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
-                >
-                  Read More &rangle;
+                <button class="text-white bg-transparent rounded-lg p-2">
+                  Watch Now &rangle;
                 </button>
               </div>
             </div>
@@ -50,6 +48,38 @@
         />
       </div>
     </div>
+    <!-- <BlogCardList v-if="blogPosts" :posts="blogPosts" variant="secondary" /> -->
+    <div
+      class="grid md:grid-cols-2 gap-5 md:place-items-stretch px-8 place-items-center"
+    >
+      <div v-for="(slide, index) in blogPosts" :key="index">
+        <div
+          class="w-full bg-center lg:h-[400px] flex items-end"
+          :style="`background:url(${slide.mainImage});background-size: cover;`"
+        >
+          <div class="p-4">
+            <p class="bg-black capitalize p-1 mb-3 w-min text-white text-xl">
+              {{ slide.categories }}
+            </p>
+            <h1
+              class="font-bold text-2xl text-white w-max mb-1 font-baseFamily capitalize"
+            >
+              {{ slide.title }}
+            </h1>
+            <h1
+              class="text-lg hidden text-gray-300 w-max font-baseFamily capitalize"
+            >
+              {{ slide.summary }}
+            </h1>
+            <div class="flex w-full justify-start">
+              <button class="text-white bg-transparent rounded-lg p-2">
+                Watch Now &rangle;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
   <AppFooter />
 </template>
@@ -58,6 +88,7 @@ import AppHeader from "../components/AppHeader.vue";
 import AppFooter from "../components/AppFooter.vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { getAPI } from "../axios";
+import BlogCardList from "../components/BlogCardList.vue";
 
 export default {
   data() {
@@ -70,6 +101,7 @@ export default {
     AppHeader,
     AppFooter,
     Carousel,
+    BlogCardList,
     Slide,
     Pagination,
     Navigation,

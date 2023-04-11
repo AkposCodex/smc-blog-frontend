@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      charset="utf-8"
+      src="//cdn.iframe.ly/embed.js?api_key=aa6b77b8443a47a0fe17b8"
+    ></script>
   </head>
   <!-- Google tag (gtag.js) -->
   <!-- <script
@@ -22,5 +26,10 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      document.querySelectorAll("oembed[url]").forEach((element) => {
+        iframely.load(element, element.attributes.url.value);
+      });
+    </script>
   </body>
 </html>

@@ -211,10 +211,10 @@ export default {
             password,
           })
           .then((response) => {
-            this.$router.push({
-              name: "adminProfile",
-              params: { slug: this.user.slug },
-            });
+            // this.$router.push({
+            //   name: "adminProfile",
+            //   params: { slug: this.user.slug },
+            // });
             this.toast.dismiss("login");
             // console.log(this.user, response);
           });

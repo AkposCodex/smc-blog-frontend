@@ -14,7 +14,9 @@
       <h3 class="font-bold font-serifFamily uppercase mb-1 leading-5">
         {{ post.title }}
       </h3>
-      <div class="flex items-center w-full text-[#919094] gap-2 pt-3 px-2 text-xxs mb-2">
+      <div
+        class="flex items-center w-full text-[#919094] gap-2 pt-3 px-2 text-xxs mb-2"
+      >
         <figure class="h-5 w-5">
           <img
             :src="athmg"
@@ -33,7 +35,17 @@
         </p>
       </div>
       <h2 class="text-sm my-3">{{ post.summary }}</h2>
-      <button class="border-[#111111] border-b">Read More &rangle;</button>
+      <button
+        class="border-[#111111] border-b"
+        @click="
+          this.$router.push({
+            name: 'post',
+            params: { slug: post.slug },
+          })
+        "
+      >
+        Read More &rangle;
+      </button>
     </div>
   </article>
 </template>

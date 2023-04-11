@@ -265,6 +265,12 @@ export default {
             </div>
             <div class="flex w-full justify-start">
               <button
+                @click="
+                  this.$router.push({
+                    name: 'post',
+                    params: { slug: post.slug },
+                  })
+                "
                 class="text-black bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111]"
               >
                 Read More &rangle;
@@ -286,7 +292,11 @@ export default {
           <div class="flex font-bold">All &Rightarrow;</div>
         </div>
         <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
-          <div class="bg-white rounded-md" v-for="post in blogPosts">
+          <a
+            :href="`post/${post.slug}`"
+            class="bg-white rounded-md"
+            v-for="post in blogPosts"
+          >
             <div class="h-[160px] w-full">
               <img
                 :src="post.mainImage"
@@ -302,7 +312,7 @@ export default {
                 {{ post.title }}
               </h1>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -372,7 +382,7 @@ export default {
       <div class="flex items-center justify-between mb-3 p-2">
         <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
       </div>
-      <p>Post specially selected by our editors for your</p>
+      <p>Post specially currated by our editors</p>
       <div class="px-5">
         <BlogCardList v-if="editorPosts" :posts="editorPosts" />
         <div

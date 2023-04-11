@@ -1,9 +1,7 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
 
-export default {
-
-};
+export default {};
 </script>
 
 <template>
@@ -17,12 +15,18 @@ a {
   word-wrap: normal;
   height: min-content;
 }
+
+.formattedMedia a {
+  color: #2536eb;
+  text-decoration: underline;
+}
+
 .dark {
   background: #1b1b1f;
   color: #e4e1e6;
 }
 
-.h2{
+.h2 {
   font-family: Sora;
 }
 

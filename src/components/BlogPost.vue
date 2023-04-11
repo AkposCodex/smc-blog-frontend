@@ -26,6 +26,7 @@ export default {
     };
   },
   created() {
+    // if (this.loading === false) this.loadEmbeds();
     getAPI
       .get("/posts/" + this.thsl)
       .then((response) => {
@@ -59,10 +60,40 @@ export default {
                 break;
               }
             }
+            this.loadEmbeds();
           })
           .catch((err) => {});
       })
       .catch((err) => {});
+  },
+
+  methods: {
+    loadEmbeds() {
+      document.querySelectorAll("oembed[url]").forEach((element) => {
+        iframely.load(element, element.attributes.url.value);
+      });
+    },
+    loadIframelyEmbedJs() {
+      var oembed = document.querySelectorAll("oembed");
+      console.log("loading...", oembed);
+      // Replace 'iframe.ly' with your custom CDN if available.
+      if (document.querySelectorAll("oembed").length === 0) return;
+      var iframely = (window.oembed = window.oembed || {});
+      console.log(iframely, "framely");
+      if (iframely.load) {
+        iframely.load();
+      } else {
+        var ifs = document.createElement("script");
+        ifs.type = "text/javascript";
+        ifs.async = true;
+        ifs.src =
+          ("https:" == document.location.protocol ? "https:" : "http:") +
+          "//cdn.iframe.ly/embed.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(ifs, s);
+        console.log(s, ifs);
+      }
+    },
   },
   components: {
     BlogCardList,
@@ -77,8 +108,9 @@ export default {
 <template>
   <AppHeader></AppHeader>
 
-  <main class="max-w-4xl mx-auto">
+  <main class="max-w-4xl mx-auto formattedMedia">
     <section class="pb-6 mb-20 font-baseFamily mx-auto">
+      <button @click="loadEmbeds">LOAD FRAMES</button>
       <div>
         <div v-if="posts" class="p-5">
           <h1
@@ -152,7 +184,7 @@ export default {
 
           <div class="">
             <div
-              class="flex-nowrap content mx-auto flex flex-col space-y-9 text-lg text-elipsis"
+              class="mx-auto flex flex-col space-y-9 text-lg text-elipsis"
             >
               <div class="text-md" v-html="text"></div>
             </div>
@@ -231,7 +263,15 @@ ol {
   text-decoration: underline;
 }
 
+.formattedMedia a {
+  color: aqua;
+  text-decoration: underline;
+}
+
 main {
   min-height: 100vh;
+}
+.formattedMedia.media {
+  height: 400px;
 }
 </style>

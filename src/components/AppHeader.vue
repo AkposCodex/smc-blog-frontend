@@ -76,9 +76,6 @@ export default {
       <div class="">
         <button class="flex gap-2 items-center" @click="toggleDark()">
           <BaseIcon name="mode" />
-          <span class="hidden lg:block text-sm whitespace-nowrap font-semibold"
-            >{{ isDark ? "Dark" : "Light" }} Mode</span
-          >
         </button>
       </div>
       <RouterLink class="lg:hidden" to="/">

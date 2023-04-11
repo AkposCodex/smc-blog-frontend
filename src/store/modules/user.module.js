@@ -8,6 +8,7 @@ const getInitialState = () => {
       bio: "",
       name: "",
       email: "",
+      token: "",
       password: "",
       posts: [],
       isLoggedIn: false,
@@ -24,6 +25,10 @@ export default {
   mutations: {
     LOGIN: function (state) {
       state.user.isLoggedIn = true;
+    },
+
+    LOAD_TOKEN: function (state, payload) {
+      state.user.token = payload
     },
 
     UPDATE_USER: function (state, payload) {
@@ -62,7 +67,8 @@ export default {
         let response = await getAPI
           .post("api/auth/token/login/", req)
           .then(async (response) => {
-            // console.log(response);
+            console.log(response);
+            commit("LOAD_TOKEN", response.data.auth_token)
             try {
               await getAPI
                 .get(`/users?email=${payload.username}`)
@@ -100,8 +106,10 @@ export default {
           },
         })
         .then((response) => {
-          getAPI.post("/post/review", { post: payload.postSlug });
-          dispatch("loadPosts", payload.slug);
+          console.log(payload.postSlug);
+          getAPI.post("/post/review", { post: payload.postSlug }).then((e) => {
+            dispatch("loadPosts", payload.slug);
+          });
           //   this.success = true;
           //   this.$router.go();
         })

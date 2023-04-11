@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^36.0.1",
+    "@ckeditor/ckeditor5-image": "^37.0.1",
+    "@ckeditor/ckeditor5-upload": "^37.0.1",
     "@ckeditor/ckeditor5-vue": "^4.0.1",
     "@sanity/client": "^4.0.1",
     "@sanity/image-url": "^1.0.2",
