@@ -73,10 +73,27 @@ export default {
       class="grid place-items-center grid-cols-[minmax(25px,8rem)_1fr_minmax(25px,8rem)] px-5 md:pt-4 pt-8 pb-4 gap-9 w-full items-center justify-between lg:text-lg bg-white dark:bg-[#1B1B1F]"
     >
       <!-- class="flex px-5 py-4 gap-9 w-full items-center justify-between lg:text-lg" -->
-      <div class="">
+      <div class="md:hidden lg:block">
         <button class="flex gap-2 items-center" @click="toggleDark()">
           <BaseIcon name="mode" />
         </button>
+      </div>
+      <div class="lg:hidden md:block">
+        <div
+          class="flex gap-2 bg-white dark:bg-[#1B1B1F] transition-all items-center justify-center w-full text-sm group"
+        >
+          <form
+            @submit.prevent="search(searchWord)"
+            class="flex gap-0 items-center rounded-lg w-[35%] group-focus-within:w-full transition-all mx-auto bg-gray-200 p-2"
+          >
+            <BaseIcon name="search" class="text-gray-800" />
+            <input
+              type="text"
+              class="outline-none w-full dark:text-black bg-gray-200"
+              v-model="searchWord"
+            />
+          </form>
+        </div>
       </div>
       <RouterLink class="lg:hidden" to="/">
         <AppLogo class="text-black dark:text-white" />
@@ -126,7 +143,7 @@ export default {
           @submit.prevent="search(searchWord)"
           class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-200 px-6 py-1"
         >
-          <BaseIcon name="search" class="text-gray-800" />
+          <BaseIcon name="search" class="text-gray-800 text-xl" />
           <input
             type="text"
             placeholder="search posts"
@@ -148,18 +165,11 @@ export default {
         v-if="isMenuOpen"
         class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <form
-          @submit.prevent="search(searchWord)"
-          class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-200 px-6 py-1"
-        >
-          <BaseIcon name="search" class="text-gray-800" />
-          <input
-            type="text"
-            placeholder="search posts"
-            class="outline-none w-full bg-gray-200"
-            v-model="searchWord"
-          />
-        </form>
+        <div class="w-full pt-6 px-12">
+          <button class="flex gap-2 items-center" @click="toggleDark()">
+            <BaseIcon name="mode" />
+          </button>
+        </div>
         <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
           <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
             home
@@ -217,24 +227,6 @@ export default {
         </div>
       </div>
     </nav>
-    <div class="lg:hidden md:block">
-      <div
-        class="flex gap-2 bg-white dark:bg-[#1B1B1F] transition-all items-center justify-center w-full text-sm group"
-      >
-        <form
-          @submit.prevent="search(searchWord)"
-          class="flex  gap-0 items-center rounded-lg w-[5%] group-focus-within:w-3/5 transition-all mx-auto bg-gray-200 p-2"
-        >
-          <BaseIcon name="search" class="text-gray-800" />
-          <input
-            type="text"
-
-            class="outline-none w-full bg-gray-200"
-            v-model="searchWord"
-          />
-        </form>
-      </div>
-    </div>
   </div>
   <a
     @click="results = null"

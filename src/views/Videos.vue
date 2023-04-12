@@ -2,7 +2,7 @@
   <AppHeader></AppHeader>
   <main>
     <section>
-      <p class="pb-8 text-2xl font-bold text-center">Video Headlines</p>
+      <p class="pb-8 text-2xl mt-6 font-bold text-center">Video Headlines</p>
     </section>
     <div class="lg:h-full mb-12 h-3/5 w-full mx-auto">
       <Carousel :wrap-around="true" :items-to-show="1">
@@ -50,9 +50,9 @@
     </div>
     <!-- <BlogCardList v-if="blogPosts" :posts="blogPosts" variant="secondary" /> -->
     <div
-      class="grid md:grid-cols-2 gap-5 md:place-items-stretch px-8 place-items-center"
+      class="grid md:grid-cols-2 gap-5 md:place-items-stretch px-8 mb-32 place-items-center"
     >
-      <div v-for="(slide, index) in blogPosts" :key="index">
+      <div v-for="(slide, index) in blogPosts" :key="index" class="w-full">
         <div
           class="w-full bg-center lg:h-[400px] flex items-end"
           :style="`background:url(${slide.mainImage});background-size: cover;`"
@@ -72,7 +72,15 @@
               {{ slide.summary }}
             </h1>
             <div class="flex w-full justify-start">
-              <button class="text-white bg-transparent rounded-lg p-2">
+              <button
+                @click="
+                  this.$router.push({
+                    name: 'post',
+                    params: { slug: slide.slug },
+                  })
+                "
+                class="text-white bg-transparent rounded-lg p-2"
+              >
                 Watch Now &rangle;
               </button>
             </div>

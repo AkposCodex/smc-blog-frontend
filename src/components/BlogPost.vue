@@ -107,10 +107,11 @@ export default {
 </script>
 <template>
   <AppHeader></AppHeader>
-
+  <head>
+    <title>SMC Report | {{ posts.title }}</title>
+  </head>
   <main class="max-w-4xl mx-auto formattedMedia">
     <section class="pb-6 mb-20 font-baseFamily mx-auto">
-      <button @click="loadEmbeds">LOAD FRAMES</button>
       <div>
         <div v-if="posts" class="p-5">
           <h1
@@ -119,7 +120,7 @@ export default {
             {{ cat }}
           </h1>
           <h1
-            class="md:text-4xl text-2xl my-10 font-serifFamily capitalize font-bold"
+            class="md:text-4xl text-2xl my-10 font-baseFamily capitalize font-bold"
           >
             {{ posts.title }}
           </h1>
@@ -183,9 +184,7 @@ export default {
           </div>
 
           <div class="">
-            <div
-              class="mx-auto flex flex-col space-y-9 text-lg text-elipsis"
-            >
+            <div class="mx-auto flex flex-col space-y-9 text-lg text-elipsis">
               <div class="text-md" v-html="text"></div>
             </div>
             <paragraph-shimmer

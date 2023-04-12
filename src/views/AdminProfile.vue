@@ -371,6 +371,8 @@
     </div>
     <div class="w-full">
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
+        <button class="bg-white hidden p-3" @click="showGroups()"></button>
+
         <p class="text-xl font-bold p-5 mb-9">Profile</p>
         <div class="lg:w-4/5 mx-auto">
           <div
@@ -564,9 +566,10 @@
                   Read More
                 </button>
                 <button
-                  class="bg-white rounded-md hidden border border-black px-3 py-1"
+                  @click="deletePost({ slug: post.slug })"
+                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
                 >
-                  Edit
+                  Delete
                 </button>
               </div>
             </div>
@@ -687,10 +690,7 @@
                   {{ post.summary }}
                 </p>
               </div>
-              <div
-                class="flex mt-4 gap-4 w-4/5"
-                v-if="post.review === 'InReview'"
-              >
+              <div class="flex mt-4 gap-4 w-4/5">
                 <button
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Approved` })
@@ -703,7 +703,7 @@
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Rejected` })
                   "
-                  class="bg-white border-black border-2 rounded-md text-red-600 px-3 py-1"
+                  class="bg-white border-black border-2 rounded-md text-black px-3 py-1"
                 >
                   Reject
                 </button>
@@ -882,29 +882,9 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   plugins: [
     // SimpleUploadAdapter
   ],
-  toolbar: {
-    items: [
-      "undo",
-      "redo",
-      "|",
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "|",
-      "link",
-      "uploadImage",
-      "insertTable",
-      "mediaEmbed",
-      "|",
-      "bulletedList",
-      "numberedList",
-      "outdent",
-      "indent",
-    ],
-  },
+  toolbar: {},
   simpleUpload: {
-    uploadUrl: "http://127.0.0.1:8000/ckeditor/upload/",
+    uploadUrl: "https://smc-blog-backend.herokuapp.com/ckeditor/upload/",
     withCredentials: false,
     error: {
       message:
@@ -922,7 +902,6 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
     window.editor = editor;
   })
   .catch((err) => {
-    console.log(err);
   });
 
 export default {
@@ -974,7 +953,7 @@ export default {
       editorConfig: {
         // toolbar: ["bold", "italic", "|", "link"],
         ckfinder: {
-          uploadUrl: "/editor",
+          uploadUrl: "https://smc-blog-backend.herokuapp.com/ckeditor/upload/",
           withCredentials: false,
         },
         // image: {
@@ -996,7 +975,6 @@ export default {
   async created() {
     this.loadAdminPosts();
     this.file = this.user.profileImage;
-    console.log(this.user);
     this.loadDraftPosts();
     this.showPost("equity");
     getAPI
@@ -1012,6 +990,18 @@ export default {
     });
   },
   methods: {
+    showGroups() {
+      let re = getAPI
+        .get(`https://smc-blog-backend.herokuapp.com/groups/`, {
+          headers: {
+            Token: this.user.token,
+          },
+        })
+        .catch((e) => {
+          console.log(e.response.data.detail);
+        });
+      console.log(re, this.user.token);
+    },
     logout() {
       this.$store
         .dispatch("userModule/logout")
@@ -1051,7 +1041,7 @@ export default {
           })
           .then((e) => {
             this.loadDraftPosts().then((e) => {
-              // this.$router.go();
+              this.$router.go();
             });
           })
           .catch((e) => {
@@ -1166,14 +1156,12 @@ export default {
       await getAPI.get(`/post/review`).then(async (response) => {
         result = response.data.results;
         let count = response.data.count;
-        console.log(result, count - 1);
         while (count > 0) {
           await getAPI
             .get(`/posts/${result[count - 1].post}`)
             .then((r) => {
               let res = r.data;
               let pos = count;
-              console.log(res, pos);
               // this.reviewPosts.push(res);
               this.reviewPosts.push({
                 id: result[0].id,
@@ -1190,7 +1178,6 @@ export default {
               });
             })
             .then(count--);
-          console.log(this.reviewPosts);
         }
       });
     },
@@ -1250,7 +1237,6 @@ export default {
         slug: this.user.slug,
         category: e,
       });
-      console.log(res);
       this.posts = res;
       // console.log(this.posts);
       // blog;

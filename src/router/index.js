@@ -23,6 +23,11 @@ function openMyroute(to, from, next) {
   }
 }
 
+function loadTitle(to, from, next) {
+  document.title = to.meta.title;
+  next();
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -33,6 +38,7 @@ const router = createRouter({
       meta: {
         title: "SMC REPORT",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/admin",
@@ -42,6 +48,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | LOGIN",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/profile",
@@ -52,6 +59,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Admin Profile",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/geo",
@@ -60,6 +68,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Geopolitics Reports",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/eco",
@@ -68,6 +77,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Economic Reports",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/bc",
@@ -76,6 +86,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Blockchain Reports",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/eq",
@@ -84,6 +95,7 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Equity Reports",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/videos",
@@ -92,21 +104,22 @@ const router = createRouter({
       meta: {
         title: "SMC Report | Video Headlines",
       },
+      beforeEnter: loadTitle,
     },
     {
       path: "/post/:slug",
       name: "post",
       component: () => import("../components/BlogPost.vue"),
       props: true,
-      meta: {
-        title: `SMC Report | :slug`,
-      },
+      // meta: {
+      //   title: `SMC Report | ${to}`,
+      // },
     },
   ],
 });
 
-router.beforeEach((to) => {
-  document.title = to.meta.title;
-});
+// router.beforeEach((to) => {
+//   document.title = to.meta.title;
+// });
 
 export default router;

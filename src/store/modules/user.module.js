@@ -11,6 +11,7 @@ const getInitialState = () => {
       token: "",
       password: "",
       posts: [],
+      groups: [],
       isLoggedIn: false,
       drafts: [],
       isSuper: false,
@@ -28,7 +29,7 @@ export default {
     },
 
     LOAD_TOKEN: function (state, payload) {
-      state.user.token = payload
+      state.user.token = payload;
     },
 
     UPDATE_USER: function (state, payload) {
@@ -39,6 +40,7 @@ export default {
       state.user.email = payload.email;
       state.user.password = payload.password;
       state.user.isSuper = payload.is_superuser;
+      state.user.groups = payload.groups;
     },
 
     REVIEW_POST: function (state, payload) {
@@ -68,7 +70,7 @@ export default {
           .post("api/auth/token/login/", req)
           .then(async (response) => {
             console.log(response);
-            commit("LOAD_TOKEN", response.data.auth_token)
+            commit("LOAD_TOKEN", response.data.auth_token);
             try {
               await getAPI
                 .get(`/users?email=${payload.username}`)
@@ -137,7 +139,7 @@ export default {
           //   this.blogPosts = response.data;
         })
         .catch((err) => {});
-      console.log(res);
+
       return res;
     },
 

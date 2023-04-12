@@ -11,7 +11,7 @@
       />
     </div>
     <div class="w-full">
-      <h3 class="font-bold font-serifFamily uppercase mb-1 leading-5">
+      <h3 class="font-bold font-baseFamily uppercase mb-1 leading-5">
         {{ post.title }}
       </h3>
       <div
@@ -24,9 +24,9 @@
             class="w-full h-full object-cover rounded-full"
           />
         </figure>
-        <p class="text-black font-bold w-full capitalize flex justify-between">
+        <p class="font-bold w-full capitalize flex justify-between">
           by {{ ath }}
-          <span class="text-black/40">{{
+          <span class="text-black/40 dark:text-white/60">{{
             new Date(post.publishedAt)
               .toString()
               .replace("GMT+0100 (West Africa Standard Time)", " ")
@@ -36,7 +36,7 @@
       </div>
       <h2 class="text-sm my-3">{{ post.summary }}</h2>
       <button
-        class="border-[#111111] border-b"
+        class="border-[#111111] border-b dark:border-white/30"
         @click="
           this.$router.push({
             name: 'post',

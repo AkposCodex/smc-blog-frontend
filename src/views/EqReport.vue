@@ -76,7 +76,7 @@ export default {
 <template>
   <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
-    <section class="py-4 max-w-2xl mx-auto w-full mb-12">
+    <section class="py-4 w-full mb-12">
       <p class="pb-8 text-2xl font-bold text-center">Equity Reports</p>
       <div
         class="font-baseFamily text-center font-bold text-4xl mt-32 mb-32"
@@ -87,7 +87,7 @@ export default {
       <template v-else>
         <div class="w-full mb-20">
           <div
-            class="grid grid-cols-2 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
+            class="grid grid-cols-2 max-w-4xl mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
           >
             <div class="w-full lg:h-[400px] h-[400px] rounded-l-[14px]">
               <img
@@ -112,6 +112,12 @@ export default {
               </h1>
               <div class="flex w-full justify-start">
                 <button
+                  @click="
+                    this.$router.push({
+                      name: 'post',
+                      params: { slug: blogPosts[0].slug },
+                    })
+                  "
                   class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
                 >
                   Read More &rangle;
@@ -121,7 +127,9 @@ export default {
           </div>
         </div>
 
-        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
+        <div
+          class="grid lg:grid-cols-3 max-w-2xl mx-auto w-full grid-cols-2 gap-6"
+        >
           <div class="" v-for="post in blogPosts">
             <div class="h-[200px] w-full">
               <img
@@ -152,17 +160,25 @@ export default {
                 }}</span>
               </p>
             </div>
-            <h1 class="font-bold text-lg w-max mb-1 font-baseFamily capitalize">
+            <h1
+              class="font-bold text-lg w-full mb-1 font-baseFamily capitalize"
+            >
               {{ post.title }}
             </h1>
             <h1
-              class="text-md text-gray-700 w-max mb-4 font-baseFamily capitalize"
+              class="text-md text-gray-700 w-full mb-4 font-baseFamily capitalize"
             >
               {{ post.summary }}
             </h1>
 
             <div class="flex w-full justify-start">
               <button
+                @click="
+                  this.$router.push({
+                    name: 'post',
+                    params: { slug: post.slug },
+                  })
+                "
                 class="text-black bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111]"
               >
                 Read More &rangle;

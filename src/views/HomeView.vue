@@ -159,15 +159,15 @@ export default {
     :class="{ 'overflow-hidden max-h-[100vh]': isMobile }"
   >
     <section class="py-4 px-5 w-full">
-      <div class="lg:h-full md:h-3/5 h-min max-w-5xl w-full mx-auto">
+      <div class="h-max max-w-5xl w-full mx-auto">
         <Carousel :wrap-around="true" :items-to-show="1">
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <div class="w-full">
               <div
-                class="grid md:grid-cols-2 grid-rows-2 md:grid-rows-1 grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111]"
+                class="grid md:grid-cols-2 grid-rows-2 md:grid-rows-1 grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
               >
-                <div class="w-full lg:h-[400px] h-full rounded-l-[14px]">
+                <div class="w-full h-[400px] rounded-l-[14px]">
                   <img
                     :src="slide.mainImage"
                     class="object-cover h-full w-full md:rounded-l-[14px] rounded-t-[14px] -z-20"
@@ -181,12 +181,12 @@ export default {
                     {{ slide.categories }}
                   </p>
                   <h1
-                    class="font-bold text-2xl w-max mb-1 font-baseFamily capitalize"
+                    class="font-bold text-2xl w-full mb-1 font-baseFamily capitalize"
                   >
                     {{ slide.title }}
                   </h1>
                   <h1
-                    class="text-lg text-gray-300 w-max mb-12 font-baseFamily capitalize"
+                    class="text-lg text-gray-300 w-full mb-12 font-baseFamily capitalize"
                   >
                     {{ slide.summary }}
                   </h1>
@@ -198,7 +198,7 @@ export default {
                           params: { slug: slide.slug },
                         })
                       "
-                      class="text-black bg-transparent rounded-lg p-2 border border-2 border-[#111111]"
+                      class="bg-transparent rounded-lg p-2 border border-2 border-[#111111] dark:border-white/30"
                     >
                       Read More &rangle;
                     </button>
@@ -240,20 +240,22 @@ export default {
             <p class="bg-black capitalize p-1 my-4 w-min text-white text-xl">
               {{ post.categories }}
             </p>
-            <h1 class="font-bold text-xl w-max mb-1 font-baseFamily capitalize">
+            <h1
+              class="font-bold text-xl w-full mb-1 font-baseFamily capitalize"
+            >
               {{ post.title }}
             </h1>
             <h1
-              class="text-md text-gray-700 w-max mb-4 font-baseFamily capitalize"
+              class="text-md text-gray-700 dark:text-white w-full mb-4 font-baseFamily capitalize"
             >
               {{ post.summary }}
             </h1>
             <div class="flex gap-4">
-              <h1 class="text-xs text-black w-max font-baseFamily capitalize">
+              <h1 class="text-xs w-full font-baseFamily capitalize">
                 By {{ post.author }}
               </h1>
               <h1
-                class="text-xs text-gray-500 w-max font-baseFamily capitalize"
+                class="text-xs text-gray-500 dark:text-white w-full font-baseFamily capitalize"
               >
                 {{
                   new Date(post.publishedAt)
@@ -271,7 +273,7 @@ export default {
                     params: { slug: post.slug },
                   })
                 "
-                class="text-black bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111]"
+                class="bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111] dark:border-white/30"
               >
                 Read More &rangle;
               </button>
@@ -308,7 +310,9 @@ export default {
               <p class="bg-black capitalize p-1 my-1 w-min text-white text-lg">
                 {{ post.categories }}
               </p>
-              <h1 class="text-md w-max mb-1 font-baseFamily capitalize">
+              <h1
+                class="text-md text-black w-max mb-1 font-baseFamily capitalize"
+              >
                 {{ post.title }}
               </h1>
             </div>
@@ -427,6 +431,6 @@ export default {
   color: white;
 }
 .dark .carousel__pagination-button--active::after {
-  background-color: white;
+  background-color: blue;
 }
 </style>

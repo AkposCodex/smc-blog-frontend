@@ -54,7 +54,7 @@
                         <br>
                         <p><span class="tm"> {{ comments.created_on }} </span></p><br>
                         <div class="bx"> {{ comments.body }} </div>
-                        <div class="comment__flex-btn">
+                        <div class="comment__flex-btn hidden">
                             <form method="delete" @submit.prevent="del(comments.id)">
                                 <button class="del">Delete</button>
                             </form>
