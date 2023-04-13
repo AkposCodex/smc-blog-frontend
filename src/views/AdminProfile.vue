@@ -271,7 +271,7 @@
           <div class="flex flex-col justify-center w-min items-start">
             <p class="font-bold text-xl font-serifFamily">{{ user.name }}</p>
             <p class="text-s font-serifFamilty text-gray-400">
-              {{ user.role }}
+              {{ role }}
             </p>
           </div>
         </div>
@@ -336,7 +336,7 @@
             pages = 3;
             isMenuOpen = false;
           "
-          class="font-bold hiddeb w-max flex hover:cursor-pointer gap-3 items-center"
+          class="font-bold hidden w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
@@ -477,10 +477,19 @@
             <div class="pb-9" id="userName">
               <p class="font-bold">Role</p>
               <input
-                v-model="user.name"
+                v-model="role"
                 type="text"
                 class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               />
+              <select v-model="user.role"
+              class="h-[2.5rem] bg-gray-200 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              >
+                <option :value="role">{{ role }}</option>
+                <option value="1">Editor</option>
+                <option value="2">Writer</option>
+                <option value="3">Head of Content</option>
+                <option value="4">Team Lead</option>
+              </select>
             </div>
             <div class="pb-9" id="bio">
               <p class="font-bold">Bio</p>
@@ -904,6 +913,10 @@
           </div>
         </div>
       </section>
+      <PriceIndexModal
+        :show="showPriceIndexModal"
+        @close="showPriceIndexModal = false"
+      />
       <section class="px-5" v-if="pages == 6" id="createVideoPosts">
         <p class="text-xl font-bold py-5">Create Video Headline</p>
         <div class="flex flex-col gap-12">
@@ -957,10 +970,7 @@
               resolution</i
             >
           </div>
-          <PriceIndexModal
-            :show="showPriceIndexModal"
-            @close="showPriceIndexModal = false"
-          />
+
           <div class="" id="videoContent">
             <label for="article image" class="font-bold">Upload Video</label>
             <figure class="w-full relative" id="article-image">
@@ -1131,6 +1141,7 @@ export default {
       showPriceIndexModal: false,
       summary: "",
       image: "",
+      role: "",
       drafts: [],
       showDrafts: false,
       posts: [],
@@ -1172,6 +1183,7 @@ export default {
     user: "getUserState",
   }),
   async created() {
+    this.role = this.user.role
     this.loadAdminPosts();
     this.file = this.user.profileImage;
     this.loadDraftPosts();
@@ -1240,7 +1252,7 @@ export default {
           })
           .then((e) => {
             this.loadDraftPosts().then((e) => {
-              // this.$router.go();
+              this.$router.go();
             });
           })
           .catch((e) => {
@@ -1286,7 +1298,7 @@ export default {
           .then((e) => {
             console.log(e);
             this.loadDraftPosts().then((e) => {
-              // this.$router.go();
+              this.$router.go();
               console.log(e);
             });
           })
@@ -1323,7 +1335,7 @@ export default {
       this.$store.dispatch("userModule/reviewPost", post);
       // console.log(this.drafts);
 
-      // this.$router.go();
+      this.$router.go();
     },
     UpdateProfile() {
       let data = new FormData();
@@ -1331,6 +1343,7 @@ export default {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
+        data.append("image", this.file);
         data.append("image", this.file);
         console.log("image absent");
       } else if ((this.proFile = null && this.user.profileImage != null)) {
