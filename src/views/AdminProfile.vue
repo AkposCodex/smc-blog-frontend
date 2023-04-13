@@ -1217,9 +1217,9 @@ export default {
       console.log(re, this.user.token);
     },
     logout() {
-      this.$store
-        .dispatch("userModule/logout")
-        .then(this.$router.push("/admin"));
+      this.$store.dispatch("userModule/logout").then((e) => {
+        this.$router.push("/admin");
+      });
     },
     async searchMini(e) {
       await getAPI
