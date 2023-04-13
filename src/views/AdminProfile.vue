@@ -123,6 +123,13 @@
         <BaseIcon name="Vector-1" class="" />
         <p>Drafts</p>
       </a>
+      <button
+        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+        @click="showPriceIndexModal = true"
+      >
+        <BaseIcon name="chart_line" />
+        <p>Price Index</p>
+      </button>
       <a
         v-if="user.isSuper"
         @click="
@@ -209,7 +216,7 @@
       v-show="results"
     >
       <div class="h-min bg-white">
-        <div class="" v-for="res in results">
+        <div class="" v-for="res in results" :key="res.slug">
           <a :href="`/post/${res.slug}`">
             <p class="p-3">{{ res.title }}</p>
           </a>
@@ -310,6 +317,13 @@
           <BaseIcon name="Vector-1" class="" />
           <p>Drafts</p>
         </a>
+        <button
+          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          @click="showPriceIndexModal = true"
+        >
+          <BaseIcon name="chart_line" />
+          <p>Price Index</p>
+        </button>
         <a
           v-if="user.isSuper"
           @click="
@@ -862,6 +876,10 @@
       </section>
     </div>
   </div>
+  <PriceIndexModal
+    :show="showPriceIndexModal"
+    @close="showPriceIndexModal = false"
+  />
 </template>
 <script>
 import AppLogo from "../components/AppLogo.vue";
@@ -877,6 +895,7 @@ import BaseButton from "../components/BaseButton.vue";
 import { useToast, POSITION } from "vue-toastification";
 import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
+import PriceIndexModal from "../components/PriceIndexModal.vue";
 
 ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   plugins: [
@@ -884,7 +903,7 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   ],
   toolbar: {},
   simpleUpload: {
-    uploadUrl: "https://smc-blog-backend.herokuapp.com/ckeditor/upload/",
+    uploadUrl: `${import.meta.env.VITE_API_URL}/ckeditor/upload/`,
     withCredentials: false,
     error: {
       message:
@@ -901,8 +920,7 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   .then((editor) => {
     window.editor = editor;
   })
-  .catch((err) => {
-  });
+  .catch((err) => {});
 
 export default {
   setup() {
@@ -919,6 +937,7 @@ export default {
     BaseButton,
     ToastError,
     AppLogo,
+    PriceIndexModal,
   },
   data() {
     return {
@@ -932,6 +951,7 @@ export default {
       title: "",
       subtitle: "",
       isMenuOpen: false,
+      showPriceIndexModal: false,
       summary: "",
       image: "",
       drafts: [],
@@ -953,7 +973,7 @@ export default {
       editorConfig: {
         // toolbar: ["bold", "italic", "|", "link"],
         ckfinder: {
-          uploadUrl: "https://smc-blog-backend.herokuapp.com/ckeditor/upload/",
+          uploadUrl: `${import.meta.env.VITE_API_URL}/ckeditor/upload/`,
           withCredentials: false,
         },
         // image: {
