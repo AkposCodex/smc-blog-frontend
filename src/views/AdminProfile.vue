@@ -5,7 +5,6 @@
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
       <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
         <BaseIcon name="hamburger" v-if="!isMenuOpen" />
-        <!-- <BaseIcon name="close" v-if="isMenuOpen" /> -->
       </button>
       <div class="flex justify-start m-0">
         <AppLogo class="text-black dark:text-white" />
@@ -96,6 +95,19 @@
       >
         <BaseIcon name="plusButton" class="" />
         <p>Create new article</p>
+      </a>
+      <a
+        @click="
+          pages = 6;
+          isMenuOpen = false;
+        "
+        class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+        :class="{
+          ' text-blue-600 decoration-4': pages === 6,
+        }"
+      >
+        <BaseIcon name="video" class="" />
+        <p>Create Video Post</p>
       </a>
       <a
         @click="
@@ -257,8 +269,10 @@
             </div>
           </figure>
           <div class="flex flex-col justify-center w-min items-start">
-            <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-            <p class="text-s font-serifFamilty text-gray-400">Editor</p>
+            <p class="font-bold text-xl font-serifFamily">{{ user.name }}</p>
+            <p class="text-s font-serifFamilty text-gray-400">
+              {{ user.role }}
+            </p>
           </div>
         </div>
         <hr class="w-full border" />
@@ -289,6 +303,19 @@
         >
           <BaseIcon name="plusButton" class="" />
           <p>Create new article</p>
+        </a>
+        <a
+          @click="
+            pages = 6;
+            isMenuOpen = false;
+          "
+          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+          :class="{
+            ' text-blue-600 decoration-4': pages === 6,
+          }"
+        >
+          <BaseIcon name="video" class="" />
+          <p>Create Video Post</p>
         </a>
         <a
           @click="
@@ -653,7 +680,7 @@
           <div
             v-for="post in reviewPosts"
             v-if="reviewPosts.length > 0"
-            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 items-end lg:flex-row-reverse"
+            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
           >
             <div
               v-if="post.mainImage"
@@ -667,9 +694,9 @@
             </div>
             <div class="lg:w-[50%] w-full">
               <div class="">
-                <div class="flex gap-4">
+                <div class="">
                   <h3
-                    class="font-bold w-max text-black font-baseFamily uppercase leading-5"
+                    class="font-bold flex flex-col w-max text-black font-baseFamily uppercase leading-5"
                   >
                     {{ post.title }}
                     <span
@@ -678,38 +705,41 @@
                       </p></span
                     >
                   </h3>
-                  <h3 class="bg-gray-200 rounded-md p-1 text-black h-min">
+                </div>
+                <div class="flex w-full justify-between my-2 items-center">
+                  <h3 class="text-black font-bold text-xs leading-5">
+                    {{
+                      new Date(post.publishedAt)
+                        .toString()
+                        .replace("GMT+0100 (West Africa Standard Time)", " ")
+                        .trim()
+                    }}
+                  </h3>
+                  <h3
+                    class="bg-teal-300 font-bold p-1 text-xs text-black h-min"
+                  >
                     {{ post.review }}
                   </h3>
                 </div>
-                <h3
-                  class="font-serifFamily text-gray-500 text-[11px] leading-5"
-                >
-                  {{
-                    new Date(post.publishedAt)
-                      .toString()
-                      .replace("GMT+0100 (West Africa Standard Time)", " ")
-                      .trim()
-                  }}
-                </h3>
-                <a
-                  :href="`/post/${post.slug}`"
-                  class="font-baseFamily underline text-black font-bold text-[11px] mb-3 leading-5"
-                >
-                  Go to post &rangle;
-                </a>
-                <hr class="my-3" />
-                <p class="font-bold text-black">Post summary</p>
-                <p class="px-4 leading-4 text-black">
+                <div class="mt-5">
+                  <a
+                    :href="`/post/${post.slug}`"
+                    class="font-baseFamily bg-black text-white dark:text-black dark:bg-gray-600 p-2 font-bold text-sm leading-5"
+                  >
+                    Go to preview &rangle;
+                  </a>
+                </div>
+                <hr class="mb-3 border-0" />
+                <p class="leading-4 text-black">
                   {{ post.summary }}
                 </p>
               </div>
-              <div class="flex mt-4 gap-4 w-4/5">
+              <div class="flex mt-12 gap-4 w-4/5">
                 <button
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Approved` })
                   "
-                  class="bg-white border-2 border-green-600 rounded-md text-green-600 px-3 py-1"
+                  class="bg-white border-2 border-green-600 text-green-600 px-3 py-1"
                 >
                   Approve
                 </button>
@@ -717,13 +747,13 @@
                   @click="
                     review({ id: post.id, slug: post.slug, review: `Rejected` })
                   "
-                  class="bg-white border-black border-2 rounded-md text-black px-3 py-1"
+                  class="bg-white border-black border-2 text-black px-3 py-1"
                 >
                   Reject
                 </button>
                 <button
                   @click="deletePost({ slug: post.slug })"
-                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
+                  class="bg-white border-red-600 border-2 text-red-600 px-3 py-1"
                 >
                   Delete
                 </button>
@@ -874,12 +904,159 @@
           </div>
         </div>
       </section>
+      <section class="px-5" v-if="pages == 6" id="createPosts">
+        <p class="text-xl font-bold py-5">Create Post</p>
+        <div class="flex flex-col gap-12">
+          <div class="" id="title">
+            <label for="" class="font-bold">Title*</label><br />
+            <input
+              type="text"
+              name="title"
+              v-model="title"
+              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              id=""
+            />
+          </div>
+          <div class="" id="subtitle">
+            <label for="" class="font-bold">Sub Topic</label><br />
+            <input
+              type="text"
+              name="title"
+              v-model="subtitle"
+              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              id=""
+            />
+          </div>
+          <div class="" id="mainImage">
+            <label for="article image" class="font-bold">Thumbnail*</label>
+            <figure class="w-full relative" id="article-image">
+              <div
+                after="Drag and drop images here or select from your device"
+                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] after:content-[attr(after)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
+              >
+                <img
+                  v-if="file"
+                  :src="image"
+                  alt=""
+                  class="object-cover h-[12rem] w-full rounded-xl"
+                />
+                <div v-else class="w-full h-[12rem] orunded-xl"></div>
+              </div>
+              <input
+                type="file"
+                @change="Changeimage"
+                required
+                :style="`background:url(${file}) no-repeat`"
+                class="w-full absolute opacity-0 top-0 h-full bg-center bg-contain border-black bg-gray-200 item-center justify-center"
+                name="article image"
+                accept="image/*"
+              />
+            </figure>
+            <i class="font-[500] text-blue-400 text-xs"
+              >recommended: images should be 1280px x 860px for best
+              resolution</i
+            >
+          </div>
+          <PriceIndexModal
+            :show="showPriceIndexModal"
+            @close="showPriceIndexModal = false"
+          />
+          <div class="" id="videoContent">
+            <label for="article image" class="font-bold">Upload Video</label>
+            <figure class="w-full relative" id="article-image">
+              <!-- <div
+                after="Drag and drop images here or select from your device"
+                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] after:content-[attr(after)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
+              >
+                <img
+                  v-if="file"
+                  :src="image"
+                  alt=""
+                  class="object-cover h-[12rem] w-full rounded-xl"
+                />
+                <div v-else class="w-full h-[12rem] orunded-xl"></div>
+              </div> -->
+              <input
+                type="file"
+                @change="loadVideo"
+                required
+                :style="`background:url(${video}) no-repeat`"
+                class="w-full h-max bg-center bg-contain border-black item-center justify-center"
+                name="article image"
+                accept="video/*"
+              />
+              <video :src="thumbnail" controls></video>
+            </figure>
+          </div>
+          <div class="" id="body">
+            <label for="article image" class="font-bold">Body*</label>
+            <div class="-z-50">
+              <ckeditor
+                required
+                id="editor"
+                :editor="editor"
+                v-model="editorData"
+                :config="editorConfig"
+              />
+            </div>
+          </div>
+          <div class="" id="keyNotes">
+            <label for="summary" class="font-bold">Key Notes*</label>
+            <textarea
+              name="summary"
+              id=""
+              cols="30"
+              rows="4"
+              class="bg-gray-200 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              v-model="summary"
+            ></textarea>
+          </div>
+          <div class="" id="metadata">
+            <div class="border border-gray-400 rounded-lg capitalize">
+              <p class="p-3 font-bold">Add to a Category*</p>
+              <hr class="w-full border-gray-400" />
+              <div class="lg:p-8 p-2 lg:text-md text-sm">
+                <div
+                  class="my-4"
+                  v-for="choice in categorySel.autocompleteItems"
+                  :key="choice.slug"
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    :value="choice.slug"
+                    id="category"
+                    v-model="categorySel.selected"
+                  />
+                  <label for="category" class="lg:px-4 pl-2">{{
+                    choice.cat_title
+                  }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full flex flex-col gap-4 mb-6" id="buttons">
+            <div class="w-full flex justify-center">
+              <button
+                class="bg-black dark:bg-white/60 text-white dark:text-black font-bold p-3 uppercase w-full rounded-lg mx-auto"
+                @click="publishVideo()"
+              >
+                Submit for Review
+              </button>
+            </div>
+            <div class="w-full hidden flex justify-center mb-12">
+              <button
+                class="bg-white text-black border-2 border border-black rounded-lg p-3 uppercase w-full mx-auto"
+                @click="savePost()"
+              >
+                Add To Draft
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
-  <PriceIndexModal
-    :show="showPriceIndexModal"
-    @close="showPriceIndexModal = false"
-  />
 </template>
 <script>
 import AppLogo from "../components/AppLogo.vue";
@@ -959,6 +1136,8 @@ export default {
       posts: [],
       reviewPosts: [],
       file: "",
+      video: "",
+      thumbnail: "",
       password: "",
       proFile: null,
       editorpost: false,
@@ -1046,6 +1225,7 @@ export default {
       data.append("mainImage", this.file);
       data.append("slug", postSlug);
       data.append("sub_topic", this.subtitle);
+      data.append("image_slide", this.file);
       console.log(
         postSlug,
         data,
@@ -1061,17 +1241,63 @@ export default {
           })
           .then((e) => {
             this.loadDraftPosts().then((e) => {
-              this.$router.go();
+              // this.$router.go();
             });
           })
           .catch((e) => {
-            // console.log(e);
+            console.log(e);
           });
       } catch (error) {
         this.hasError = true;
         // console.log(this.hasError);
         this.errorCode = error.response.status;
         this.toast.dismiss("login");
+        setTimeout(() => {
+          this.hasError = false;
+          // console.log(this.hasError);
+        }, 4000);
+      }
+    },
+    publishVideo() {
+      let data = new FormData();
+      let postSlug = this.title.split(" ").join("").toLowerCase();
+      data.append("title", this.title);
+      data.append("author", this.user.slug);
+      data.append("categories", this.categorySel.selected);
+      data.append("picked", this.editorpost);
+      data.append("summary", this.summary);
+      data.append("body", this.editorData);
+      data.append("mainImage", this.file);
+      data.append("slug", postSlug);
+      data.append("sub_topic", this.subtitle);
+      data.append("video", this.video);
+      console.log(
+        postSlug,
+        data,
+        this.title.replaceAll(" ", "-").toLowerCase()
+      );
+
+      try {
+        this.$store
+          .dispatch("userModule/createPost", {
+            formData: data,
+            slug: this.user.slug,
+            postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
+          })
+          .then((e) => {
+            console.log(e);
+            this.loadDraftPosts().then((e) => {
+              // this.$router.go();
+              console.log(e);
+            });
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (error) {
+        this.hasError = true;
+        // console.log(this.hasError);
+        this.errorCode = error.response.status;
         setTimeout(() => {
           this.hasError = false;
           // console.log(this.hasError);
@@ -1140,6 +1366,13 @@ export default {
       this.file = file;
       this.image = imageSRC;
       console.log(this.file, this.image);
+    },
+    loadVideo(e) {
+      let file = e.target.files[0];
+      let imageSRC = URL.createObjectURL(file);
+      this.video = file;
+      this.thumbnail = imageSRC;
+      console.log(this.video, this.thumbnail);
     },
     changeProfileImage(e) {
       let file = e.target.files[0];

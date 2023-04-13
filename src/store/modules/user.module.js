@@ -11,7 +11,7 @@ const getInitialState = () => {
       token: "",
       password: "",
       posts: [],
-      groups: [],
+      role: "",
       isLoggedIn: false,
       drafts: [],
       isSuper: false,
@@ -40,7 +40,10 @@ export default {
       state.user.email = payload.email;
       state.user.password = payload.password;
       state.user.isSuper = payload.is_superuser;
-      state.user.groups = payload.groups;
+    },
+
+    LOAD_ROLE: function (state, payload) {
+      state.user.role = payload;
     },
 
     REVIEW_POST: function (state, payload) {
@@ -70,15 +73,25 @@ export default {
           .post("api/auth/token/login/", req)
           .then(async (response) => {
             console.log(response);
-            commit("LOAD_TOKEN", response.data.auth_token);
+            let token = response.data.auth_token;
+            commit("LOAD_TOKEN", token);
             try {
               await getAPI
                 .get(`/users?email=${payload.username}`)
                 .then((response) => {
                   // console.log(response);
-                  dispatch("updateUser", response.data[0]).then(
-                    commit("LOGIN")
-                  );
+                  dispatch("updateUser", response.data[0]).then(async (e) => {
+                    commit("LOGIN");
+                    try {
+                      let role = await getAPI.get(`/groups`, {
+                        headers: {
+                          Authorization: `Token ${token}`,
+                        },
+                      });
+                      console.log(role.data[0].name);
+                      commit("LOAD_ROLE", role.data[0].name);
+                    } catch (error) {}
+                  });
                   dispatch("loadPosts", response.data[0].slug);
                   return response;
                   // this.$router.push({ path: "profile/" + state.user.slug });

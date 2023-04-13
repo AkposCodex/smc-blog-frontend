@@ -45,7 +45,7 @@
           <a class="text-blue-600 font-bold" href="">forgot password?</a>
         </div>
         <div class="flex flex-col items-center justify-center w-full">
-          <BaseIcon name="powered" class="text-black w-[150px]"/>
+          <BaseIcon name="powered" class="text-black w-[150px]" />
         </div>
 
         <div class="flex justify-center">
@@ -219,7 +219,7 @@ export default {
             // console.log(this.user, response);
           });
       } catch (error) {
-        // console.log(error);
+        console.log(error);
         this.hasError = true;
         // console.log(this.hasError);
         this.errorCode = error.response.status;
@@ -232,7 +232,6 @@ export default {
     },
     async generateUsers() {
       this.users.forEach(generate);
-
       async function generate(e) {
         await getAPI.patch(`/users/${e.slug}`, e);
       }
