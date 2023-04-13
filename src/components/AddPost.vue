@@ -10,11 +10,11 @@ export default {
     return {
       editor: ClassicEditor,
       editorConfig: {
-          ckfinder: {
-              uploadUrl: 'http://127.0.0.1:8000/ckeditor/upload/',
+        ckfinder: {
+          uploadUrl: `${import.meta.env.VITE_API_URL}/ckeditor/upload/`,
 
-              withCredentials: false,
-          }
+          withCredentials: false,
+        },
       },
       categorySel: {
         selected: [],
@@ -42,29 +42,26 @@ export default {
     },
     postForm() {
       let data = new FormData();
-      data.append('title', this.title);
-      data.append('picked', this.editorpost);
-      data.append('summary', this.summary);
-      data.append('body', this.editorData);
-      data.append('mainImage', this.file);
-      data.append('author', this.$route.params.slug.toString(),);
-      data.append('categories', this.categorySel.selected);
-      data.append('slug', this.title.split(' ').join('').toLowerCase());
+      data.append("title", this.title);
+      data.append("picked", this.editorpost);
+      data.append("summary", this.summary);
+      data.append("body", this.editorData);
+      data.append("mainImage", this.file);
+      data.append("author", this.$route.params.slug.toString());
+      data.append("categories", this.categorySel.selected);
+      data.append("slug", this.title.split(" ").join("").toLowerCase());
 
       getAPI
-        .post(
-          "/posts",
-          {
-            title: this.title,
-            picked: this.editorpost,
-            summary: this.summary,
-            body: this.editorData,
-            mainImage: this.file,
-            author: this.$route.params.slug.toString(),
-            categories: this.categorySel.selected,
-            slug: this.title.split(" ").join("").toLowerCase(),
-          },
-        )
+        .post("/posts", {
+          title: this.title,
+          picked: this.editorpost,
+          summary: this.summary,
+          body: this.editorData,
+          mainImage: this.file,
+          author: this.$route.params.slug.toString(),
+          categories: this.categorySel.selected,
+          slug: this.title.split(" ").join("").toLowerCase(),
+        })
         .then((response) => {
           this.success = true;
           this.$router.go();
@@ -99,7 +96,13 @@ export default {
         <br /><br />
         <label class="editor">
           Article
-          <ckeditor id="editor" required :editor="editor" v-model="editorData" :config="editorConfig"/>
+          <ckeditor
+            id="editor"
+            required
+            :editor="editor"
+            v-model="editorData"
+            :config="editorConfig"
+          />
         </label>
         <br /><br />
         <label class="editor">

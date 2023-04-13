@@ -11,23 +11,23 @@
       class="coin-marquee-item-price font-medium border-r dark:border-white border-black px-3"
       :class="{
         'text-[#008769] dark:text-[#37FECB]':
-          coin.quote['2781'].percent_change_24h > 0,
-        'text-red-500': coin.quote['2781'].percent_change_24h < 0,
+          coin.quote.USD.percent_change_24h > 0,
+        'text-red-500': coin.quote.USD.percent_change_24h < 0,
       }"
     >
-      ${{ parsePrice(coin.quote["2781"].price) }}
+      ${{ parsePrice(coin.quote.USD.price) }}
     </span>
     <div
       class="flex items-center gap-2 pl-3"
       :class="{
         'text-[#008769] dark:text-[#37FECB]':
-          coin.quote['2781'].percent_change_24h > 0,
-        'text-red-500': coin.quote['2781'].percent_change_24h < 0,
+          coin.quote.USD.percent_change_24h > 0,
+        'text-red-500': coin.quote.USD.percent_change_24h < 0,
       }"
     >
       <span>24h</span>
       <svg
-        v-if="coin.quote['2781'].percent_change_24h > 0"
+        v-if="coin.quote.USD.percent_change_24h > 0"
         width="16"
         height="16"
         viewBox="0 0 6 6"
@@ -59,7 +59,7 @@
       </svg>
 
       <span class="coin-marquee-item-percent">
-        {{ coin.quote["2781"].percent_change_24h.toFixed(2) }}%
+        {{ coin.quote.USD.percent_change_24h.toFixed(2) }}%
       </span>
     </div>
   </div>

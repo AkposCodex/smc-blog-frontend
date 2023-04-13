@@ -1,11 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 const getAPI = axios.create({
-    baseURL: 'https://smc-blog-backend.herokuapp.com/',
+  baseURL: import.meta.env.VITE_API_URL,
+});
 
-    // headers: {
-    //     "Content-Type": "FormData"
-    // }
-})
-
-export { getAPI }
+export { getAPI };
