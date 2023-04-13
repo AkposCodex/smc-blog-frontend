@@ -138,6 +138,7 @@
       <button
         class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
         @click="showPriceIndexModal = true"
+        v-if="user.isSuper"
       >
         <BaseIcon name="chart_line" />
         <p>Price Index</p>
@@ -346,6 +347,7 @@
         </a>
         <button
           class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          v-if="user.isSuper"
           @click="showPriceIndexModal = true"
         >
           <BaseIcon name="chart_line" />
@@ -481,8 +483,9 @@
                 type="text"
                 class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               />
-              <select v-model="user.role"
-              class="h-[2.5rem] bg-gray-200 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              <select
+                v-model="user.role"
+                class="h-[2.5rem] bg-gray-200 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               >
                 <option :value="role">{{ role }}</option>
                 <option value="1">Editor</option>
@@ -1183,7 +1186,7 @@ export default {
     user: "getUserState",
   }),
   async created() {
-    this.role = this.user.role
+    this.role = this.user.role;
     this.loadAdminPosts();
     this.file = this.user.profileImage;
     this.loadDraftPosts();
