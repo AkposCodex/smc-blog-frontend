@@ -76,51 +76,104 @@ export default {
   },
   async created() {
     this.fetchTypedPost("equity", 1);
-
+    this.loading = true;
     await getAPI
-      .get("/posts")
+      .get("/post/review?state=Approved")
       .then((response) => {
-        console.log(response);
+        console.log(response.data.results.length);
+        if (response.data.results.length === 0) this.loading = false;
         response.data.results.forEach(async (e) => {
           console.log(e);
           let repo = e;
-          if (e.author === "sir-mapy") {
-            await getAPI.get(`/users?slug=${e.author}`).then((response) => {
-              // console.log(email, response.data[0].name);
-              this.blogPosts.push({
-                title: repo.title,
-                slug: repo.slug,
-                picked: repo.picked,
-                publishedAt: repo.publishedAt,
-                summary: repo.summary,
-                body: repo.body,
-                mainImage: repo.mainImage,
-                categories: repo.categories,
-                author: response.data[0].name,
+          await getAPI.get(`posts/${e.post}`).then(async (e) => {
+            let repo = e.data;
+            console.log(repo.author, repo);
+            if (repo.author === "sir-mapy") {
+              await getAPI.get(`/users/${repo.author}`).then((response) => {
+                // console.log(email, response.data[0].name);
+                this.blogPosts.push({
+                  title: repo.title,
+                  slug: repo.slug,
+                  picked: repo.picked,
+                  publishedAt: repo.publishedAt,
+                  summary: repo.summary,
+                  body: repo.body,
+                  mainImage: repo.mainImage,
+                  categories: repo.categories,
+                  author: response.data[0].name,
+                });
+                // console.log(this.blogPosts);
+                this.loading = true;
               });
-              // console.log(this.blogPosts);
-            });
-          } else {
-            await getAPI.get(`/users?slug=${e.author}`).then((response) => {
-              // console.log(email, response.data[0].name);
-              this.blogPosts.push({
-                title: repo.title,
-                slug: repo.slug,
-                picked: repo.picked,
-                publishedAt: repo.publishedAt,
-                summary: repo.summary,
-                body: repo.body,
-                mainImage: repo.mainImage,
-                categories: repo.categories,
-                author: response.data[0].name,
+            } else {
+              await getAPI.get(`/users/${repo.author}`).then((response) => {
+                // console.log(email, response.data[0].name);
+                console.log(response);
+                this.blogPosts.push({
+                  title: repo.title,
+                  slug: repo.slug,
+                  picked: repo.picked,
+                  publishedAt: repo.publishedAt,
+                  summary: repo.summary,
+                  body: repo.body,
+                  mainImage: repo.mainImage,
+                  categories: repo.categories,
+                  author: response.data.name,
+                });
+                this.loading = false;
+                console.log(response);
+                console.log(this.blogPosts);
               });
-              console.log(response);
-              console.log(this.blogPosts);
-            });
-          }
+            }
+          });
         });
       })
       .catch((err) => {});
+
+    // await getAPI
+    //   .get("/posts")
+    //   .then((response) => {
+    //     console.log(response);
+    //     response.data.results.forEach(async (e) => {
+    //       console.log(e);
+    //       let repo = e;
+    //       if (e.author === "sir-mapy") {
+    //         await getAPI.get(`/users?slug=${e.author}`).then((response) => {
+    //           // console.log(email, response.data[0].name);
+    //           this.blogPosts.push({
+    //             title: repo.title,
+    //             slug: repo.slug,
+    //             picked: repo.picked,
+    //             publishedAt: repo.publishedAt,
+    //             summary: repo.summary,
+    //             body: repo.body,
+    //             mainImage: repo.mainImage,
+    //             categories: repo.categories,
+    //             author: response.data[0].name,
+    //           });
+    //           // console.log(this.blogPosts);
+    //         });
+    //       } else {
+    //         await getAPI.get(`/users?slug=${e.author}`).then((response) => {
+    //           // console.log(email, response.data[0].name);
+    //           this.blogPosts.push({
+    //             title: repo.title,
+    //             slug: repo.slug,
+    //             picked: repo.picked,
+    //             publishedAt: repo.publishedAt,
+    //             summary: repo.summary,
+    //             body: repo.body,
+    //             mainImage: repo.mainImage,
+    //             categories: repo.categories,
+    //             author: response.data[0].name,
+    //           });
+    //           console.log(response);
+    //           console.log(this.blogPosts);
+    //         });
+    //       }
+    //     });
+    //   })
+    //   .catch((err) => {});
 
     await getAPI
       .get("/posts?editor=True")
@@ -160,17 +213,24 @@ export default {
   >
     <section class="py-4 px-5 w-full">
       <div class="h-max max-w-5xl w-full mx-auto">
-        <Carousel :wrap-around="true" :items-to-show="1">
+        <h2 class="text-6xl font-bold text-center underline">Headlines</h2>
+        <Carousel
+          :wrap-around="true"
+          :items-to-show="1"
+          v-if="blogPosts.length > 0"
+        >
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
             <div class="w-full">
               <div
-                class="grid md:grid-cols-2 grid-rows-2 md:grid-rows-1 grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
+                class="md:grid md:grid-cols-2 flex flex-col grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
               >
-                <div class="w-full h-[400px] rounded-l-[14px]">
+                <div
+                  class="w-full h-[400px] rounded-l-[14px] rounded-t-[14px] md:rounded-l-[14px]"
+                >
                   <img
                     :src="slide.mainImage"
-                    class="object-cover h-full w-full md:rounded-l-[14px] rounded-t-[14px] -z-20"
+                    class="object-cover h-full w-full md:rounded-l-[14px] md:rounded-t-[0px] rounded-t-[14px] -z-20"
                     alt=""
                   />
                 </div>
@@ -181,12 +241,12 @@ export default {
                     {{ slide.categories }}
                   </p>
                   <h1
-                    class="font-bold text-2xl w-full mb-1 font-baseFamily capitalize"
+                    class="font-bold text-2xl text-left w-full mb-1 font-baseFamily capitalize"
                   >
                     {{ slide.title }}
                   </h1>
                   <h1
-                    class="text-lg text-gray-300 w-full mb-12 font-baseFamily capitalize"
+                    class="text-lg text-gray-300 text-left w-full mb-12 font-baseFamily capitalize"
                   >
                     {{ slide.summary }}
                   </h1>
@@ -212,11 +272,18 @@ export default {
             <Pagination />
           </template>
         </Carousel>
-        <div class="w-[400px] mx-auto">
+        <div class="" v-else>
+          <div
+            class="font-baseFamily text-center font-bold text-2xl mt-32 mb-32"
+          >
+            <h3>No New Posts</h3>
+          </div>
+        </div>
+        <div class="w-100% mx-auto">
           <free-style-shimmer
-            :is-loading="false"
+            :is-loading="loading"
             height="400px"
-            width="400px"
+            width="100%"
             color="#bdbdbd"
           />
         </div>
@@ -224,11 +291,16 @@ export default {
     </section>
     <section class="mb-12 px-5" id="latest-posts">
       <div class="max-w-4xl mx-auto">
-        <div class="flex items-center w-4/5 mx-auto justify-between mb-8 p-2">
+        <div
+          class="flex items-center w-4/5 mx-auto border-b-2 border-[#111111] justify-between mb-8 p-2"
+        >
           <h2 class="text-xl font-bold text-left">Latest Updates</h2>
-          <div class="flex font-bold">All &Rightarrow;</div>
+          <div class="flex font-bold hidden">All &Rightarrow;</div>
         </div>
-        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
+        <div
+          class="grid lg:grid-cols-3 grid-cols-2 gap-6"
+          v-if="blogPosts.length > 0"
+        >
           <div class="" v-for="post in blogPosts">
             <div class="h-[200px] w-full">
               <img
@@ -280,6 +352,20 @@ export default {
             </div>
           </div>
         </div>
+        <div class="" v-else>
+          <div
+            class="font-baseFamily text-center font-bold text-2xl mt-32 mb-32"
+          >
+            <h3>No New Posts</h3>
+          </div>
+        </div>
+        <div
+          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+        >
+          <card-shimmer :is-loading="loading" />
+          <card-shimmer :is-loading="loading" />
+          <card-shimmer :is-loading="loading" />
+        </div>
       </div>
     </section>
     <section
@@ -288,12 +374,15 @@ export default {
     >
       <div class="max-w-4xl mx-auto pb-10">
         <div
-          class="flex items-center text-white w-4/5 mx-auto justify-between mb-8 p-2"
+          class="flex items-center text-white w-4/5 border-b-2 border-[#ffffff] mx-auto justify-between mb-8 p-2"
         >
           <h2 class="text-xl font-bold text-left mt-2">Video Headlines</h2>
-          <div class="flex font-bold">All &Rightarrow;</div>
+          <div class="flex font-bold hidden">All &Rightarrow;</div>
         </div>
-        <div class="grid lg:grid-cols-3 grid-cols-2 gap-6">
+        <div
+          class="grid lg:grid-cols-3 grid-cols-2 gap-6"
+          v-if="blogPosts.length > 0"
+        >
           <a
             :href="`post/${post.slug}`"
             class="bg-white rounded-md"
@@ -317,6 +406,20 @@ export default {
               </h1>
             </div>
           </a>
+        </div>
+        <div class="" v-else>
+          <div
+            class="font-baseFamily text-center text-white font-bold text-2xl mt-32 mb-32"
+          >
+            <h3>No New Posts</h3>
+          </div>
+        </div>
+        <div
+          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+        >
+          <card-shimmer :is-loading="!blogPosts" />
+          <card-shimmer :is-loading="!blogPosts" />
+          <card-shimmer :is-loading="!blogPosts" />
         </div>
       </div>
     </section>
@@ -383,7 +486,9 @@ export default {
       </div>
     </section>
     <section id="editor-posts" class="py-4 px-5 w-full">
-      <div class="flex items-center justify-between mb-3 p-2">
+      <div
+        class="flex items-center justify-between mb-3 p-2 border-b-2 border-[#111111]"
+      >
         <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
       </div>
       <p>Post specially currated by our editors</p>

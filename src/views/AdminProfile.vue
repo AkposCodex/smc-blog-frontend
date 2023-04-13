@@ -101,7 +101,7 @@
           pages = 6;
           isMenuOpen = false;
         "
-        class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+        class="font-bold hidden hover:cursor-pointer w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 6,
         }"
@@ -127,7 +127,7 @@
           pages = 3;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+        class="font-bold w-max hidden flex hover:cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
         }"
@@ -309,7 +309,7 @@
             pages = 6;
             isMenuOpen = false;
           "
-          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+          class="font-bold hidden hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 6,
           }"
@@ -336,7 +336,7 @@
             pages = 3;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          class="font-bold hiddeb w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
@@ -560,7 +560,7 @@
         <main class="bg-gray-100 lg:bg-white p-5">
           <div
             v-for="post in posts"
-            v-if="posts.length > 0"
+            v-if="posts && posts.length > 0"
             class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -676,11 +676,11 @@
       </section>
       <section class="" v-if="pages == 5" id="review">
         <p class="text-xl font-bold p-5">Pending Posts</p>
-        <div class="bg-gray-100 dark:bg-transparent p-5">
+        <div class="dark:bg-transparent p-5">
           <div
             v-for="post in reviewPosts"
             v-if="reviewPosts.length > 0"
-            class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
+            class="flex flex-col lg:flex-row bg-white shadow-md rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
           >
             <div
               v-if="post.mainImage"
@@ -904,8 +904,8 @@
           </div>
         </div>
       </section>
-      <section class="px-5" v-if="pages == 6" id="createPosts">
-        <p class="text-xl font-bold py-5">Create Post</p>
+      <section class="px-5" v-if="pages == 6" id="createVideoPosts">
+        <p class="text-xl font-bold py-5">Create Video Headline</p>
         <div class="flex flex-col gap-12">
           <div class="" id="title">
             <label for="" class="font-bold">Title*</label><br />
@@ -1225,7 +1225,6 @@ export default {
       data.append("mainImage", this.file);
       data.append("slug", postSlug);
       data.append("sub_topic", this.subtitle);
-      data.append("image_slide", this.file);
       console.log(
         postSlug,
         data,
@@ -1387,7 +1386,7 @@ export default {
       this.showAddPost = false;
     },
     async loadDraftPosts() {
-      await getAPI.get(`/post/review`).then((response) => {
+      await getAPI.get(`/post/review?state=InReview`).then((response) => {
         let res = response.data.results;
         let count = response.data.count;
         // console.log(res, count);
@@ -1502,7 +1501,8 @@ export default {
 </script>
 <style>
 .ck-editor__editable {
-  height: 12rem;
+  height: auto;
+  min-height: 12rem;
 }
 
 .toggler-wrapper {

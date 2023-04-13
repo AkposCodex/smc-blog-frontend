@@ -93,7 +93,7 @@ export default {
 <template>
   <AppHeader></AppHeader>
   <main class="pb-6 mb-20 font-baseFamily mx-auto">
-    <section class="py-4 w-full mb-12">
+    <section class="p-4 w-full mb-12">
       <p class="pb-8 text-2xl font-bold text-center">Blockchain Reports</p>
       <div
         class="font-baseFamily text-center font-bold text-4xl mt-32 mb-32"
@@ -104,26 +104,28 @@ export default {
       <template v-else>
         <div class="w-full mb-20">
           <div
-            class="grid grid-cols-2 max-w-4xl mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
+            class="md:grid md:grid-cols-2 flex flex-col grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
           >
-            <div class="w-full lg:h-[400px] h-[400px] rounded-l-[14px]">
+            <div
+              class="w-full lg:h-[400px] h-[400px] rounded-t-[14px] md:rounded-l-[14px]"
+            >
               <img
                 :src="blogPosts[0].mainImage"
-                class="object-cover h-full w-full rounded-l-[14px] -z-20"
+                class="object-cover h-full w-full rounded-l-[14px] rounded-t-[14px] md:rounded-l-[14px] -z-20"
                 alt=""
               />
             </div>
             <div class="p-10">
-              <p class="bg-black capitalize p-1 mb-4 w-min text-white text-xl">
+              <p class="bg-black capitalize p-1 mb-4 w-max text-white text-xl">
                 {{ blogPosts[0].categories }}
               </p>
               <h1
-                class="font-bold text-2xl w-max mb-1 font-baseFamily capitalize"
+                class="font-bold text-2xl w-full mb-1 font-baseFamily capitalize"
               >
                 {{ blogPosts[0].title }}
               </h1>
               <h1
-                class="text-lg text-gray-500 dark:text-white w-max mb-12 font-baseFamily capitalize"
+                class="text-lg text-gray-500 dark:text-white w-full mb-12 font-baseFamily capitalize"
               >
                 {{ blogPosts[0].summary }}
               </h1>
@@ -135,7 +137,7 @@ export default {
                       params: { slug: blogPosts[0].slug },
                     })
                   "
-                  class=" bg-transparent rounded-lg p-2 border border-2 border-[#111111] dark:border-white/30"
+                  class="bg-transparent rounded-lg p-2 border border-2 border-[#111111] dark:border-white/30"
                 >
                   Read More &rangle;
                 </button>
@@ -145,7 +147,7 @@ export default {
         </div>
 
         <div
-          class="grid lg:grid-cols-3 max-w-2xl mx-auto w-full grid-cols-2 gap-6"
+          class="grid lg:grid-cols-3 max-w-2xl mx-auto w-full md:grid-cols-2 grid-cols-1 gap-6"
         >
           <div class="" v-for="post in blogPosts">
             <div class="h-[200px] w-full">
@@ -166,7 +168,7 @@ export default {
                 />
               </figure>
               <p
-                class=" font-bold text-md w-full capitalize flex justify-between"
+                class="font-bold text-md w-full capitalize flex justify-between"
               >
                 by {{ post.author }}
                 <span class="text-black/40 dark:text-white/40">{{

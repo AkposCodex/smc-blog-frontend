@@ -73,7 +73,7 @@ export default {
       class="grid place-items-center grid-cols-[minmax(25px,8rem)_1fr_minmax(25px,8rem)] px-5 md:pt-4 pt-8 pb-4 gap-9 w-full items-center justify-between lg:text-lg bg-white dark:bg-[#1B1B1F]"
     >
       <!-- class="flex px-5 py-4 gap-9 w-full items-center justify-between lg:text-lg" -->
-      <div class="md:hidden lg:block">
+      <div class="hidden lg:block">
         <button class="flex gap-2 items-center" @click="toggleDark()">
           <BaseIcon name="mode" />
         </button>
@@ -84,7 +84,7 @@ export default {
         >
           <form
             @submit.prevent="search(searchWord)"
-            class="flex gap-0 items-center rounded-lg w-[35%] group-focus-within:w-full transition-all mx-auto bg-gray-200 p-2"
+            class="flex gap-0 items-center rounded-lg md:w-[35%] w-full group-focus-within:w-full transition-all mx-auto bg-gray-200 p-2"
           >
             <BaseIcon name="search" class="text-gray-800" />
             <input

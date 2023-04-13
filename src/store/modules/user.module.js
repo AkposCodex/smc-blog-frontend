@@ -128,7 +128,9 @@ export default {
           //   this.success = true;
           //   this.$router.go();
         })
-        .catch((err) => {});
+        .catch((err) => {
+          throw err;
+        });
     },
     async reviewPost({ commit, dispatch }, payload) {
       dispatch("createPost", payload);
