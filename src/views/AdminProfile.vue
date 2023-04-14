@@ -84,6 +84,14 @@
         <p>Profile</p>
       </a>
       <a
+        v-if="user.isSuper"
+        href="https://analytics.google.com/analytics/web/?authuser=1"
+        class="font-bold w-max text-[#E37400] flex hover:cursor-pointer gap-3 items-center"
+      >
+        <BaseIcon name="chart_line" class="" />
+        <p>Analytics</p>
+      </a>
+      <a
         @click="
           pages = 4;
           isMenuOpen = false;
@@ -291,6 +299,14 @@
         >
           <BaseIcon name="user" class="" />
           <p>Profile</p>
+        </a>
+        <a
+          v-if="user.isSuper"
+          href="https://analytics.google.com/analytics/web/?authuser=1"
+          class="font-bold w-max flex text-[#E37400] hover:cursor-pointer gap-3 items-center"
+        >
+          <BaseIcon name="chart_line" class=" " />
+          <p>Analytics</p>
         </a>
         <a
           @click="
@@ -692,7 +708,14 @@
           <div
             v-for="post in reviewPosts"
             v-if="reviewPosts.length > 0"
-            class="flex flex-col lg:flex-row bg-white shadow-md rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
+            checked=" &checkmark;"
+            unchecked=" &excl;"
+            :class="{
+              approved: post.review === `Approved`,
+              disapproved:
+                post.review === `InReview` || post.review === `Rejected`,
+            }"
+            class="flex flex-col relative lg:flex-row bg-white shadow-md rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
           >
             <div
               v-if="post.mainImage"
@@ -728,7 +751,7 @@
                     }}
                   </h3>
                   <h3
-                    class="bg-teal-300 font-bold p-1 text-xs text-black h-min"
+                    class="bg-stone-600 font-bold p-2 text-md text-white h-min"
                   >
                     {{ post.review }}
                   </h3>
@@ -1187,6 +1210,7 @@ export default {
   }),
   async created() {
     this.role = this.user.role;
+    this.reviewPosts = [];
     this.loadAdminPosts();
     this.file = this.user.profileImage;
     this.loadDraftPosts();
@@ -1423,6 +1447,7 @@ export default {
       let result;
       await getAPI.get(`/post/review`).then(async (response) => {
         result = response.data.results;
+        console.log(result);
         let count = response.data.count;
         while (count > 0) {
           await getAPI
@@ -1451,7 +1476,7 @@ export default {
     },
     async review(e) {
       let res = await getAPI
-        .put(`/post/review/${e.id}`, {
+        .patch(`/post/review/${e.id}`, {
           post: e.slug,
           review: e.review,
         })
@@ -1559,6 +1584,36 @@ export default {
   + .toggler-slider
   .toggler-knob {
   left: calc(100% - 19px - 3px);
+}
+
+.approved::before {
+  position: absolute;
+  top: 0%;
+  left: -1%;
+  content: "" attr(checked) "";
+  border-radius: 50%;
+  background-color: #29a247;
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.disapproved::before {
+  position: absolute;
+  top: 0%;
+  left: -1%;
+  content: "" attr(unchecked) "";
+  border-radius: 50%;
+  background-color: rgb(204, 47, 47);
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .toggler-wrapper.style-3 .toggler-knob {

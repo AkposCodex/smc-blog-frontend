@@ -16,7 +16,7 @@ module.exports = {
         },
       },
       animation: {
-        "marquee-scroll": "marquee-scroll 35s linear infinite",
+        "marquee-scroll": "marquee-scroll 60s linear infinite",
       },
       fontFamily: {
         baseFamily: ["Sora", "sans-serif"],
