@@ -1366,38 +1366,46 @@ export default {
     },
     UpdateProfile() {
       let data = new FormData();
+      console.log(this.proFile === null && this.user.profileImage != null);
       if (this.proFile != null) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
-        data.append("image", this.file);
+        getAPI
+          .patch("/users/" + this.user.slug, data)
+          .then((response) => {
+            this.success = true;
+            console.log(response);
+            this.mssg = "Updated";
+            this.$router.go();
+          })
+          .catch((err) => {
+            this.hasError = true;
+            console.log(err);
+            this.errorCode = err.response.status;
+          });
+
         console.log("image absent");
-      } else if ((this.proFile = null && this.user.profileImage != null)) {
+      } else if (this.proFile === null && this.user.profileImage != null) {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
+        getAPI
+          .patch("/users/" + this.user.slug, data)
+          .then((response) => {
+            this.success = true;
+            console.log(response);
+            this.mssg = "Updated";
+            this.$router.go();
+          })
+          .catch((err) => {
+            this.hasError = true;
+            console.log(err);
+            this.errorCode = err.response.status;
+          });
         console.log("image present");
       }
-
-      // data.append("slug", this.password);
-
-      getAPI
-        .patch("/users/" + this.user.slug, data, {
-          headers: {
-            "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
-          },
-        })
-        .then((response) => {
-          this.success = true;
-          this.mssg = "Updated";
-          this.$router.go();
-        })
-        .catch((err) => {
-          this.hasError = true;
-          console.log(err);
-          this.errorCode = err.response.status;
-        });
     },
     Changeimage(e) {
       let file = e.target.files[0];

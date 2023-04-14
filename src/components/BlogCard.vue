@@ -28,8 +28,8 @@
           by {{ ath }}
           <span class="text-black/40 dark:text-white/60">{{
             new Date(post.publishedAt)
-              .toString()
-              .replace("GMT+0100 (West Africa Standard Time)", " ")
+              .toLocaleString()
+              // .replace("GMT+0100 (West Africa Standard Time)", " ")
               .trim()
           }}</span>
         </p>

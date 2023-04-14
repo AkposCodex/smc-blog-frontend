@@ -213,7 +213,7 @@ export default {
   >
     <section class="py-4 px-5 w-full">
       <div class="h-max max-w-5xl w-full mx-auto">
-        <h2 class="text-6xl font-bold text-center underline">Headlines</h2>
+        <h2 class="md:text-6xl text-3xl font-bold text-center">Hot Topics</h2>
         <Carousel
           :wrap-around="true"
           :items-to-show="1"
@@ -246,7 +246,7 @@ export default {
                     {{ slide.title }}
                   </h1>
                   <h1
-                    class="text-lg text-gray-300 text-left w-full mb-12 font-baseFamily capitalize"
+                    class="text-lg text-black text-left w-full mb-12 font-baseFamily capitalize"
                   >
                     {{ slide.summary }}
                   </h1>
@@ -292,13 +292,13 @@ export default {
     <section class="mb-12 px-5" id="latest-posts">
       <div class="max-w-4xl mx-auto">
         <div
-          class="flex items-center w-4/5 mx-auto border-b-2 border-[#111111] justify-between mb-8 p-2"
+          class="flex items-center w-4/5 mx-auto border-[#111111] justify-between mb-8 p-2"
         >
           <h2 class="text-xl font-bold text-left">Latest Updates</h2>
           <div class="flex font-bold hidden">All &Rightarrow;</div>
         </div>
         <div
-          class="grid lg:grid-cols-3 grid-cols-2 gap-6"
+          class="grid lg:grid-cols-3 grid-cols-1 md:grid-cols-2 gap-6"
           v-if="blogPosts.length > 0"
         >
           <div class="" v-for="post in blogPosts">
@@ -331,8 +331,8 @@ export default {
               >
                 {{
                   new Date(post.publishedAt)
-                    .toString()
-                    .replace("GMT+0100 (West Africa Standard Time)", " ")
+                    .toLocaleString()
+                    // .replace("GMT+0100 (West Africa Standard Time)", " ")
                     .trim()
                 }}
               </h1>
@@ -345,7 +345,7 @@ export default {
                     params: { slug: post.slug },
                   })
                 "
-                class="bg-transparent rounded-[2px] p-1 mt-2 border border-[1px] border-[#111111] dark:border-white/30"
+                class="border-[#111111] border-b dark:border-white/30 pt-3"
               >
                 Read More &rangle;
               </button>
@@ -374,13 +374,13 @@ export default {
     >
       <div class="max-w-4xl mx-auto pb-10">
         <div
-          class="flex items-center text-white w-4/5 border-b-2 border-[#ffffff] mx-auto justify-between mb-8 p-2"
+          class="flex items-center text-white w-4/5 border-[#ffffff] mx-auto justify-between mb-8 p-2"
         >
           <h2 class="text-xl font-bold text-left mt-2">Video Headlines</h2>
           <div class="flex font-bold hidden">All &Rightarrow;</div>
         </div>
         <div
-          class="grid lg:grid-cols-3 grid-cols-2 gap-6"
+          class="grid lg:grid-cols-3 grid-cols-1 hidden md:grid-cols-2 gap-6"
           v-if="blogPosts.length > 0"
         >
           <a
@@ -407,7 +407,7 @@ export default {
             </div>
           </a>
         </div>
-        <div class="" v-else>
+        <div class="" >
           <div
             class="font-baseFamily text-center text-white font-bold text-2xl mt-32 mb-32"
           >
@@ -472,7 +472,7 @@ export default {
         />
 
         <div
-          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+          class="grid md:grid-cols-2 grid-cols-1 md:grid-rows-2 w-full gap-4 justify-center items-center"
         >
           <card-shimmer :is-loading="!typedPosts" />
           <card-shimmer :is-loading="!typedPosts" />
@@ -486,16 +486,14 @@ export default {
       </div>
     </section>
     <section id="editor-posts" class="py-4 px-5 w-full">
-      <div
-        class="flex items-center justify-between mb-3 p-2 border-b-2 border-[#111111]"
-      >
+      <div class="flex items-center justify-between mb-3 p-2 border-[#111111]">
         <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
       </div>
       <p>Post specially currated by our editors</p>
       <div class="px-5">
         <BlogCardList v-if="editorPosts" :posts="editorPosts" />
         <div
-          class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
+          class="grid md:grid-cols-2 grid-cols-1 md:grid-rows-2 w-full gap-4 justify-center items-center"
         >
           <card-shimmer :is-loading="!editorPosts" />
           <card-shimmer :is-loading="!editorPosts" />
