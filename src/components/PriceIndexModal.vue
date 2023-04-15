@@ -1,13 +1,13 @@
 <template>
   <BaseModal>
-    <header class="pb-4 capitalize overflow-hidden w-full">
+    <header class="pb-4 capitalize overflow-x-clip w-full">
       <div class="h-max" id="stats">
-        <PriceMarqueeWidget class="dark:text-black" :key="marqueeKey" />
+        <PriceMarqueeWidget :key="marqueeKey" />
       </div>
     </header>
-    <AddIndex v-if="currentTab === 1" @change-tab="setTab(2)" />
+    <AddIndex v-show="currentTab === 1" @change-tab="setTab(2)" />
     <ManageIndex
-      v-if="currentTab === 2"
+      v-show="currentTab === 2"
       @change-tab="setTab(1)"
       @index-updated="refreshMarquee"
     />
