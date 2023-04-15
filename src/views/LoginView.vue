@@ -276,12 +276,13 @@ export default {
         }, 4000);
       }
     },
+    // ksjdn jkkjdsb dkshshk dsjhjm ndbjbsjb
     async resetPasswordFn(email) {
       try {
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
           .then(async () => {
-            let newPass = await getAPI.put(`/api/reset-password`, email);
+            let newPass = await getAPI.post(`/api/password_reset`, email);
           })
           .catch((e) => {});
         console.log(newPass);
