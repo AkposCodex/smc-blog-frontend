@@ -281,7 +281,7 @@ export default {
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
           .then(async () => {
-            let newPass = await getAPI.put(`/api/reset_password`, email);
+            let newPass = await getAPI.put(`/api/reset-password`, email);
           })
           .catch((e) => {});
         console.log(newPass);

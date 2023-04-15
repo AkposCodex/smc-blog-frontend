@@ -113,7 +113,7 @@
         </figure>
         <div class="flex flex-col justify-center w-min items-start">
           <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-          <p class="text-s font-serifFamilty text-gray-400">Editor</p>
+          <p class="text-s font-serifFamilty text-gray-400">{{user.role}}</p>
         </div>
       </div>
       <hr class="w-full border" />
@@ -482,7 +482,7 @@
     </div>
     <div class="w-full">
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
-        <button class="bg-white hidden p-3" @click="showGroups()"></button>
+        <button class="bg-white p-3" @click="showGroups()"></button>
 
         <p class="text-xl font-bold p-5 mb-9">Profile</p>
         <div class="lg:w-4/5 mx-auto">
@@ -1302,9 +1302,9 @@ export default {
     },
     showGroups() {
       let re = getAPI
-        .get(`https://smc-blog-backend.herokuapp.com/groups/`, {
+        .get(`/groups`, {
           headers: {
-            Token: this.user.token,
+            Authorization: `Token ${this.user.token}`,
           },
         })
         .catch((e) => {
