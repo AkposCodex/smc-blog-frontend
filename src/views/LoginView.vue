@@ -282,7 +282,7 @@ export default {
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
           .then(async () => {
-            let newPass = await getAPI.post(`/api/password_reset`, email);
+            let newPass = await getAPI.post(`/api/password_reset/`, email); // for some odd reason you need to append slash to the end of the url
           })
           .catch((e) => {});
         console.log(newPass);

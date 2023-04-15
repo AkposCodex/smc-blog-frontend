@@ -14,7 +14,7 @@
         class="fixed inset-0 w-full h-screen gap-3 z-50 flex justify-center items-center flex-col bg-black/50"
       >
         <div
-          class="relative flex flex-col items-center p-5 bg-white w-[80vw] max-w-lg rounded-lg shadow-lg max-h-[80vh] overflow-auto"
+          class="dark:bg-[#1b1b1f] relative flex flex-col items-center p-5 bg-white w-[80vw] max-w-lg rounded-lg shadow-lg max-h-[80vh] overflow-auto"
         >
           <slot />
         </div>
@@ -23,7 +23,7 @@
           @click.prevent="close"
           class="p-2 flex items-center justify-center rounded-full bg-white shadow-lg cursor-pointer hover:bg-slate-300"
         >
-          <BaseIcon name="close" />
+          <BaseIcon name="close" class="dark:text-black" />
         </div>
       </div>
     </Transition>
@@ -54,7 +54,7 @@ const close = () => {
 </script>
 
 <style scoped>
-.modal-close svg {
+svg {
   width: 20px;
   height: 20px;
 }

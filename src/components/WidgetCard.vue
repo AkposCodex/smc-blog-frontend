@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-4 px-6 border dark:border-white border-black flex items-center"
+    class="py-4 px-6 border dark:border-white border-black flex items-center text-black dark:text-white"
   >
     <span
       class="border-r dark:border-white border-black pr-3 font-medium dark:text-white"

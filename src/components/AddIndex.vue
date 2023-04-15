@@ -1,5 +1,5 @@
 <template>
-  <aside class="px-4 overflow-auto w-full">
+  <aside class="dark:text-white px-4 overflow-auto w-full">
     <div
       class="border-b p-3 border-b-gray-300 flex justify-between items-center mb-8"
     >
@@ -15,7 +15,9 @@
         :key="coin.id"
       >
         <div class="flex items-center gap-2">
-          <figure class="border border-[#2D2D2D99] rounded-full p-2 w-10 h-10">
+          <figure
+            class="border border-[#2D2D2D99] rounded-full p-2 w-10 h-10 dark:border-zinc-700"
+          >
             <img
               :src="`https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png`"
               :alt="`${coin.slug} logo`"
@@ -24,7 +26,7 @@
           </figure>
           <div>
             <p class="font-bold">{{ coin.name }}</p>
-            <p class="text-[#2A2B2E] text-sm opacity-80">
+            <p class="text-[#2A2B2E] text-sm opacity-80 dark:text-zinc-400">
               1.00 {{ coin.symbol }}
             </p>
           </div>
@@ -88,30 +90,16 @@ const parsePrice = (price) => {
     return price.toPrecision(7);
   } else return price.toPrecision(6);
 };
-// import { useStore } from "vuex";
 
-// const store = useStore();
-
-// const coinMap = computed(() => store.getters["coin/coinMap"]);
-
-// const coinMap = await getAPI.get("api/cryptocurrency/map?limit=100")
-//   .then((res) => {
-//     return res.data;
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
 defineEmits(["change-tab"]);
 
 const coinMap = ref([]);
 getAPI
   .get("/coins")
   .then((res) => {
-    console.log(res.data);
     getAPI
       .get(`/api/cmc/quotes?id=${res.data.coin_ids.toString()}`)
       .then((res) => {
-        console.log(res.data);
         coinMap.value = Object.values(res.data.data);
       });
   })
