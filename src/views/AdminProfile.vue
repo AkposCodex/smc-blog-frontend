@@ -1,6 +1,58 @@
 <template>
   <ToastError v-if="hasError" :code="errorCode"></ToastError>
-
+  <BaseModal :show="changePassword" @close="changePassword = false">
+    <div class="font-baseFamily w-full">
+      <header class="w-full">
+        <h1 class="font-bold w-ful text-center text-2xl uppercase">
+          Change Password
+        </h1>
+      </header>
+      <form
+        @submit.prevent="
+          updatePassword({
+            old_password: old_password,
+            new_password: new_password,
+          })
+        "
+        class="p-9 w-full min-h-[400px] flex gap-9 flex-col items-center justify-center"
+        id="password"
+      >
+        <div class="w-full">
+          <p class="w-full">Current Password</p>
+          <input
+            v-model="old_password"
+            type="password"
+            aria-autocomplete="both"
+            required
+            autocomplete="current password"
+            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+          />
+        </div>
+        <div class="w-full">
+          <p class="w-full">New Password</p>
+          <input
+            v-model="new_password"
+            type="password"
+            aria-autocomplete="both"
+            autocomplete="password"
+            required
+            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+          />
+        </div>
+        <div class="w-full flex">
+          <button
+            type="submit"
+            class="bg-black uppercase dark:bg-white/60 w-4/5 mx-auto h-[3rem] text-white dark:text-black font-bold rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+        <div class="flex flex-col items-center justify-center w-full">
+          <BaseIcon name="powered" class="text-black w-[150px]" />
+        </div>
+      </form>
+    </div>
+  </BaseModal>
   <header class="md:flex justify-start shadow-md py-3 w-full px-12">
     <div class="flex md:w-full gap-9 items-center lg:justify-between">
       <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
@@ -61,7 +113,7 @@
         </figure>
         <div class="flex flex-col justify-center w-min items-start">
           <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-          <p class="text-s font-serifFamilty text-gray-400">Editor</p>
+          <p class="text-s font-serifFamilty text-gray-400">{{user.role}}</p>
         </div>
       </div>
       <hr class="w-full border" />
@@ -246,6 +298,7 @@
       </div>
     </a>
   </div>
+
   <a
     @click="results = null"
     class="shadow mx-auto h-[100vh] w-full z-30 bg-transparent absolute transition-all"
@@ -253,7 +306,6 @@
   >
     <div class="w-2/5"></div>
   </a>
-  <SavedModal v-show="showModal" @close-modal="showModal = false" />
   <div class="lg:grid grid-cols-[1fr_3fr] font-baseFamily h-[100vh]">
     <div
       class="w-full hidden lg:flex dark:text-white items-center flex-col bg-gray-100 dark:bg-[#1b1b1f]"
@@ -430,7 +482,7 @@
     </div>
     <div class="w-full">
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
-        <button class="bg-white hidden p-3" @click="showGroups()"></button>
+        <button class="bg-white p-3" @click="showGroups()"></button>
 
         <p class="text-xl font-bold p-5 mb-9">Profile</p>
         <div class="lg:w-4/5 mx-auto">
@@ -519,21 +571,24 @@
                 class="bg-gray-200 dark:bg-transparent p-1 font-bold focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
               ></textarea>
             </div>
-            <div class="pb-9 hidden" id="password">
-              <p class="font-bold">Password</p>
-              <input
-                v-model="password"
-                type="text"
-                autocomplete="current-password"
-                class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
-              />
+
+            <div class="w-full flex">
+              <button
+                @click="UpdateProfile"
+                class="bg-black dark:bg-white/60 w-4/5 mx-auto h-[3rem] text-white dark:text-black font-bold rounded-md"
+              >
+                Save
+              </button>
             </div>
-            <button
-              @click="UpdateProfile"
-              class="bg-black dark:bg-white/60 md:w-3/5 w-full h-[3rem] text-white dark:text-black font-bold rounded-md"
-            >
-              Save
-            </button>
+
+            <div class="w-full flex justify-center text-sky-600 p-3 font-bold">
+              <a
+                @click="changePassword = true"
+                class="shadow-md p-3 cursor-pointer"
+              >
+                Change Password?
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -1109,6 +1164,7 @@ import { useToast, POSITION } from "vue-toastification";
 import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import PriceIndexModal from "../components/PriceIndexModal.vue";
+import BaseModal from "../components/BaseModal.vue";
 
 ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   plugins: [
@@ -1146,6 +1202,7 @@ export default {
     BlogCardList,
     SavedModal,
     BaseIcon,
+    BaseModal,
     ckeditor: CKEditor.component,
     BaseButton,
     ToastError,
@@ -1165,6 +1222,9 @@ export default {
       subtitle: "",
       isMenuOpen: false,
       showPriceIndexModal: false,
+      changePassword: false,
+      new_password: "",
+      old_password: "",
       summary: "",
       image: "",
       role: "",
@@ -1228,11 +1288,23 @@ export default {
     });
   },
   methods: {
+    updatePassword(e) {
+      try {
+        let newPass = getAPI.put(`/api/change-password/`, e, {
+          headers: {
+            Authorization: `Token ${this.user.token}`,
+          },
+        });
+        console.log(newPass);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     showGroups() {
       let re = getAPI
-        .get(`https://smc-blog-backend.herokuapp.com/groups/`, {
+        .get(`/groups`, {
           headers: {
-            Token: this.user.token,
+            Authorization: `Token ${this.user.token}`,
           },
         })
         .catch((e) => {

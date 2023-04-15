@@ -1,5 +1,46 @@
 <template>
   <ToastError v-if="hasError" :code="errorCode"></ToastError>
+  <BaseModal :show="resetPassword" @close="resetPassword = false">
+    <div class="font-baseFamily w-full">
+      <header class="w-full">
+        <h1 class="font-bold w-ful text-center text-2xl uppercase">
+          Reset your Password
+        </h1>
+      </header>
+      <form
+        @submit.prevent="
+          resetPasswordFn({
+            email: email,
+          })
+        "
+        class="p-9 w-full min-h-[400px] flex gap-9 flex-col items-center justify-center"
+        id="password"
+      >
+        <div class="w-full">
+          <p class="w-full">Email</p>
+          <input
+            v-model="email"
+            type="email"
+            aria-autocomplete="both"
+            required
+            autocomplete="email"
+            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+          />
+        </div>
+        <div class="w-full flex">
+          <button
+            type="submit"
+            class="bg-black uppercase dark:bg-white/60 w-4/5 mx-auto h-[3rem] text-white dark:text-black font-bold rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+        <div class="flex flex-col items-center justify-center w-full">
+          <BaseIcon name="powered" class="text-black w-[150px]" />
+        </div>
+      </form>
+    </div>
+  </BaseModal>
   <div class="font-baseFamily md:h-full h-[100vh]">
     <div class="mb-16"></div>
     <div
@@ -42,7 +83,9 @@
           >
             LOGIN
           </button>
-          <a class="text-blue-600 font-bold" href="">forgot password?</a>
+          <a class="text-blue-600 font-bold" @click="resetPassword = true"
+            >forgot password?</a
+          >
         </div>
         <div class="flex flex-col items-center justify-center w-full">
           <BaseIcon name="powered" class="text-black w-[150px]" />
@@ -72,6 +115,7 @@ import { mapGetters } from "vuex";
 import ToastError from "../services/error.vue";
 import { useToast, POSITION } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
+import BaseModal from "../components/BaseModal.vue";
 import { getAPI } from "../axios";
 export default {
   setup(props) {
@@ -81,6 +125,7 @@ export default {
   components: {
     ToastError,
     BaseIcon,
+    BaseModal,
   },
   data() {
     return {
@@ -187,6 +232,7 @@ export default {
       email: "",
       password: "",
       userslg: "",
+      resetPassword: false,
       success: null,
       error: null,
       token: null,
@@ -228,6 +274,20 @@ export default {
           this.hasError = false;
           // console.log(this.hasError);
         }, 4000);
+      }
+    },
+    // ksjdn jkkjdsb dkshshk dsjhjm ndbjbsjb
+    async resetPasswordFn(email) {
+      try {
+        let newUser = await getAPI
+          .get(`/users?email=${email.email.toLowerCase()}`)
+          .then(async () => {
+            let newPass = await getAPI.post(`/api/password_reset`, email);
+          })
+          .catch((e) => {});
+        console.log(newPass);
+      } catch (error) {
+        console.log(error);
       }
     },
     async generateUsers() {
