@@ -10,7 +10,8 @@ import BaseButton from "../components/BaseButton.vue";
 import BaseIcon from "../components/BaseIcon.vue";
 import { getAPI } from "../axios";
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { Carousel, Slide, Pagination } from "vue3-carousel";
+import UpdatesCard from "../components/UpdatesCard.vue";
 
 const isDark = useDark();
 
@@ -194,7 +195,7 @@ export default {
     Carousel,
     Slide,
     Pagination,
-    Navigation,
+    UpdatesCard,
   },
 };
 </script>
@@ -213,40 +214,41 @@ export default {
   >
     <section class="py-4 px-5 w-full">
       <div class="h-max max-w-5xl w-full mx-auto">
-        <h2 class="md:text-6xl text-3xl font-bold text-center">Hot Topics</h2>
+        <!-- <h2 class="md:text-6xl text-3xl font-bold text-center">Hot Topics</h2> -->
         <Carousel
+          snap-align="center"
           :wrap-around="true"
           :items-to-show="1"
           v-if="blogPosts.length > 0"
         >
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
-            <div class="w-full">
+            <div class="w-11/12">
               <div
-                class="md:grid md:grid-cols-2 flex flex-col grid-cols-1 mx-auto justify-end rounded-[15px] z-50 border border-[1px] border-[#111111] dark:border-white/30"
+                class="md:grid md:grid-cols-2 flex flex-col grid-cols-1 mx-auto justify-end rounded-lg z-50 border border-[#111111] dark:border-white/30"
               >
-                <div
-                  class="w-full h-[400px] rounded-l-[14px] rounded-t-[14px] md:rounded-l-[14px]"
+                <figure
+                  class="max-h-72 w-full h-[400px] rounded-lg rounded-b-none md:rounded-tr-none md:rounded-bl-lg md:border-r-0 border-[#111111] dark:border-white/30 overflow-hidden"
                 >
                   <img
                     :src="slide.mainImage"
-                    class="object-cover h-full w-full md:rounded-l-[14px] md:rounded-t-[0px] rounded-t-[14px] -z-20"
+                    class="object-cover h-full w-full"
                     alt=""
                   />
-                </div>
-                <div class="p-10">
+                </figure>
+                <div class="p-5">
                   <p
-                    class="bg-black capitalize p-1 mb-3 w-min text-white text-xl"
+                    class="bg-black rounded-sm capitalize p-1 mb-3 w-min text-white text-sm"
                   >
                     {{ slide.categories }}
                   </p>
                   <h1
-                    class="font-bold text-2xl text-left w-full mb-1 font-baseFamily capitalize"
+                    class="font-semibold text-2xl md:text-3xl text-left w-full mb-1 font-baseFamily capitalize"
                   >
                     {{ slide.title }}
                   </h1>
                   <h1
-                    class="text-lg text-black text-left w-full mb-12 font-baseFamily capitalize"
+                    class="hidden md:block text-base text-left w-full mb-12 text-[#11111186] dark:text-white/30"
                   >
                     {{ slide.summary }}
                   </h1>
@@ -258,9 +260,10 @@ export default {
                           params: { slug: slide.slug },
                         })
                       "
-                      class="bg-transparent rounded-lg p-2 border border-2 border-[#111111] dark:border-white/30"
+                      class="mt-6 flex items-center bg-transparent rounded-[4px] p-2 border text-sm border-[#111111] dark:border-white/30"
                     >
-                      Read More &rangle;
+                      <span>Read More</span>
+                      <BaseIcon name="chevron-right" class="w-auto" />
                     </button>
                   </div>
                 </div>
@@ -268,7 +271,6 @@ export default {
             </div>
           </Slide>
           <template #addons>
-            <Navigation />
             <Pagination />
           </template>
         </Carousel>
@@ -292,65 +294,21 @@ export default {
     <section class="mb-12 px-5" id="latest-posts">
       <div class="max-w-4xl mx-auto">
         <div
-          class="flex items-center w-4/5 mx-auto border-[#111111] justify-between mb-8 p-2"
+          class="flex items-center md:w-4/5 md:mx-auto border-[#111111] justify-between mb-8 p-2"
         >
-          <h2 class="text-xl font-bold text-left">Latest Updates</h2>
-          <div class="flex font-bold hidden">All &Rightarrow;</div>
+          <h2 class="text-xl">Latest Updates</h2>
+          <RouterLink to="latest" class="flex font-semibold">
+            <span>All</span>
+            <BaseIcon name="arrow-right" class="ml-2" />
+          </RouterLink>
         </div>
         <div
           class="grid lg:grid-cols-3 grid-cols-1 md:grid-cols-2 gap-6"
           v-if="blogPosts.length > 0"
         >
-          <div class="" v-for="post in blogPosts">
-            <div class="h-[200px] w-full">
-              <img
-                :src="post.mainImage"
-                alt="blog post"
-                class="w-full rounded-md h-full object-cover"
-              />
-            </div>
-            <p class="bg-black capitalize p-1 my-4 w-min text-white text-xl">
-              {{ post.categories }}
-            </p>
-            <h1
-              class="font-bold text-xl w-full mb-1 font-baseFamily capitalize"
-            >
-              {{ post.title }}
-            </h1>
-            <h1
-              class="text-md text-gray-700 dark:text-white w-full mb-4 font-baseFamily capitalize"
-            >
-              {{ post.summary }}
-            </h1>
-            <div class="flex gap-4">
-              <h1 class="text-xs w-full font-baseFamily capitalize">
-                By {{ post.author }}
-              </h1>
-              <h1
-                class="text-xs text-gray-500 dark:text-white w-full font-baseFamily capitalize"
-              >
-                {{
-                  new Date(post.publishedAt)
-                    .toLocaleString()
-                    // .replace("GMT+0100 (West Africa Standard Time)", " ")
-                    .trim()
-                }}
-              </h1>
-            </div>
-            <div class="flex w-full justify-start">
-              <button
-                @click="
-                  this.$router.push({
-                    name: 'post',
-                    params: { slug: post.slug },
-                  })
-                "
-                class="border-[#111111] border-b dark:border-white/30 pt-3"
-              >
-                Read More &rangle;
-              </button>
-            </div>
-          </div>
+          <template v-for="post in blogPosts" :key="post.slug">
+            <UpdatesCard :post="post" />
+          </template>
         </div>
         <div class="" v-else>
           <div
@@ -374,19 +332,23 @@ export default {
     >
       <div class="max-w-4xl mx-auto pb-10">
         <div
-          class="flex items-center text-white w-4/5 border-[#ffffff] mx-auto justify-between mb-8 p-2"
+          class="flex items-center text-white md:w-4/5 md:mx-auto border-[#111111] justify-between pt-5 mb-8 p-2"
         >
-          <h2 class="text-xl font-bold text-left mt-2">Video Headlines</h2>
-          <div class="flex font-bold hidden">All &Rightarrow;</div>
+          <h2 class="text-xl">Video Headlines</h2>
+          <RouterLink to="videos" class="flex font-semibold">
+            <span>All</span>
+            <BaseIcon name="arrow-right" class="ml-2" />
+          </RouterLink>
         </div>
         <div
-          class="grid lg:grid-cols-3 grid-cols-1 hidden md:grid-cols-2 gap-6"
+          class="grid lg:grid-cols-3 grid-cols-1 md:grid-cols-2 gap-6"
           v-if="blogPosts.length > 0"
         >
-          <a
-            :href="`post/${post.slug}`"
+          <RouterLink
+            :to="`post/${post.slug}`"
             class="bg-white rounded-md"
             v-for="post in blogPosts"
+            :key="post.slug"
           >
             <div class="h-[160px] w-full">
               <img
@@ -396,24 +358,24 @@ export default {
               />
             </div>
             <div class="p-3">
-              <p class="bg-black capitalize p-1 my-1 w-min text-white text-lg">
+              <p
+                class="bg-black capitalize p-1 my-1 w-min text-white text-sm rounded-sm"
+              >
                 {{ post.categories }}
               </p>
-              <h1
-                class="text-md text-black w-max mb-1 font-baseFamily capitalize"
-              >
+              <h1 class="text-black w-max">
                 {{ post.title }}
               </h1>
             </div>
-          </a>
+          </RouterLink>
         </div>
-        <div class="" >
+        <template v-else>
           <div
             class="font-baseFamily text-center text-white font-bold text-2xl mt-32 mb-32"
           >
             <h3>No New Posts</h3>
           </div>
-        </div>
+        </template>
         <div
           class="grid md:grid-cols-2 grid-rows-2 w-full gap-4 justify-center items-center"
         >
@@ -423,53 +385,53 @@ export default {
         </div>
       </div>
     </section>
-    <section id="all-posts" class="mt-16 py-4 px-5 w-full">
+    <section id="all-posts" class="mt-16 py-4 px-6 md:px-20 w-full">
       <nav
-        class="flex gap-4 py-2 mx-5 mb-8 border-b border-black dark:border-white overflow-y-auto scrollbar-hide"
+        class="flex gap-4 mb-8 md:border-b border-black dark:border-white overflow-y-auto scrollbar-hide mx-auto md:w-4/5"
       >
         <button
           @click="fetchTypedPost('equity', 1)"
           :class="{
-            'text-blue-700 ': count == 1,
+            'text-blue-700 font-semibold after:h-1 after:w-full relative after:absolute after:bg-blue-700 after:bottom-0 after:left-0':
+              count == 1,
           }"
-          class="font-bold"
+          class="py-2"
         >
           Equity
         </button>
         <button
           @click="fetchTypedPost('blockchain', 2)"
           :class="{
-            'text-blue-700 ': count == 2,
+            'text-blue-700 font-semibold after:h-1 after:w-full relative after:absolute after:bg-blue-700 after:bottom-0 after:left-0':
+              count == 2,
           }"
-          class="font-bold"
+          class="py-2"
         >
           Blockchain
         </button>
         <button
           @click="fetchTypedPost('geopolitics', 3)"
           :class="{
-            'text-blue-700 ': count == 3,
+            'text-blue-700 font-semibold after:h-1 after:w-full relative after:absolute after:bg-blue-700 after:bottom-0 after:left-0':
+              count == 3,
           }"
-          class="font-bold"
+          class="py-2"
         >
           Geopolitical
         </button>
         <button
           @click="fetchTypedPost('economic', 4)"
           :class="{
-            'text-blue-700 ': count == 4,
+            'text-blue-700 font-semibold after:h-1 after:w-full relative after:absolute after:bg-blue-700 after:bottom-0 after:left-0':
+              count == 4,
           }"
-          class="font-bold"
+          class="py-2"
         >
-          Economic
+          Economics
         </button>
       </nav>
       <div class="px-5">
-        <BlogCardList
-          v-if="typedPosts"
-          :posts="typedPosts"
-          variant="secondary"
-        />
+        <BlogCardList v-if="typedPosts" :posts="typedPosts" />
 
         <div
           class="grid md:grid-cols-2 grid-cols-1 md:grid-rows-2 w-full gap-4 justify-center items-center"
@@ -486,10 +448,10 @@ export default {
       </div>
     </section>
     <section id="editor-posts" class="py-4 px-5 w-full">
-      <div class="flex items-center justify-between mb-3 p-2 border-[#111111]">
+      <div class="mb-3 p-2 border-[#111111]">
         <h2 class="text-xl font-bold text-left">Editor's Posts</h2>
+        <p>Post specially curated by our editors</p>
       </div>
-      <p>Post specially currated by our editors</p>
       <div class="px-5">
         <BlogCardList v-if="editorPosts" :posts="editorPosts" />
         <div
@@ -513,11 +475,11 @@ export default {
   border-radius: 8px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .carousel__slide {
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .carousel__prev,
@@ -533,7 +495,24 @@ export default {
   box-sizing: content-box;
   color: white;
 }
-.dark .carousel__pagination-button--active::after {
+/* .dark .carousel__pagination-button--active::after {
   background-color: blue;
+} */
+.carousel__track {
+  touch-action: auto;
+}
+.carousel__pagination {
+  gap: 4px;
+}
+.carousel__pagination-button::after {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #d9d9d9 !important;
+}
+.carousel__pagination-button--active::after {
+  background-color: #000 !important;
+  border-radius: 14px;
+  width: 33px;
 }
 </style>

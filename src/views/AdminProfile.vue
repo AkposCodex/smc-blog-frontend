@@ -54,23 +54,25 @@
     </div>
   </BaseModal>
   <header class="md:flex justify-start shadow-md py-3 w-full px-12">
-    <div class="flex md:w-full gap-9 items-center lg:justify-between">
-      <button class="w-1/5 lg:hidden" @click="isMenuOpen = !isMenuOpen">
-        <BaseIcon name="hamburger" v-if="!isMenuOpen" />
-      </button>
+    <div class="flex md:w-full gap-9 items-center justify-between">
+      <span class="lg:hidden"> &nbsp; </span>
       <div class="flex justify-start m-0">
         <AppLogo class="text-black dark:text-white" />
       </div>
+      <button class="lg:hidden" @click="isMenuOpen = !isMenuOpen">
+        <BaseIcon name="hamburger" v-if="!isMenuOpen" />
+        <BaseIcon name="close" v-if="isMenuOpen" />
+      </button>
       <div class="hidden lg:block" id="search" z-50>
         <form
           @submit.prevent="searchMini(word)"
-          class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-200 px-6 py-1"
+          class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 md:w-full mx-auto bg-gray-100 px-6 py-1"
         >
           <BaseIcon name="search" class="text-gray-800" />
           <input
             type="text"
             placeholder="search posts"
-            class="outline-none w-full bg-gray-200"
+            class="outline-none w-full bg-gray-100"
             v-model="word"
           />
         </form>
@@ -80,7 +82,7 @@
           v-show="results"
         >
           <div class="h-min bg-white">
-            <div class="" v-for="res in results">
+            <div class="" v-for="res in results" :key="res.slug">
               <a :href="`/post/${res.slug}`">
                 <p class="p-3">{{ res.title }}</p>
               </a>
@@ -95,11 +97,6 @@
     v-if="isMenuOpen"
     class="flex absolute bg-white dark:bg-[#272626] mt-[3rem] h-[100%] overflow-scroll z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
   >
-    <div class="p-6">
-      <button class="flex gap-2 items-center" @click="toggleDark()">
-        <BaseIcon name="mode" />
-      </button>
-    </div>
     <div class="w-4/5 mt-9">
       <div class="w-4/5 flex pb-6 gap-6">
         <figure class="w-[70px] h-[70px]">
@@ -111,15 +108,17 @@
           />
           <img v-else src="@/assets/icons/Ellipse.png" alt="" />
         </figure>
-        <div class="flex flex-col justify-center w-min items-start">
-          <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
-          <p class="text-s font-serifFamilty text-gray-400">{{user.role}}</p>
+        <div
+          class="flex flex-col justify-center w-min items-start font-baseFamily"
+        >
+          <p class="text-2xl mb-2">{{ user.name }}</p>
+          <p class="text-base font-semibold text-zinc-700">{{ user.role }}</p>
         </div>
       </div>
       <hr class="w-full border" />
     </div>
     <div
-      class="flex flex-col justify-center font-baseFamily gap-10 w-4/5 pt-5 !m-0"
+      class="flex text-xl flex-col justify-center font-baseFamily gap-10 w-4/5 pt-5 !m-0"
       id="dropMenu"
     >
       <a
@@ -127,7 +126,7 @@
           pages = 1;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3 items-center"
+        class="w-max flex gap-3 items-center cursor-pointer"
         :class="{
           ' text-blue-600 decoration-4': pages === 1,
         }"
@@ -138,7 +137,7 @@
       <a
         v-if="user.isSuper"
         href="https://analytics.google.com/analytics/web/?authuser=1"
-        class="font-bold w-max text-[#E37400] flex hover:cursor-pointer gap-3 items-center"
+        class="w-max text-[#E37400] flex cursor-pointer gap-3 items-center"
       >
         <BaseIcon name="chart_line" class="" />
         <p>Analytics</p>
@@ -148,7 +147,7 @@
           pages = 4;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3 items-center"
+        class="cursor-pointer w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 4,
         }"
@@ -161,7 +160,7 @@
           pages = 6;
           isMenuOpen = false;
         "
-        class="font-bold hidden hover:cursor-pointer w-max flex gap-3 items-center"
+        class="cursor-pointer w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 6,
         }"
@@ -174,7 +173,7 @@
           pages = 2;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex gap-3 items-center"
+        class="w-max flex gap-3 items-center cursor-pointer"
         :class="{
           ' text-blue-600 decoration-4': pages === 2,
         }"
@@ -187,7 +186,7 @@
           pages = 3;
           isMenuOpen = false;
         "
-        class="font-bold w-max hidden flex hover:cursor-pointer gap-3 items-center"
+        class="w-max flex cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
         }"
@@ -196,7 +195,7 @@
         <p>Drafts</p>
       </a>
       <button
-        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+        class="w-max flex cursor-pointer gap-3 items-center"
         @click="showPriceIndexModal = true"
         v-if="user.isSuper"
       >
@@ -209,7 +208,7 @@
           pages = 5;
           isMenuOpen = false;
         "
-        class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+        class="w-max flex cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 5,
         }"
@@ -217,63 +216,69 @@
         <BaseIcon name="Vector-1" class="" />
         <p>Review</p>
       </a>
-      <a
+      <button class="w-max flex gap-3 items-center" @click="toggleDark()">
+        <BaseIcon name="mode" class="stroke-black" />
+        <p>Dark Mode</p>
+      </button>
+      <button
         @click="logout()"
-        class="font-bold w-max flex gap-3 items-center"
-        active-class="text-[#366bff]"
-        exact-active-class="text-[#366bff]"
+        class="w-max flex gap-3 items-center cursor-pointer"
       >
         <BaseIcon name="logOut" class="" />
         <p>Log out</p>
-      </a>
+      </button>
       <hr class="w-full border" />
-      <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
+      <RouterLink
+        to="/"
+        class="font-semibold text-base"
+        exact-active-class="text-[#366bff]"
+      >
         home
-      </a>
-      <a
-        href="/bc"
-        class="font-bold"
+      </RouterLink>
+      <RouterLink
+        to="/bc"
+        class="font-semibold text-base"
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
         >blockchain report
-      </a>
-      <a
-        href="/eq"
-        class="font-bold"
+      </RouterLink>
+      <RouterLink
+        to="/eq"
+        class="font-semibold text-base"
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
-        equity report</a
+        equity report</RouterLink
       >
-      <a
-        href="/eco"
-        class="font-bold"
+      <RouterLink
+        to="/eco"
+        class="font-semibold text-base"
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
-        economics report</a
+        economics report</RouterLink
       >
-      <a
-        href="/geo"
-        class="font-bold"
+      <RouterLink
+        to="/geo"
+        class="font-semibold text-base"
         active-class="text-[#366bff]"
         exact-active-class="text-[#366bff]"
       >
-        geopolitical report</a
+        geopolitical report</RouterLink
       >
     </div>
   </a>
   <div class="pb-6 pt-2 lg:hidden" id="search" z-50>
     <form
       @submit.prevent="searchMini(word)"
-      class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 mx-auto bg-gray-200 px-6 py-1"
+      class="flex md:gap-4 gap-0 items-center rounded-lg w-2/5 mx-auto bg-gray-100 px-6 py-1"
     >
       <BaseIcon name="search" class="text-gray-800" />
       <input
         type="text"
         required
         placeholder="search posts"
-        class="outline-none w-full bg-gray-200"
+        class="outline-none w-full bg-gray-100"
         v-model="word"
       />
       <!-- <button
@@ -311,11 +316,6 @@
       class="w-full hidden lg:flex dark:text-white items-center flex-col bg-gray-100 dark:bg-[#1b1b1f]"
       id="sidebar"
     >
-      <div class="p-6">
-        <button class="flex gap-2 items-center" @click="toggleDark()">
-          <BaseIcon name="mode" />
-        </button>
-      </div>
       <div class="w-4/5 mt-9">
         <div class="w-4/5 flex pb-6 gap-6">
           <figure class="w-[70px]">
@@ -329,22 +329,26 @@
               <img v-else src="@/assets/icons/Ellipse.png" alt="" />
             </div>
           </figure>
-          <div class="flex flex-col justify-center w-min items-start">
-            <p class="font-bold text-xl font-serifFamily">{{ user.name }}</p>
-            <p class="text-s font-serifFamilty text-gray-400">
+          <div
+            class="font-baseFamily flex flex-col justify-center w-min items-start"
+          >
+            <p class="text-2xl">{{ user.name }}</p>
+            <p class="text-base text-gray-400">
               {{ role }}
             </p>
           </div>
         </div>
         <hr class="w-full border" />
       </div>
-      <div class="flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0">
+      <div
+        class="text-base 2xl:text-xl flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0"
+      >
         <a
           @click="
             pages = 1;
             isMenuOpen = false;
           "
-          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+          class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 1,
           }"
@@ -355,7 +359,7 @@
         <a
           v-if="user.isSuper"
           href="https://analytics.google.com/analytics/web/?authuser=1"
-          class="font-bold w-max flex text-[#E37400] hover:cursor-pointer gap-3 items-center"
+          class="w-max flex text-[#E37400] hover:cursor-pointer gap-3 items-center"
         >
           <BaseIcon name="chart_line" class=" " />
           <p>Analytics</p>
@@ -365,7 +369,7 @@
             pages = 4;
             isMenuOpen = false;
           "
-          class="font-bold hover:cursor-pointer w-max flex gap-3 items-center"
+          class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 4,
           }"
@@ -378,7 +382,7 @@
             pages = 6;
             isMenuOpen = false;
           "
-          class="font-bold hidden hover:cursor-pointer w-max flex gap-3 items-center"
+          class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 6,
           }"
@@ -391,7 +395,7 @@
             pages = 2;
             isMenuOpen = false;
           "
-          class="font-bold w-max hover:cursor-pointer flex gap-3 items-center"
+          class="w-max hover:cursor-pointer flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 2,
           }"
@@ -405,7 +409,7 @@
             pages = 3;
             isMenuOpen = false;
           "
-          class="font-bold hidden w-max flex hover:cursor-pointer gap-3 items-center"
+          class="w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
           }"
@@ -414,7 +418,7 @@
           <p>Drafts</p>
         </a>
         <button
-          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          class="w-max flex hover:cursor-pointer gap-3 items-center"
           v-if="user.isSuper"
           @click="showPriceIndexModal = true"
         >
@@ -427,7 +431,7 @@
             pages = 5;
             isMenuOpen = false;
           "
-          class="font-bold w-max flex hover:cursor-pointer gap-3 items-center"
+          class="w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 5,
           }"
@@ -435,48 +439,56 @@
           <BaseIcon name="Vector-1" class="" />
           <p>Review</p>
         </a>
-        <a
+        <button class="w-max flex gap-3 items-center" @click="toggleDark()">
+          <BaseIcon name="mode" class="stroke-black" />
+          <p>Dark Mode</p>
+        </button>
+        <button
           @click="logout()"
-          class="font-bold w-max flex gap-3 hover:cursor-pointer items-center"
+          class="w-max flex gap-3 hover:cursor-pointer items-center"
         >
           <BaseIcon name="logOut" class="" />
 
           <p>Log out</p>
-        </a>
+        </button>
         <hr class="w-full border" />
-        <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
+        <RouterLink
+          to="/"
+          class="font-semibold text-base"
+          exact-active-class="text-[#366bff]"
+        >
           home
-        </a>
-        <a
-          href="/bc"
-          class="font-bold"
+        </RouterLink>
+        <RouterLink
+          to="/bc"
+          class="font-semibold text-base"
           active-class="text-[#366bff]"
           exact-active-class="text-[#366bff]"
           >blockchain report
-        </a>
-        <a
-          href="/eq"
-          class="font-bold"
+        </RouterLink>
+        <RouterLink
+          to="/eq"
+          class="font-semibold text-base"
           active-class="text-[#366bff]"
           exact-active-class="text-[#366bff]"
         >
-          equity report</a
+          equity report</RouterLink
         >
-        <a
-          href="/eco"
-          class="font-bold"
+        <RouterLink
+          to="/eco"
+          class="font-semibold text-base"
           active-class="text-[#366bff]"
           exact-active-class="text-[#366bff]"
         >
-          economics report</a
+          economics report</RouterLink
         >
-        <a
-          href="/geo"
-          class="font-bold"
+        <RouterLink
+          to="/geo"
+          class="font-semibold text-base"
           active-class="text-[#366bff]"
           exact-active-class="text-[#366bff]"
         >
-          geopolitical report</a
+          geopolitical report</RouterLink
         >
       </div>
     </div>
@@ -484,7 +496,9 @@
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
         <button class="bg-white p-3" @click="showGroups()"></button>
 
-        <p class="text-xl font-bold p-5 mb-9">Profile</p>
+        <p class="text-xl md:text-3xl md:font-medium font-bold p-5 mb-9">
+          Profile
+        </p>
         <div class="lg:w-4/5 mx-auto">
           <div
             class="flex flex-col lg:flex-row gap-4 mb-9 relative items-center"
@@ -511,14 +525,14 @@
                 @change="changeProfileImage"
                 required
                 :style="`background:url(${user.profileImage})`"
-                class="w-[150px] opacity-0 absolute top-0 rounded-full h-[150px] bg-center bg-contain border-black bg-gray-200 item-center justify-center"
+                class="w-[150px] opacity-0 absolute top-0 rounded-full h-[150px] bg-center bg-contain border-black bg-gray-100 item-center justify-center cursor-pointer"
                 accept="image/*"
               />
             </figure>
-            <div class="flex flex-col gap-2">
-              <p class="font-bold text-xl font-serifFamilty">{{ user.name }}</p>
+            <div class="flex flex-col gap-2 text-center md:text-left">
+              <p class="font-bold text-3xl">{{ user.name }}</p>
               <p
-                class="bg-gray-200 px-4 w-max py-1 font-bold dark:text-black text-xs rounded-md"
+                class="bg-gray-100 px-4 w-max py-1 dark:text-black text-xs rounded-md mx-auto md:mx-0 my-4"
               >
                 {{ user.posts.length }}
                 Articles Written
@@ -526,7 +540,7 @@
               <div class="flex justify-center items-center">
                 <p
                   v-if="user.bio"
-                  class="md:text-left font-bold text-center w-full"
+                  class="md:text-left text-[#47464A] text-sm w-full"
                 >
                   {{ user.bio }}
                 </p>
@@ -535,13 +549,15 @@
             </div>
           </div>
           <div class="">
-            <p class="pb-9 font-bold text-xl">Edit Profile</p>
+            <p class="pb-9 font-bold text-xl md:text-2xl md:font-medium">
+              Edit Profile
+            </p>
             <div class="pb-9" id="userName">
               <p class="font-bold">Name</p>
               <input
                 v-model="user.name"
                 type="text"
-                class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
               />
             </div>
             <div class="pb-9" id="userName">
@@ -549,11 +565,11 @@
               <input
                 v-model="role"
                 type="text"
-                class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
               />
               <select
                 v-model="user.role"
-                class="h-[2.5rem] bg-gray-200 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+                class="h-[2.5rem] bg-gray-100 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
               >
                 <option :value="role">{{ role }}</option>
                 <option value="1">Editor</option>
@@ -568,26 +584,26 @@
                 cols="30"
                 v-model="user.bio"
                 rows="5"
-                class="bg-gray-200 dark:bg-transparent p-1 font-bold focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+                class="bg-gray-100 dark:bg-transparent p-1 text-sm text-[#47464A] focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
               ></textarea>
             </div>
 
-            <div class="w-full flex">
-              <button
-                @click="UpdateProfile"
-                class="bg-black dark:bg-white/60 w-4/5 mx-auto h-[3rem] text-white dark:text-black font-bold rounded-md"
-              >
-                Save
-              </button>
-            </div>
+            <button
+              @click="UpdateProfile"
+              class="bg-black dark:bg-white/60 w-11/12 mx-auto h-[3rem] text-white text-base dark:text-black rounded-[10px] md:w-fit md:mx-0 px-10 block"
+            >
+              Save
+            </button>
+            <hr class="my-12" />
 
-            <div class="w-full flex justify-center text-sky-600 p-3 font-bold">
-              <a
+            <div class="p-3">
+              <button
                 @click="changePassword = true"
-                class="shadow-md p-3 cursor-pointer"
+                class="p-3 cursor-pointer flex items-center gap-2 text-xl"
               >
-                Change Password?
-              </a>
+                <BaseIcon name="lock" />
+                Change password
+              </button>
             </div>
           </div>
         </div>
@@ -600,7 +616,6 @@
           >
             <button
               @click="showPost('equity')"
-              class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
                   et,
@@ -610,7 +625,6 @@
             </button>
             <button
               @click="showPost('blockchain')"
-              class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
                   bc,
@@ -620,7 +634,6 @@
             </button>
             <button
               @click="showPost('geopolitics')"
-              class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
                   ge,
@@ -630,7 +643,6 @@
             </button>
             <button
               @click="showPost('economic')"
-              class="font-bold"
               :class="{
                 'underline underline-offset-[10px] text-blue-600 decoration-4':
                   ec,
@@ -640,64 +652,55 @@
             </button>
           </nav>
         </div>
-        <main class="bg-gray-100 lg:bg-white p-5">
-          <div
-            v-for="post in posts"
-            v-if="posts && posts.length > 0"
-            class="flex flex-col lg:flex-row gap-4 bg-white rounded-xl p-5 mb-6 lg:h-[20vh] items-end lg:flex-row-reverse"
-          >
+        <main class="bg-gray-100 lg:bg-white p-5 flex flex-col mt-10 gap-10">
+          <template v-if="posts && posts.length > 0">
             <div
-              v-if="post.mainImage"
-              class="sm:h-[12rem] h-[8rem] lg:h-full w-full lg:w-[50%]"
+              v-for="post in posts"
+              :key="post.slug"
+              class="flex flex-col gap-4 bg-white rounded-xl p-5 mb-6 items-end lg:items-start lg:flex-row-reverse"
             >
-              <img
-                :src="post.mainImage"
-                alt="blog post"
-                class="lg:w-4/5 w-full rounded-lg h-full object-cover"
-              />
-            </div>
-            <div class="lg:w-[50%] w-full">
-              <div class="mb-5">
-                <h3
-                  class="font-bold font-baseFamily text-black uppercase leading-5"
-                >
-                  {{ post.title }}
-                </h3>
-                <h3
-                  class="font-serifFamily text-gray-500 text-[11px] mb-3 leading-5"
-                >
-                  {{
-                    new Date(post.publishedAt)
-                      .toString()
-                      .replace("GMT+0100 (West Africa Standard Time)", " ")
-                      .trim()
-                  }}
-                </h3>
-                <p class="text-xs text-black leading-4">
-                  {{ post.summary }}
-                </p>
+              <div
+                v-if="post.mainImage"
+                class="sm:h-[12rem] h-[8rem] lg:h-60 lg:max-h-56 w-full lg:w-[50%]"
+              >
+                <img
+                  :src="post.mainImage"
+                  alt="blog post"
+                  class="lg:w-4/5 w-full rounded-lg h-full object-cover"
+                />
               </div>
-              <div class="grid grid-cols-2 gap-4 w-4/5">
-                <button
-                  class="bg-black rounded-md text-white px-3 py-1"
-                  @click="
-                    this.$router.push({
+              <div class="lg:w-[50%] w-full">
+                <div class="mb-5">
+                  <h3 class="font-semibold text-black capitalize leading-5">
+                    {{ post.title }}
+                  </h3>
+                  <h3 class="text-gray-500 text-[11px] mt-2 mb-3 leading-5">
+                    {{ formatDate(post.publishedAt) }}
+                  </h3>
+                  <p class="text-sm text-black leading-4">
+                    {{ post.summary }}
+                  </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 w-4/5 text-sm">
+                  <RouterLink
+                    class="text-center block h-full bg-black rounded-md text-white p-3"
+                    :to="{
                       name: 'post',
                       params: { slug: post.slug },
-                    })
-                  "
-                >
-                  Read More
-                </button>
-                <button
-                  @click="deletePost({ slug: post.slug })"
-                  class="bg-white border-red-600 border-2 rounded-md text-red-600 px-3 py-1"
-                >
-                  Delete
-                </button>
+                    }"
+                  >
+                    Read More
+                  </RouterLink>
+                  <button
+                    @click="deletePost({ slug: post.slug })"
+                    class="block bg-white border-red-600 border-2 rounded-md text-red-600 p-3"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          </template>
           <div class="w-full flex justify-center items-center h-[50vh]" v-else>
             <h1 class="font-bold text-black text-2xl">No Posts</h1>
           </div>
@@ -770,6 +773,7 @@
               disapproved:
                 post.review === `InReview` || post.review === `Rejected`,
             }"
+            :key="post.slug"
             class="flex flex-col relative lg:flex-row bg-white shadow-md rounded-xl p-5 mb-6 gap-6 items-end lg:flex-row-reverse"
           >
             <div
@@ -856,40 +860,45 @@
         </div>
       </section>
       <section class="px-5" v-if="pages == 4" id="createPosts">
-        <p class="text-xl font-bold py-5">Create Post</p>
+        <p class="text-2xl md:text-3xl font-semibold md:font-bold py-5">
+          Create article
+        </p>
         <div class="flex flex-col gap-12">
           <div class="" id="title">
-            <label for="" class="font-bold">Title*</label><br />
+            <label for="title">Title*</label><br />
             <input
               type="text"
               name="title"
               v-model="title"
-              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
-              id=""
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
+              id="title"
             />
           </div>
           <div class="" id="subtitle">
-            <label for="" class="font-bold">Sub Topic</label><br />
+            <label for="subtitle">Sub Topic</label><br />
             <input
               type="text"
               name="title"
               v-model="subtitle"
-              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
-              id=""
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
+              id="subtitle"
             />
           </div>
           <div class="" id="mainImage">
-            <label for="article image" class="font-bold">Main Image*</label>
-            <figure class="w-full relative" id="article-image">
+            <label for="article image">Main Image*</label>
+            <figure
+              class="w-full relative h-[12rem] overflow-hidden rounded-xl"
+              id="article-image"
+            >
               <div
                 after="Drag and drop images here or select from your device"
-                class="before:border-dashed before:border-4 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] after:content-[attr(after)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
+                class="before:border-dashed before:border-2 before:border-gray-500 rounded-xl before:rounded-xl before:content-[url(@/assets/icons/svgs/admin/remix-icons/Vector.png)] after:content-[attr(after)] before:flex before:justify-center before:items-center before:w-full before:h-[12rem] before:backdrop-brightness-[.6] before:absolute z-50"
               >
                 <img
                   v-if="file"
                   :src="image"
                   alt=""
-                  class="object-cover h-[12rem] w-full rounded-xl"
+                  class="object-cover w-full"
                 />
                 <div v-else class="w-full h-[12rem] orunded-xl"></div>
               </div>
@@ -898,7 +907,7 @@
                 @change="Changeimage"
                 required
                 :style="`background:url(${file}) no-repeat`"
-                class="w-full absolute opacity-0 top-0 h-full bg-center bg-contain border-black bg-gray-200 item-center justify-center"
+                class="w-full absolute opacity-0 top-0 h-full bg-center bg-contain bg-gray-100 item-center justify-center cursor-pointer"
                 name="article image"
                 accept="image/*"
               />
@@ -909,7 +918,7 @@
             >
           </div>
           <div class="" id="body">
-            <label for="article image" class="font-bold">Body*</label>
+            <label for="article image">Body*</label>
             <div class="-z-50">
               <ckeditor
                 required
@@ -921,13 +930,13 @@
             </div>
           </div>
           <div class="" id="keyNotes">
-            <label for="summary" class="font-bold">Key Notes*</label>
+            <label for="summary">Key Notes*</label>
             <textarea
               name="summary"
               id=""
               cols="30"
               rows="4"
-              class="bg-gray-200 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
               v-model="summary"
             ></textarea>
           </div>
@@ -956,7 +965,7 @@
             </div>
             <div class="border border-gray-400 rounded-lg h-min">
               <div class="p-3">
-                <p class="font-[500]">Get featured on the Home screen</p>
+                <p class="font-semibold">Get featured on the Home screen</p>
                 <p class="lg:text-md text-sm">
                   Tag this post as <i>Editor's Pick</i> to get featured on the
                   home screen
@@ -974,21 +983,24 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex flex-col gap-4 mb-6" id="buttons">
-            <div class="w-full flex justify-center">
+          <div
+            class="w-full md:flex-row items-center flex flex-col gap-4 mb-6"
+            id="buttons"
+          >
+            <div class="w-full md:w-auto flex justify-center">
               <button
-                class="bg-black dark:bg-white/60 text-white dark:text-black font-bold p-3 uppercase w-full rounded-lg mx-auto"
-                @click="publishPost()"
-              >
-                Submit for Review
-              </button>
-            </div>
-            <div class="w-full hidden flex justify-center mb-12">
-              <button
-                class="bg-white text-black border-2 border border-black rounded-lg p-3 uppercase w-full mx-auto"
+                class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
                 @click="savePost()"
               >
                 Add To Draft
+              </button>
+            </div>
+            <div class="w-full md:w-auto flex justify-center">
+              <button
+                class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
+                @click="publishPost()"
+              >
+                Upload
               </button>
             </div>
           </div>
@@ -1007,7 +1019,7 @@
               type="text"
               name="title"
               v-model="title"
-              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
               id=""
             />
           </div>
@@ -1017,7 +1029,7 @@
               type="text"
               name="title"
               v-model="subtitle"
-              class="h-[2.5rem] bg-gray-200 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
               id=""
             />
           </div>
@@ -1041,7 +1053,7 @@
                 @change="Changeimage"
                 required
                 :style="`background:url(${file}) no-repeat`"
-                class="w-full absolute opacity-0 top-0 h-full bg-center bg-contain border-black bg-gray-200 item-center justify-center"
+                class="w-full absolute opacity-0 top-0 h-full bg-center bg-contain border-black bg-gray-100 item-center justify-center"
                 name="article image"
                 accept="image/*"
               />
@@ -1098,7 +1110,7 @@
               id=""
               cols="30"
               rows="4"
-              class="bg-gray-200 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-gray-400"
+              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
               v-model="summary"
             ></textarea>
           </div>
@@ -1126,21 +1138,24 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex flex-col gap-4 mb-6" id="buttons">
-            <div class="w-full flex justify-center">
+          <div
+            class="w-full md:flex-row items-center flex flex-col gap-4 mb-6"
+            id="buttons"
+          >
+            <div class="w-full md:w-auto flex justify-center">
               <button
-                class="bg-black dark:bg-white/60 text-white dark:text-black font-bold p-3 uppercase w-full rounded-lg mx-auto"
-                @click="publishVideo()"
-              >
-                Submit for Review
-              </button>
-            </div>
-            <div class="w-full hidden flex justify-center mb-12">
-              <button
-                class="bg-white text-black border-2 border border-black rounded-lg p-3 uppercase w-full mx-auto"
+                class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
                 @click="savePost()"
               >
                 Add To Draft
+              </button>
+            </div>
+            <div class="w-full md:w-auto flex justify-center">
+              <button
+                class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
+                @click="publishPost()"
+              >
+                Upload
               </button>
             </div>
           </div>
@@ -1151,7 +1166,6 @@
 </template>
 <script>
 import AppLogo from "../components/AppLogo.vue";
-import BlogCardList from "../components/BlogCardList.vue";
 import { getAPI } from "../axios";
 import SavedModal from "../components/Modal.vue";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -1165,6 +1179,7 @@ import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import PriceIndexModal from "../components/PriceIndexModal.vue";
 import BaseModal from "../components/BaseModal.vue";
+import { formatDate } from "../helpers/date";
 
 ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   plugins: [
@@ -1199,7 +1214,6 @@ export default {
     return { toast, isDark, toggleDark };
   },
   components: {
-    BlogCardList,
     SavedModal,
     BaseIcon,
     BaseModal,
@@ -1288,6 +1302,7 @@ export default {
     });
   },
   methods: {
+    formatDate,
     updatePassword(e) {
       try {
         let newPass = getAPI.put(`/api/change-password/`, e, {
