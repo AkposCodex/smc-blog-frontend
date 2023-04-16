@@ -1,10 +1,10 @@
 <template>
   <footer
-  id="footer"
-    class="text-center bg-[#1B1B1F] dark:bg-black text-white py-9 text-xs"
+    id="footer"
+    class="text-center bg-[#1B1B1F] dark:bg-black text-white py-9 px-3 text-xs font-baseFamily"
   >
     <div class="md:w-1/2 mx-auto">
-      <h1 class="text-3xl font-bold font-baseFamily capitalize">
+      <h1 class="text-3xl font-bold capitalize">
         Sign up for daily report in your inbox
       </h1>
       <div class="mt-4 my-6">
@@ -13,12 +13,12 @@
       </div>
       <form method="post" @submit.prevent="submitForm">
         <input
-        class="border-b outline-none bg-transparent w-4/5 p-3 text-xs"
-        type="text"
-        name="email"
-        v-model="email"
-        placeholder="Enter your email address"
-        required
+          class="border-b outline-none bg-transparent w-4/5 p-3 text-xs"
+          type="text"
+          name="email"
+          v-model="email"
+          placeholder="Enter your email address"
+          required
         />
         <br />
         <button
@@ -30,45 +30,52 @@
         <pre>{{ response }}</pre>
       </form>
     </div>
-    <div
-      class="flex md:flex-row flex-col footer lg:px-24 px-3 py-6 md:justify-between text-xs text-[#767680]"
-    >
-      <div class="">
-        <p class="flex md:space-x-4 text-sm justify-center">
-          &copy;2023 SMC Report &nbsp;|<span
-            class="mx-3 flex justify-center items-center space-x-6"
-          >
-            <a href="https://twitter.com/smcdao"><img src="@/assets/icons/twitter.png" alt="" width="12" /></a>
-            <a href="https://youtube.com/@smcdao"><img src="@/assets/icons/youtube.png" alt="" width="12" /></a>
-            <a href="https://t.me/smcnewdesk"><img src="@/assets/icons/telegram.png" alt="" width="12" /></a>
-          </span>
-        </p>
+    <div class="lg:px-24 px-3 py-6 md:justify-between text-xs text-[#767680]">
+      <div class="flex md:justify-between justify-center gap-3 flex-wrap">
+        <div class="flex items-center md:space-x-4 text-sm justify-center">
+          <span>&copy;2023 SMC Report &nbsp;|</span>
+          <div class="mx-3 flex justify-center items-center space-x-6">
+            <a href="https://twitter.com/smcdao"
+              ><img src="@/assets/icons/twitter.png" alt="" width="12"
+            /></a>
+            <a href="https://youtube.com/@smcdao"
+              ><img src="@/assets/icons/youtube.png" alt="" width="12"
+            /></a>
+            <a href="https://t.me/smcnewdesk"
+              ><img src="@/assets/icons/telegram.png" alt="" width="12"
+            /></a>
+          </div>
+        </div>
+        <ul class="flex gap-3">
+          <li>About us</li>
+          <li>Privacy</li>
+          <li>Cookie Policy</li>
+        </ul>
       </div>
     </div>
   </footer>
 </template>
 
 <script>
-  import { getAPI } from "../axios";
-  export default {
-    data (){
-      return {
-        email: '',
-        response: '',
-        success: null,
-      }
-    },
-    methods: {
-      submitForm(){
-        getAPI.post('/subscribe', {email: this.email})
-        .then(response => {
-          this.success = true
-          this.response = 'Subscribed'
+import { getAPI } from "../axios";
+export default {
+  data() {
+    return {
+      email: "",
+      response: "",
+      success: null,
+    };
+  },
+  methods: {
+    submitForm() {
+      getAPI
+        .post("/subscribe", { email: this.email })
+        .then((response) => {
+          this.success = true;
+          this.response = "Subscribed";
         })
-        .catch(err => {
-           
-        })
-      }
+        .catch((err) => {});
     },
-  };
+  },
+};
 </script>

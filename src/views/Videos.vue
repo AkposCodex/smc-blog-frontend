@@ -1,23 +1,27 @@
 <template>
   <AppHeader></AppHeader>
-  <main>
-    <section>
-      <p class="pb-8 text-2xl mt-6 font-bold text-center">Video Headlines</p>
+  <main class="font-baseFamily">
+    <section class="md:absolute z-10">
+      <h2 class="pb-8 px-8 text-2xl mt-6 font-bold md:text-white">
+        Video Headlines
+      </h2>
     </section>
     <div class="lg:h-full mb-12 h-3/5 w-full mx-auto">
       <Carousel :wrap-around="true" :items-to-show="1">
         <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
         <Slide v-for="(slide, index) in blogPosts" :key="index">
           <div
-            class="w-full bg-center lg:h-[400px] flex items-end"
-            :style="`background:url(${slide.mainImage});background-size: cover;`"
+            class="w-full bg-center bg-cover lg:max-h-[70vh] lg:h-screen flex items-end h-56"
+            :style="`background-image:linear-gradient(360deg, #1B1B1F 14.06%, rgba(0, 0, 0, 0) 50%), linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),url(${slide.mainImage})`"
           >
             <div class="p-10">
-              <p class="bg-black capitalize p-1 mb-3 w-min text-white text-xl">
+              <p
+                class="bg-black capitalize p-1 mb-3 w-min text-white text-sm rounded-sm"
+              >
                 {{ slide.categories }}
               </p>
               <h1
-                class="font-bold text-2xl text-white w-max mb-1 font-baseFamily capitalize"
+                class="font-semibold text-2xl text-white w-max mb-1 font-baseFamily capitalize"
               >
                 {{ slide.title }}
               </h1>
@@ -26,11 +30,12 @@
               >
                 {{ slide.summary }}
               </h1>
-              <div class="flex w-full justify-start">
-                <button class="text-white bg-transparent rounded-lg p-2">
-                  Watch Now &rangle;
-                </button>
-              </div>
+              <button
+                class="text-white bg-transparent rounded-lg flex items-center"
+              >
+                <BaseIcon name="play_circle" />
+                <span>Watch Now</span>
+              </button>
             </div>
           </div>
         </Slide>
@@ -49,45 +54,44 @@
       </div>
     </div>
     <!-- <BlogCardList v-if="blogPosts" :posts="blogPosts" variant="secondary" /> -->
-    <div
-      class="grid md:grid-cols-2 gap-5 md:place-items-stretch px-8 mb-32 place-items-center"
-    >
-      <div v-for="(slide, index) in blogPosts" :key="index" class="w-full">
-        <div
-          class="w-full bg-center lg:h-[400px] flex items-end"
-          :style="`background:url(${slide.mainImage});background-size: cover;`"
-        >
-          <div class="p-4">
-            <p class="bg-black capitalize p-1 mb-3 w-min text-white text-xl">
-              {{ slide.categories }}
-            </p>
-            <h1
-              class="font-bold text-2xl text-white w-max mb-1 font-baseFamily capitalize"
-            >
-              {{ slide.title }}
-            </h1>
-            <h1
-              class="text-lg hidden text-gray-300 w-max font-baseFamily capitalize"
-            >
-              {{ slide.summary }}
-            </h1>
-            <div class="flex w-full justify-start">
-              <button
-                @click="
-                  this.$router.push({
+    <section>
+      <h2 class="my-12 text-center font-semibold text-2xl">Latest Headline</h2>
+      <div
+        class="grid md:grid-cols-2 gap-5 md:place-items-stretch px-8 mb-32 place-items-center"
+      >
+        <div v-for="(slide, index) in blogPosts" :key="index" class="w-full">
+          <div
+            class="w-full bg-center bg-cover lg:max-h-[400px] flex items-end h-56"
+            :style="`background-image:linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),url(${slide.mainImage});`"
+          >
+            <div class="p-4">
+              <p
+                class="bg-black capitalize p-1 mb-3 w-min text-white rounded-[2px] text-xxs md:text-sm"
+              >
+                {{ slide.categories }}
+              </p>
+              <h3
+                class="font-bold text-sm md:text-base text-white w-max mb-1 font-baseFamily"
+              >
+                {{ slide.title }}
+              </h3>
+              <div class="flex w-full justify-start">
+                <RouterLink
+                  :to="{
                     name: 'post',
                     params: { slug: slide.slug },
-                  })
-                "
-                class="text-white bg-transparent rounded-lg p-2"
-              >
-                Watch Now &rangle;
-              </button>
+                  }"
+                  class="text-white bg-transparent rounded-lg flex items-center text-sm md:text-base"
+                >
+                  <BaseIcon name="play_filled" />
+                  <span>Watch Now</span>
+                </RouterLink>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
   <AppFooter />
 </template>
@@ -97,6 +101,7 @@ import AppFooter from "../components/AppFooter.vue";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { getAPI } from "../axios";
 import BlogCardList from "../components/BlogCardList.vue";
+import BaseIcon from "../components/BaseIcon.vue";
 
 export default {
   data() {
@@ -113,6 +118,7 @@ export default {
     Slide,
     Pagination,
     Navigation,
+    BaseIcon,
   },
 
   async created() {

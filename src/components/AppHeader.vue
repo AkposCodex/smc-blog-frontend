@@ -84,12 +84,16 @@ export default {
         >
           <form
             @submit.prevent="search(searchWord)"
-            class="flex gap-0 items-center rounded-lg md:w-[35%] w-full group-focus-within:w-full transition-all mx-auto bg-gray-200 p-2"
+            class="flex gap-0 items-center rounded-lg md:w-[35%] focus-within:w-full transition-all mx-auto bg-transparent focus-within:bg-gray-200 lg:bg-gray-200 p-2 focus-within:absolute left-0"
           >
-            <BaseIcon name="search" class="text-gray-800" />
+            <label for="search" class="cursor-pointer">
+              <BaseIcon name="search" class="w-auto" />
+            </label>
             <input
+              id="search"
               type="text"
-              class="outline-none w-full dark:text-black bg-gray-200"
+              class="outline-none w-0 md:w-full dark:text-black bg-transparent lg:bg-gray-200 focus-within:w-full ml-3"
+              placeholder="Search..."
               v-model="searchWord"
             />
           </form>
@@ -147,7 +151,7 @@ export default {
           <input
             type="text"
             placeholder="search posts"
-            class="outline-none w-full bg-gray-200"
+            class="outline-none w-full bg-gray-200 text-sm"
             v-model="searchWord"
           />
         </form>
@@ -165,11 +169,6 @@ export default {
         v-if="isMenuOpen"
         class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <div class="w-full pt-6 px-12">
-          <button class="flex gap-2 items-center" @click="toggleDark()">
-            <BaseIcon name="mode" />
-          </button>
-        </div>
         <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
           <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
             home
@@ -205,6 +204,10 @@ export default {
           >
             geopolitical report</a
           >
+          <button class="font-bold flex items-center" @click="toggleDark()">
+            <BaseIcon name="mode" class="mx-0" />
+            <p>Dark Mode</p>
+          </button>
         </div>
         <hr class="border w-full" />
         <a

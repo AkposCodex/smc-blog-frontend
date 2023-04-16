@@ -9,7 +9,7 @@ export default {};
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;600;700&family=Crimson+Pro:wght@700&family=Sora:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;600;700&family=Crimson+Pro:wght@700&family=Sora:wght@200;400;500;600&display=swap");
 a {
   text-decoration: underline;
   word-wrap: normal;
