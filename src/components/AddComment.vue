@@ -4,13 +4,18 @@
       <div class="form__group">
         <label>Leave a comment</label>
         <textarea
-          v-model="newComment"
+          v-model.trim="newComment"
           required
           placeholder="Type in your comment..."
         ></textarea>
         <div class="flex items-center justify-center">
-          <input type="text" v-model="newName" placeholder="Name*" required />
-          <input type="email" v-model="newMail" placeholder="Email" />
+          <input
+            type="text"
+            v-model.trim="newName"
+            placeholder="Name*"
+            required
+          />
+          <input type="email" v-model.trim="newMail" placeholder="Email" />
         </div>
         <br />
         <button class="text-white">Post Comment</button>
@@ -45,9 +50,7 @@ export default {
           this.success = true;
           this.$router.go();
         })
-        .catch((err) => {
-          
-        });
+        .catch((err) => {});
     },
   },
 };

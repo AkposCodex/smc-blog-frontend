@@ -29,3 +29,27 @@
     </defs>
   </svg>
 </template>
+<style scoped>
+svg #m {
+  animation: fade 4s infinite;
+  animation-delay: 2s;
+}
+svg #c {
+  animation: fade 4s infinite;
+  animation-delay: 0s;
+}
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>

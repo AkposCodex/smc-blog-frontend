@@ -57,6 +57,7 @@ export default {
     const router = useRouter();
     router.beforeEach((to, from) => {
       this.isMenuOpen = false;
+      document.body.classList.remove("overflow-hidden");
     });
   },
   components: { BaseButton, AppLogo, BaseIcon },
@@ -167,42 +168,46 @@ export default {
       <!-- TODO: Refactor mobile menu dropdown -->
       <div
         v-if="isMenuOpen"
-        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] md:mt-[3.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <div class="flex flex-col justify-center gap-10 h-1/2 !m-0">
-          <a href="/" class="font-bold" exact-active-class="text-[#366bff]">
+        <div class="flex flex-col justify-center gap-10 h-1/2 mt-14">
+          <RouterLink
+            to="/"
+            class="font-bold"
+            exact-active-class="text-[#366bff]"
+          >
             home
-          </a>
-          <a
-            href="/bc"
+          </RouterLink>
+          <RouterLink
+            to="/bc"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
             >blockchain report
-          </a>
-          <a
-            href="/eq"
+          </RouterLink>
+          <RouterLink
+            to="/eq"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            equity report</a
+            equity report</RouterLink
           >
-          <a
-            href="/eco"
+          <RouterLink
+            to="/eco"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            economics report</a
+            economics report</RouterLink
           >
-          <a
-            href="/geo"
+          <RouterLink
+            to="/geo"
             class="font-bold"
             active-class="text-[#366bff]"
             exact-active-class="text-[#366bff]"
           >
-            geopolitical report</a
+            geopolitical report</RouterLink
           >
           <button class="font-bold flex items-center" @click="toggleDark()">
             <BaseIcon name="mode" class="mx-0" />
