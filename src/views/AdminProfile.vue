@@ -1116,7 +1116,7 @@
             <div class="w-full md:w-auto flex justify-center">
               <button
                 class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
-                @click="publishPost()"
+                @click="publishVideo()"
               >
                 Upload
               </button>
