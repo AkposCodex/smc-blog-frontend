@@ -7,13 +7,14 @@ const getInitialState = () => {
       profileImage: null,
       bio: "",
       name: "",
+      username: "",
       email: "",
       token: "",
       password: "",
       posts: [],
       role: "",
       isLoggedIn: false,
-      drafts: [],
+      drafts: null,
       isSuper: false,
     },
   };
@@ -33,7 +34,8 @@ export default {
     },
 
     UPDATE_USER: function (state, payload) {
-      state.user.name = payload.username;
+      state.user.name = payload.name;
+      state.user.username = payload.username;
       state.user.profileImage = payload.image;
       state.user.bio = payload.bio;
       state.user.slug = payload.slug;
@@ -59,6 +61,10 @@ export default {
     LOGOUT: function (state) {
       state.user.isLoggedIn = false;
       Object.assign(state, getInitialState());
+    },
+
+    CREATE_DRAFT: function (state, payload) {
+      state.user.drafts = payload;
     },
   },
   actions: {
@@ -132,9 +138,11 @@ export default {
           throw err;
         });
     },
+
     async reviewPost({ commit, dispatch }, payload) {
       dispatch("createPost", payload);
     },
+
     async loadPosts({ commit, dispatch }, payload) {
       getAPI
         .get("/posts?user=" + payload)
@@ -145,6 +153,7 @@ export default {
         })
         .catch((err) => {});
     },
+
     async loadPostsByGenre({ commit, dispatch }, payload) {
       let res = await getAPI
         .get(`/posts?user=${payload.slug}&category=${payload.category}`)
@@ -160,6 +169,11 @@ export default {
 
     logout({ commit }) {
       return commit("LOGOUT");
+    },
+
+    createDraft({ commit }, payload) {
+      console.log(payload)
+      return commit("CREATE_DRAFT", payload);
     },
   },
   getters: {},
