@@ -1431,7 +1431,7 @@ export default {
       console.log(this.proFile === null && this.user.profileImage != null);
       if (this.proFile != null) {
         data.append("email", this.user.email);
-        data.append("name", this.user.name);
+        data.append("username", this.user.name);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
         getAPI

@@ -7,6 +7,7 @@ const getInitialState = () => {
       profileImage: null,
       bio: "",
       name: "",
+      username: "",
       email: "",
       token: "",
       password: "",
@@ -33,7 +34,8 @@ export default {
     },
 
     UPDATE_USER: function (state, payload) {
-      state.user.name = payload.username;
+      state.user.name = payload.name;
+      state.user.username = payload.username;
       state.user.profileImage = payload.image;
       state.user.bio = payload.bio;
       state.user.slug = payload.slug;
