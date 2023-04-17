@@ -199,7 +199,7 @@
         <p>Review</p>
       </a>
       <button class="w-max flex gap-3 items-center" @click="toggleDark()">
-        <BaseIcon name="mode" class="stroke-black" />
+        <BaseIcon name="mode" class="stroke-black dark:stroke-white" />
         <p>Dark Mode</p>
       </button>
       <button
@@ -374,10 +374,7 @@
           <p>Your articles</p>
         </a>
         <a
-          @click="
-            loadDraftPosts();
-            goToPage(3);
-          "
+          @click="goToPage(3)"
           class="w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 3,
@@ -406,7 +403,7 @@
           <p>Review</p>
         </a>
         <button class="w-max flex gap-3 items-center" @click="toggleDark()">
-          <BaseIcon name="mode" class="stroke-black" />
+          <BaseIcon name="mode" class="stroke-black dark:stroke-white" />
           <p>Dark Mode</p>
         </button>
         <button
@@ -460,7 +457,7 @@
     </div>
     <div class="w-full">
       <section class="pt-2 px-5 w-full mx-auto" v-if="pages == 1" id="profile">
-        <button class="bg-white p-3" @click="showGroups()"></button>
+        <!-- <button class="bg-white p-3" @click="showGroups()"></button> -->
 
         <p class="text-xl md:text-3xl md:font-medium font-bold p-5 mb-9">
           Profile
@@ -506,7 +503,7 @@
               <div class="flex justify-center items-center">
                 <p
                   v-if="user.bio"
-                  class="md:text-left text-[#47464A] text-sm w-full"
+                  class="md:text-left text-[#47464A] dark:text-white text-sm w-full"
                 >
                   {{ user.bio }}
                 </p>
@@ -523,7 +520,7 @@
               <input
                 v-model="user.name"
                 type="text"
-                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
+                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black dark:border-b-white"
               />
             </div>
             <div class="pb-9" id="userName">
@@ -531,11 +528,11 @@
               <input
                 v-model="role"
                 type="text"
-                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
+                class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black dark:border-b-white"
               />
               <select
                 v-model="user.role"
-                class="h-[2.5rem] bg-gray-100 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
+                class="h-[2.5rem] bg-gray-100 hidden p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black dark:border-b-white"
               >
                 <option :value="role">{{ role }}</option>
                 <option value="1">Editor</option>
@@ -550,7 +547,7 @@
                 cols="30"
                 v-model="user.bio"
                 rows="5"
-                class="bg-gray-100 dark:bg-transparent p-1 text-sm text-[#47464A] focus:outline-none focus:border-b-green-300 w-full border-b border-b-black"
+                class="bg-gray-100 dark:bg-transparent p-1 text-sm text-[#47464A] dark:text-white focus:outline-none focus:border-b-green-300 w-full border-b border-b-black dark:border-b-white"
               ></textarea>
             </div>
 
@@ -560,14 +557,14 @@
             >
               Save
             </button>
-            <hr class="my-12" />
+            <hr class="my-6" />
 
-            <div class="p-3">
+            <div class="pb-3 flex justify-center">
               <button
                 @click="changePassword = true"
-                class="p-3 cursor-pointer flex items-center gap-2 text-xl"
+                class="pb-3 px-3 cursor-pointer flex items-center dark:bg-white/60 dark:text-black dark:pt-3 gap-2 text-xl shadow-lg rounded-[10px]"
               >
-                <BaseIcon name="lock" />
+                <BaseIcon name="lock" class="dark:text-black" />
                 Change password
               </button>
             </div>
@@ -676,8 +673,8 @@
         <p class="text-xl font-bold p-5">Drafts</p>
         <div class="bg-gray-100 p-5">
           <div
-            v-for="post in drafts"
-            v-if="drafts.length > 0"
+            v-for="(post, index) in drafts"
+            :key="index"
             class="flex flex-col lg:flex-row bg-white rounded-xl p-5 mb-6 gap-4 lg:h-[20vh] items-end lg:flex-row-reverse"
           >
             <div
@@ -721,9 +718,9 @@
               </div>
             </div>
           </div>
-          <div class="w-full flex justify-center items-center h-[50vh]" v-else>
+          <!-- <div class="w-full flex justify-center items-center h-[50vh]" v-else>
             <h1 class="font-bold text-black text-2xl">No Drafts</h1>
-          </div>
+          </div> -->
         </div>
       </section>
       <section class="" v-if="pages == 5" id="review">
@@ -784,7 +781,7 @@
                 <div class="mt-5">
                   <a
                     :href="`/post/${post.slug}`"
-                    class="font-baseFamily bg-black text-white dark:text-black dark:bg-gray-600 p-2 font-bold text-sm leading-5"
+                    class="font-baseFamily bg-black text-white p-2 font-bold text-sm leading-5"
                   >
                     Go to preview &rangle;
                   </a>
@@ -836,7 +833,7 @@
               type="text"
               name="title"
               v-model="title"
-              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id="title"
             />
           </div>
@@ -846,7 +843,7 @@
               type="text"
               name="title"
               v-model="subtitle"
-              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id="subtitle"
             />
           </div>
@@ -902,7 +899,7 @@
               id=""
               cols="30"
               rows="4"
-              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black"
+              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               v-model="summary"
             ></textarea>
           </div>
@@ -985,7 +982,7 @@
               type="text"
               name="title"
               v-model="title"
-              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id=""
             />
           </div>
@@ -995,7 +992,7 @@
               type="text"
               name="title"
               v-model="subtitle"
-              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
+              class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id=""
             />
           </div>
@@ -1076,7 +1073,7 @@
               id=""
               cols="30"
               rows="4"
-              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-2 w-full border-b-black"
+              class="bg-gray-100 dark:bg-transparent p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               v-model="summary"
             ></textarea>
           </div>
@@ -1140,7 +1137,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import { mapGetters } from "vuex";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseButton from "../components/BaseButton.vue";
-import { useToast } from "vue-toastification";
+import { useToast, POSITION } from "vue-toastification";
 import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import PriceIndexModal from "../components/PriceIndexModal.vue";
@@ -1252,8 +1249,13 @@ export default {
     this.role = this.user.role;
     this.reviewPosts = [];
     this.loadAdminPosts();
-    this.file = this.user.profileImage;
     this.loadDraftPosts();
+    console.log(
+      "userModule/drafts: " + this.user.drafts,
+      "AdminProfile/drafts: " + this.drafts
+    );
+    this.file = this.user.profileImage;
+    // this.loadDraftPosts();
     this.showPost("equity");
     getAPI
       .get("/categories")
@@ -1314,7 +1316,7 @@ export default {
           this.results = response.data;
         });
     },
-    publishPost() {
+    async publishPost() {
       let data = new FormData();
       let postSlug = this.title.split(" ").join("").toLowerCase();
       data.append("title", this.title);
@@ -1333,23 +1335,32 @@ export default {
       );
 
       try {
-        this.$store
+        this.toast.info("Creating Post...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await this.$store
           .dispatch("userModule/createPost", {
             formData: data,
             slug: this.user.slug,
             postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
           })
           .then((e) => {
-            this.loadDraftPosts().then((e) => {
-              this.$router.go();
+            this.toast.dismiss("login");
+            this.toast.success("Post Successful!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
             });
+            this.$router.go();
           })
           .catch((e) => {
             console.log(e);
           });
       } catch (error) {
         this.hasError = true;
-        // console.log(this.hasError);
+        console.log(error);
         this.errorCode = error.response.status;
         this.toast.dismiss("login");
         setTimeout(() => {
@@ -1358,7 +1369,7 @@ export default {
         }, 4000);
       }
     },
-    publishVideo() {
+    async publishVideo() {
       let data = new FormData();
       let postSlug = this.title.split(" ").join("").toLowerCase();
       data.append("title", this.title);
@@ -1378,7 +1389,12 @@ export default {
       );
 
       try {
-        this.$store
+        this.toast.info("Creating Post...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await this.$store
           .dispatch("userModule/createPost", {
             formData: data,
             slug: this.user.slug,
@@ -1386,10 +1402,13 @@ export default {
           })
           .then((e) => {
             console.log(e);
-            this.loadDraftPosts().then((e) => {
-              this.$router.go();
-              console.log(e);
+            this.toast.dismiss("login");
+            this.toast.success("Post Successful!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
             });
+            this.$router.go();
           })
           .catch((e) => {
             console.log(e);
@@ -1404,7 +1423,7 @@ export default {
         }, 4000);
       }
     },
-    savePost() {
+    async savePost() {
       let data = new FormData();
       data.append("title", this.title);
       data.append("author", this.user.slug);
@@ -1415,6 +1434,17 @@ export default {
       data.append("mainImage", this.file);
       data.append("slug", this.title.split(" ").join("").toLowerCase());
 
+      let draft = {
+        title: this.title,
+        author: this.user.slug,
+        categories: this.categorySel.selected,
+        picked: this.editorpost,
+        summary: this.summary,
+        body: this.editorData,
+        mainImage: this.image,
+        slug: this.title.split(" ").join("").toLowerCase(),
+      };
+
       let post = {
         formData: data,
         slug: this.user.slug,
@@ -1423,24 +1453,33 @@ export default {
       this.drafts.push(post);
       this.$store.dispatch("userModule/reviewPost", post);
       // console.log(this.drafts);
-
-      this.$router.go();
     },
-    UpdateProfile() {
+    async UpdateProfile() {
       let data = new FormData();
       console.log(this.proFile === null && this.user.profileImage != null);
-      if (this.proFile != null) {
+      if (this.proFile != null && this.file != "") {
         data.append("email", this.user.email);
         data.append("username", this.user.name);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
-        getAPI
+        this.toast.info("Updating Profile...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await getAPI
           .patch("/users/" + this.user.slug, data)
           .then((response) => {
+            this.toast.dismiss("login");
+            this.toast.success("Post Successful!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
+            });
             this.success = true;
             console.log(response);
             this.mssg = "Updated";
-            this.$router.go();
+            // this.$router.go();
           })
           .catch((err) => {
             this.hasError = true;
@@ -1453,13 +1492,53 @@ export default {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
-        getAPI
+        this.toast.info("Updating Profile...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await getAPI
           .patch("/users/" + this.user.slug, data)
           .then((response) => {
+            this.toast.dismiss("login");
+            this.toast.success("Profile Updated!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
+            });
             this.success = true;
             console.log(response);
             this.mssg = "Updated";
-            this.$router.go();
+            // this.$router.go();
+          })
+          .catch((err) => {
+            this.hasError = true;
+            console.log(err);
+            this.errorCode = err.response.status;
+          });
+        console.log("image present");
+      } else if (this.proFile != null && this.file === "") {
+        data.append("email", this.user.email);
+        data.append("name", this.user.name);
+        data.append("bio", this.user.bio);
+        this.toast.info("Updating Profile...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await getAPI
+          .patch("/users/" + this.user.slug, data)
+          .then((response) => {
+            this.toast.dismiss("login");
+            this.toast.success("Profile Updated!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
+            });
+            this.success = true;
+            console.log(response);
+            this.mssg = "Updated";
+            // this.$router.go();
           })
           .catch((err) => {
             this.hasError = true;

@@ -44,7 +44,7 @@
   <div class="font-baseFamily md:h-full h-[100vh]">
     <div class="mb-16"></div>
     <div
-      class="flex flex-col justify-start max-w-xl mx-auto items-start md:bg-none mb-10 bg-center bg-contain"
+      class="flex flex-col justify-start max-w-xl md:mx-auto mx-20 items-start md:bg-none mb-10 bg-center bg-contain"
     >
       <p class="h-min font-bold p-3 text-3xl">Welcome!</p>
       <p class="h-min font-bold p-3 text-xl">Sign in to continue</p>
@@ -52,7 +52,7 @@
     <form
       method="post"
       @submit.prevent="loginForm(email, password)"
-      class="mx-auto max-w-xl px-5 pt-12"
+      class="md:mx-auto max-w-xl md:px-5 md:pt-6 mx-20"
     >
       <div class="flex flex-col space-y-6">
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
@@ -63,7 +63,7 @@
             required
             placeholder="Email"
             autocomplete="email"
-            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
+            class="p-1 h-[4rem] focus:outline-none font-baseFamily focus:border-2 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
           />
         </div>
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
@@ -74,7 +74,7 @@
             v-model="password"
             placeholder="Password"
             required
-            class="p-1 h-[4rem] focus:outline-none focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+            class="p-1 h-[4rem] focus:outline-none font-baseFamily focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
           />
         </div>
         <div class="flex flex-col items-center justify-center w-full">
@@ -279,13 +279,31 @@ export default {
     // ksjdn jkkjdsb dkshshk dsjhjm ndbjbsjb
     async resetPasswordFn(email) {
       try {
+        this.toast.info("Checking...", {
+          timeout: false,
+          id: "checking",
+          position: POSITION.BOTTOM_CENTER,
+        });
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
           .then(async () => {
-            let newPass = await getAPI.post(`/api/password_reset/`, email); // for some odd reason you need to append slash to the end of the url
+            let newPass = await getAPI
+              .post(`/api/password_reset/`, email)
+              .then(() => {
+                this.toast.dismiss("checking");
+                this.toast.success("Check your email to reset your password", {
+                  timeout: 2000,
+                  position: POSITION.BOTTOM_CENTER,
+                });
+              }); // for some odd reason you need to append slash to the end of the url
+            console.log(newPass);
           })
-          .catch((e) => {});
-        console.log(newPass);
+          .catch((e) => {
+            this.toast.dismiss("checking");
+            this.toast.error(e, {
+              timeout: 2000,
+            });
+          });
       } catch (error) {
         console.log(error);
       }
