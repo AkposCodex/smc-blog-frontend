@@ -44,7 +44,7 @@
           class="w-fit flex items-center bg-transparent rounded-sm p-2 border border-[#111111] dark:border-white/30"
         >
           <span>Read More</span>
-          <BaseIcon name="chevron-right" class="w-auto" />
+          <BaseIcon name="chevron-right" class="!w-auto" />
         </RouterLink>
       </div>
     </div>
