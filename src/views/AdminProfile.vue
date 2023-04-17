@@ -59,7 +59,7 @@
       <div class="flex justify-start m-0">
         <AppLogo class="text-black dark:text-white" />
       </div>
-      <button class="lg:hidden" @click="isMenuOpen = !isMenuOpen">
+      <button class="lg:hidden" @click="toggleMenu">
         <BaseIcon name="hamburger" v-if="!isMenuOpen" />
         <BaseIcon name="close" v-if="isMenuOpen" />
       </button>
@@ -93,9 +93,9 @@
       </div>
     </div>
   </header>
-  <a
+  <aside
     v-if="isMenuOpen"
-    class="flex absolute bg-white dark:bg-[#272626] mt-[3rem] h-[100%] overflow-scroll z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+    class="flex absolute bg-white dark:bg-[#272626] mt-[3rem] h-full overflow-scroll z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
   >
     <div class="w-4/5 mt-9">
       <div class="w-4/5 flex pb-6 gap-6">
@@ -122,10 +122,7 @@
       id="dropMenu"
     >
       <a
-        @click="
-          pages = 1;
-          isMenuOpen = false;
-        "
+        @click="goToPage(1)"
         class="w-max flex gap-3 items-center cursor-pointer"
         :class="{
           ' text-blue-600 decoration-4': pages === 1,
@@ -143,10 +140,7 @@
         <p>Analytics</p>
       </a>
       <a
-        @click="
-          pages = 4;
-          isMenuOpen = false;
-        "
+        @click="goToPage(4)"
         class="cursor-pointer w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 4,
@@ -155,11 +149,8 @@
         <BaseIcon name="plusButton" class="" />
         <p>Create new article</p>
       </a>
-      <a
-        @click="
-          pages = 6;
-          isMenuOpen = false;
-        "
+      <button
+        @click="goToPage(6)"
         class="cursor-pointer w-max flex gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 6,
@@ -167,12 +158,9 @@
       >
         <BaseIcon name="video" class="" />
         <p>Create Video Post</p>
-      </a>
+      </button>
       <a
-        @click="
-          pages = 2;
-          isMenuOpen = false;
-        "
+        @click="goToPage(2)"
         class="w-max flex gap-3 items-center cursor-pointer"
         :class="{
           ' text-blue-600 decoration-4': pages === 2,
@@ -182,10 +170,7 @@
         <p>Your articles</p>
       </a>
       <a
-        @click="
-          pages = 3;
-          isMenuOpen = false;
-        "
+        @click="goToPage(3)"
         class="w-max flex cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 3,
@@ -204,10 +189,7 @@
       </button>
       <a
         v-if="user.isSuper"
-        @click="
-          pages = 5;
-          isMenuOpen = false;
-        "
+        @click="goToPage(5)"
         class="w-max flex cursor-pointer gap-3 items-center"
         :class="{
           ' text-blue-600 decoration-4': pages === 5,
@@ -267,7 +249,7 @@
         geopolitical report</RouterLink
       >
     </div>
-  </a>
+  </aside>
   <div class="pb-6 pt-2 lg:hidden" id="search" z-50>
     <form
       @submit.prevent="searchMini(word)"
@@ -344,10 +326,7 @@
         class="text-base 2xl:text-xl flex flex-col justify-center gap-10 w-4/5 pt-5 !m-0"
       >
         <a
-          @click="
-            pages = 1;
-            isMenuOpen = false;
-          "
+          @click="goToPage(1)"
           class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 1,
@@ -365,10 +344,7 @@
           <p>Analytics</p>
         </a>
         <a
-          @click="
-            pages = 4;
-            isMenuOpen = false;
-          "
+          @click="goToPage(4)"
           class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 4,
@@ -378,10 +354,7 @@
           <p>Create new article</p>
         </a>
         <a
-          @click="
-            pages = 6;
-            isMenuOpen = false;
-          "
+          @click="goToPage(6)"
           class="hover:cursor-pointer w-max flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 6,
@@ -391,10 +364,7 @@
           <p>Create Video Post</p>
         </a>
         <a
-          @click="
-            pages = 2;
-            isMenuOpen = false;
-          "
+          @click="goToPage(2)"
           class="w-max hover:cursor-pointer flex gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 2,
@@ -406,8 +376,7 @@
         <a
           @click="
             loadDraftPosts();
-            pages = 3;
-            isMenuOpen = false;
+            goToPage(3);
           "
           class="w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
@@ -427,10 +396,7 @@
         </button>
         <a
           v-if="user.isSuper"
-          @click="
-            pages = 5;
-            isMenuOpen = false;
-          "
+          @click="goToPage(5)"
           class="w-max flex hover:cursor-pointer gap-3 items-center"
           :class="{
             ' text-blue-600 decoration-4': pages === 5,
@@ -1174,7 +1140,7 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 import { mapGetters } from "vuex";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseButton from "../components/BaseButton.vue";
-import { useToast, POSITION } from "vue-toastification";
+import { useToast } from "vue-toastification";
 import ToastError from "../services/error.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import PriceIndexModal from "../components/PriceIndexModal.vue";
@@ -1303,6 +1269,15 @@ export default {
   },
   methods: {
     formatDate,
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
+      document.body.classList.toggle("overflow-hidden");
+    },
+    goToPage(pageNum) {
+      this.pages = pageNum;
+      this.isMenuOpen = false;
+      document.body.classList.remove("overflow-hidden");
+    },
     updatePassword(e) {
       try {
         let newPass = getAPI.put(`/api/change-password/`, e, {
