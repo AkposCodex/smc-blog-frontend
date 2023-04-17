@@ -1457,12 +1457,12 @@ export default {
     async UpdateProfile() {
       let data = new FormData();
       console.log(this.proFile === null && this.user.profileImage != null);
-      if (this.proFile != null) {
+      if (this.proFile != null && this.file != "") {
         data.append("email", this.user.email);
         data.append("name", this.user.name);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
-        this.toast.info("Creating Post...", {
+        this.toast.info("Updating Profile...", {
           timeout: false,
           id: "login",
           position: POSITION.BOTTOM_CENTER,
@@ -1479,7 +1479,7 @@ export default {
             this.success = true;
             console.log(response);
             this.mssg = "Updated";
-            this.$router.go();
+            // this.$router.go();
           })
           .catch((err) => {
             this.hasError = true;
@@ -1509,7 +1509,36 @@ export default {
             this.success = true;
             console.log(response);
             this.mssg = "Updated";
-            this.$router.go();
+            // this.$router.go();
+          })
+          .catch((err) => {
+            this.hasError = true;
+            console.log(err);
+            this.errorCode = err.response.status;
+          });
+        console.log("image present");
+      } else if (this.proFile != null && this.file === "") {
+        data.append("email", this.user.email);
+        data.append("name", this.user.name);
+        data.append("bio", this.user.bio);
+        this.toast.info("Updating Profile...", {
+          timeout: false,
+          id: "login",
+          position: POSITION.BOTTOM_CENTER,
+        });
+        await getAPI
+          .patch("/users/" + this.user.slug, data)
+          .then((response) => {
+            this.toast.dismiss("login");
+            this.toast.success("Profile Updated!", {
+              timeout: 2000,
+              id: "success",
+              position: POSITION.BOTTOM_CENTER,
+            });
+            this.success = true;
+            console.log(response);
+            this.mssg = "Updated";
+            // this.$router.go();
           })
           .catch((err) => {
             this.hasError = true;
@@ -1649,29 +1678,6 @@ export default {
       let res = await this.$store.dispatch("userModule/loadPostsByGenre", {
         slug: this.user.slug,
         category: e,
-      });
-      await getAPI.get(`/post/review?state=Approved`).then((response) => {
-        let res = response.data.results;
-        let count = response.data.count;
-        // console.log(res, count);
-        while (count > 0) {
-          getAPI.get(`/posts/${res[count - 1].post}`).then(async (r) => {
-            let res = r.data;
-            // console.log(res);
-            if (res.author === this.user.slug) {
-              this.drafts.push(res);
-              let res = await this.$store.dispatch(
-                "userModule/loadPostsByGenre",
-                {
-                  slug: this.user.slug,
-                  category: e,
-                }
-              );
-            }
-          });
-          // console.log(this.drafts);
-          count--;
-        }
       });
       this.posts = res;
       // console.log(this.posts);
