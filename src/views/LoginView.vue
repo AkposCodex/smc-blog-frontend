@@ -83,9 +83,9 @@
           >
             LOGIN
           </button>
-          <a class="text-blue-600 font-bold" @click="resetPassword = true"
-            >forgot password?</a
-          >
+          <button class="text-blue-600 font-bold" @click="resetPassword = true">
+            forgot password?
+          </button>
         </div>
         <div class="flex flex-col items-center justify-center w-full">
           <BaseIcon name="powered" class="text-black w-[150px]" />

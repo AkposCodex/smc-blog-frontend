@@ -57,7 +57,7 @@
         }"
       >
         <span>Read More</span>
-        <BaseIcon name="chevron-right" class="w-auto" />
+        <BaseIcon name="chevron-right" class="!w-auto" />
       </RouterLink>
     </div>
   </article>
