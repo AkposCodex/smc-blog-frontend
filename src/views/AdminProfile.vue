@@ -1459,7 +1459,7 @@ export default {
       console.log(this.proFile === null && this.user.profileImage != null);
       if (this.proFile != null && this.file != "") {
         data.append("email", this.user.email);
-        data.append("username", this.user.name);
+        data.append("username", this.user.username);
         data.append("bio", this.user.bio);
         data.append("image", this.file);
         this.toast.info("Updating Profile...", {
@@ -1490,7 +1490,7 @@ export default {
         console.log("image absent");
       } else if (this.proFile === null && this.user.profileImage != null) {
         data.append("email", this.user.email);
-        data.append("name", this.user.name);
+        data.append("username", this.user.username);
         data.append("bio", this.user.bio);
         this.toast.info("Updating Profile...", {
           timeout: false,
