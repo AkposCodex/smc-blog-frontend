@@ -219,6 +219,7 @@ export default {
           snap-align="center"
           :wrap-around="true"
           :items-to-show="1"
+          :autoplay="7000"
           v-if="blogPosts.length > 0"
         >
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->

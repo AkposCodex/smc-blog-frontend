@@ -7,7 +7,7 @@
       </h2>
     </section>
     <div class="lg:h-full mb-12 h-3/5 w-full mx-auto">
-      <Carousel :wrap-around="true" :items-to-show="1">
+      <Carousel :wrap-around="true" :items-to-show="1" :autoplay="7000">
         <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
         <Slide v-for="(slide, index) in blogPosts" :key="index">
           <div
