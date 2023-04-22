@@ -1170,6 +1170,13 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   .catch((err) => {});
 
 export default {
+  mounted() {
+    const router = useRouter();
+    router.beforeEach((to, from) => {
+      this.isMenuOpen = false;
+      document.body.classList.remove("overflow-hidden");
+    });
+  },
   setup() {
     const toast = useToast();
     const isDark = useDark();
