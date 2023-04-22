@@ -60,8 +60,8 @@
         <AppLogo class="text-black dark:text-white" />
       </div>
       <button class="lg:hidden" @click="toggleMenu">
-        <BaseIcon name="hamburger" v-if="!isMenuOpen" />
-        <BaseIcon name="close" v-if="isMenuOpen" />
+        <BaseIcon name="hamburger" v-if="!menuOpen" />
+        <BaseIcon name="close" v-if="menuOpen" />
       </button>
       <div class="hidden lg:block" id="search" z-50>
         <form
@@ -94,7 +94,7 @@
     </div>
   </header>
   <aside
-    v-if="isMenuOpen"
+    v-if="menuOpen"
     class="flex absolute bg-white dark:bg-[#272626] mt-[3rem] h-full overflow-scroll z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
   >
     <div class="w-4/5 mt-9">
@@ -1168,13 +1168,6 @@ ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   .catch((err) => {});
 
 export default {
-  mounted() {
-    const router = useRouter();
-    router.beforeEach((to, from) => {
-      this.isMenuOpen = false;
-      document.body.classList.remove("overflow-hidden");
-    });
-  },
   setup() {
     const toast = useToast();
     const isDark = useDark();
@@ -1202,7 +1195,7 @@ export default {
       showAddPost: false,
       title: "",
       subtitle: "",
-      isMenuOpen: false,
+      menuOpen: false,
       showPriceIndexModal: false,
       changePassword: false,
       new_password: "",
@@ -1250,6 +1243,13 @@ export default {
   computed: mapGetters({
     user: "getUserState",
   }),
+  mounted() {
+    const router = useRouter();
+    router.beforeEach((to, from) => {
+      this.menuOpen = false;
+      document.body.classList.remove("overflow-hidden");
+    });
+  },
   async created() {
     this.role = this.user.role;
     this.reviewPosts = [];
@@ -1277,12 +1277,12 @@ export default {
   methods: {
     formatDate,
     toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
+      this.menuOpen = !this.menuOpen;
       document.body.classList.toggle("overflow-hidden");
     },
     goToPage(pageNum) {
       this.pages = pageNum;
-      this.isMenuOpen = false;
+      this.menuOpen = false;
       document.body.classList.remove("overflow-hidden");
     },
     updatePassword(e) {
@@ -1350,6 +1350,7 @@ export default {
             formData: data,
             slug: this.user.slug,
             postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
+            auth: this.user.token
           })
           .then((e) => {
             this.toast.dismiss("login");
