@@ -108,9 +108,7 @@
           />
           <img v-else src="@/assets/icons/Ellipse.png" alt="" />
         </figure>
-        <div
-          class="flex flex-col justify-center w-min items-start font-baseFamily"
-        >
+        <div class="flex flex-col justify-center items-start font-baseFamily">
           <p class="text-2xl mb-2">{{ user.name }}</p>
           <p class="text-base font-semibold text-zinc-700">{{ user.role }}</p>
         </div>
@@ -311,9 +309,7 @@
               <img v-else src="@/assets/icons/Ellipse.png" alt="" />
             </div>
           </figure>
-          <div
-            class="font-baseFamily flex flex-col justify-center w-min items-start"
-          >
+          <div class="font-baseFamily flex flex-col justify-center items-start">
             <p class="text-2xl">{{ user.name }}</p>
             <p class="text-base text-gray-400">
               {{ role }}
@@ -615,7 +611,9 @@
             </button>
           </nav>
         </div>
-        <main class="bg-gray-100 lg:bg-white p-5 flex flex-col mt-10 gap-10">
+        <main
+          class="dark:bg-inherit bg-gray-100 lg:bg-white p-5 flex flex-col mt-10 gap-10"
+        >
           <template v-if="posts && posts.length > 0">
             <div
               v-for="post in posts"

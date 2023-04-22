@@ -264,7 +264,7 @@ export default {
                       class="mt-6 flex items-center bg-transparent rounded-[4px] p-2 border text-sm border-[#111111] dark:border-white/30"
                     >
                       <span>Read More</span>
-                      <BaseIcon name="chevron-right" class="w-auto" />
+                      <BaseIcon name="chevron-right" class="!w-auto" />
                     </button>
                   </div>
                 </div>
@@ -479,9 +479,9 @@ export default {
   /* align-items: center; */
 }
 
-.carousel__slide {
-  /* padding: 10px; */
-}
+/* .carousel__slide {
+  padding: 10px;
+} */
 
 .carousel__prev,
 .carousel__next {
@@ -496,9 +496,6 @@ export default {
   box-sizing: content-box;
   color: white;
 }
-/* .dark .carousel__pagination-button--active::after {
-  background-color: blue;
-} */
 .carousel__track {
   touch-action: auto;
 }
@@ -515,5 +512,8 @@ export default {
   background-color: #000 !important;
   border-radius: 14px;
   width: 33px;
+}
+.dark .carousel__pagination-button--active::after {
+  background-color: blue !important;
 }
 </style>
