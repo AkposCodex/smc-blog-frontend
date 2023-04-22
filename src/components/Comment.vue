@@ -94,7 +94,6 @@ export default {
 }
 .avatar .user {
   position: relative;
-  z-index: 100;
   background: #dbdfe4;
   padding: 0;
 }
