@@ -122,7 +122,7 @@ export default {
       await getAPI
         .post("/posts", payload.formData, {
           headers: {
-            Authorization: `token 6e8cf68a4fc854801686530dcd0ec256e39a9e43`,
+            Authorization: `token ${payload.auth}`,
             "Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
           },
         })

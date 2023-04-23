@@ -23,10 +23,9 @@
           name: 'post',
           params: { slug: post.slug },
         }"
+        class="tracking-[0.15px] mt-2 md:text-xl line-clamp-2 w-fit"
       >
-        <p class="tracking-[0.15px] mt-2 md:text-xl line-clamp-2">
-          {{ post.title }}
-        </p>
+        {{ post.title }}
       </RouterLink>
       <div class="hidden md:block">
         <p class="text-sm text-[#111]/60 mt-2 dark:text-white">
