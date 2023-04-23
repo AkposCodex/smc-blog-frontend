@@ -41,20 +41,19 @@
       </form>
     </div>
   </BaseModal>
-  <div class="font-baseFamily md:h-full h-[100vh]">
-    <div class="mb-16"></div>
+  <div class="font-baseFamily mx-auto max-w-xl w-5/6">
     <div
-      class="flex flex-col justify-start max-w-xl md:mx-auto mx-20 items-start md:bg-none mb-10 bg-center bg-contain"
+      class="flex flex-col justify-start items-start md:bg-none mb-20 bg-center bg-contain mt-16"
     >
-      <p class="h-min font-bold p-3 text-3xl">Welcome!</p>
-      <p class="h-min font-bold p-3 text-xl">Sign in to continue</p>
+      <p class="font-bold text-3xl">Welcome!</p>
+      <p class="mt-1 text-xl">Sign in to continue</p>
     </div>
     <form
       method="post"
       @submit.prevent="loginForm(email, password)"
-      class="md:mx-auto max-w-xl md:px-5 md:pt-6 mx-20"
+      class="md:px-5 md:pt-6"
     >
-      <div class="flex flex-col space-y-6">
+      <div class="flex flex-col w-5/6 mx-auto md:w-full">
         <div class="flex flex-col md:w-3/5 w-full mx-auto">
           <input
             type="email"
@@ -63,10 +62,10 @@
             required
             placeholder="Email"
             autocomplete="email"
-            class="p-1 h-[4rem] focus:outline-none font-baseFamily focus:border-2 focus:border-b-green-300 border-2 border-[#75777A] w-full rounded-lg"
+            class="p-4 focus:outline-none font-baseFamily focus:border-b-green-300 border border-[#75777A] w-full rounded-xl"
           />
         </div>
-        <div class="flex flex-col md:w-3/5 w-full mx-auto">
+        <div class="flex flex-col md:w-3/5 w-full mx-auto mt-9">
           <input
             type="password"
             name="password"
@@ -74,30 +73,29 @@
             v-model="password"
             placeholder="Password"
             required
-            class="p-1 h-[4rem] focus:outline-none font-baseFamily focus:border-2 focus:border-b-green-300 border-2 w-full border-[#75777A] rounded-lg"
+            class="p-4 focus:outline-none font-baseFamily focus:border-b-green-300 border w-full border-[#75777A] rounded-xl"
           />
         </div>
-        <div class="flex flex-col items-center justify-center w-full">
+        <div class="flex flex-col items-center justify-center w-full mt-12">
           <button
-            class="bg-blue-600 dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black rounded-lg"
+            class="bg-blue-600 dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white dark:border-black rounded-xl font-semibold text-sm tracking-widest"
+            type="submit"
           >
-            LOGIN
+            Login
           </button>
-          <button class="text-blue-600 font-bold" @click="resetPassword = true">
-            forgot password?
+          <button
+            class="text-blue-600 text-sm mt-3"
+            type="button"
+            @click="resetPassword = true"
+          >
+            Forgot password?
           </button>
-        </div>
-        <div class="flex flex-col items-center justify-center w-full">
-          <BaseIcon name="powered" class="text-black w-[150px]" />
-        </div>
-
-        <div class="flex justify-center">
-          <br />
-          <p style="color: rgb(255, 0, 0)">{{ error }}</p>
         </div>
       </div>
     </form>
-    <br /><br /><br />
+    <div class="flex flex-col items-center justify-center w-full mt-28">
+      <BaseIcon name="powered" class="text-black w-[150px]" />
+    </div>
 
     <!-- <button
       @click="generateUsers"

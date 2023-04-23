@@ -111,15 +111,15 @@ const router = createRouter({
       name: "post",
       component: () => import("../components/BlogPost.vue"),
       props: true,
-      // meta: {
-      //   title: `SMC Report | ${to}`,
-      // },
+      meta: {
+        title: `SMC Report | Blog Post`,
+      },
     },
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: PageNotFound,
-      meta: { title: "Page Not Found" },
+      meta: { title: "SMC Report |Page Not Found" },
     },
   ],
 });

@@ -72,6 +72,7 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 }
 .col1 {
   width: 5%;

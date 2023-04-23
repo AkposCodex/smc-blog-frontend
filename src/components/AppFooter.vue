@@ -73,8 +73,16 @@ export default {
         .then((response) => {
           this.success = true;
           this.response = "Subscribed";
+          this.email = "";
         })
-        .catch((err) => {});
+        .catch((err) => {
+          if (err.response.status === 400) {
+            this.response = "Email already subscribed";
+          } else {
+            this.response = "Something went wrong";
+          }
+          this.success = false;
+        });
     },
   },
 };

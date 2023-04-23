@@ -99,12 +99,12 @@
   >
     <div class="w-4/5 mt-9">
       <div class="w-4/5 flex pb-6 gap-6">
-        <figure class="w-[70px] h-[70px]">
+        <figure class="w-[70px] h-[70px] min-w-[70px]">
           <img
             v-if="user.profileImage"
             :src="user.profileImage"
             alt=""
-            class="rounded-full object-cover w-[70px] h-[70px]"
+            class="rounded-full object-cover w-full h-full"
           />
           <img v-else src="@/assets/icons/Ellipse.png" alt="" />
         </figure>
@@ -1141,6 +1141,7 @@ import { useDark, useToggle } from "@vueuse/core";
 import PriceIndexModal from "../components/PriceIndexModal.vue";
 import BaseModal from "../components/BaseModal.vue";
 import { formatDate } from "../helpers/date";
+import { useRouter } from "vue-router";
 
 ClassicEditor.create(document.querySelector("#snippet-classic-editor"), {
   plugins: [
@@ -1350,7 +1351,7 @@ export default {
             formData: data,
             slug: this.user.slug,
             postSlug: this.title.replaceAll(" ", "-").toLowerCase(),
-            auth: this.user.token
+            auth: this.user.token,
           })
           .then((e) => {
             this.toast.dismiss("login");
