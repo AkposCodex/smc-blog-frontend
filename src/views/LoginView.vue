@@ -42,6 +42,11 @@
     </div>
   </BaseModal>
   <div class="font-baseFamily mx-auto max-w-xl w-5/6">
+    <div class="flex justify-start m-0 px-6 pt-3">
+      <a href="/">
+        <AppLogo class="text-black dark:text-white" />
+      </a>
+    </div>
     <div
       class="flex flex-col justify-start items-start md:bg-none mb-20 bg-center bg-contain mt-16"
     >
@@ -114,6 +119,7 @@ import ToastError from "../services/error.vue";
 import { useToast, POSITION } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseModal from "../components/BaseModal.vue";
+import AppLogo from "../components/AppLogo.vue";
 import { getAPI } from "../axios";
 export default {
   setup(props) {
@@ -124,109 +130,10 @@ export default {
     ToastError,
     BaseIcon,
     BaseModal,
+    AppLogo,
   },
   data() {
     return {
-      users: [
-        {
-          email: "abimbola.hammed@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Abimbola Hammed",
-          slug: "abimbola-hammed",
-          username: "Abimbola",
-        },
-        {
-          email: "birima.ibrahim@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Birima Ibrahim",
-          slug: "birima-ibrahim",
-          username: "Birima",
-        },
-        {
-          email: "adebowale.odunoren@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adebowale Odunoren",
-          slug: "adebowale-odunoren",
-          username: "Adebowale",
-        },
-        {
-          email: "adeoye.imisioluwa@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adeoye Imisioluwa",
-          slug: "adeoye-imisioluwa",
-          username: "Adeoye",
-        },
-        {
-          email: "osigwe.michael@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Osigwe Michael",
-          slug: "osigwe-michael",
-          username: "Osigwe",
-        },
-        {
-          email: "opeyemi.oladepo@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Opeyemi Oladepo",
-          slug: "opeyemi-oladepo",
-          username: "Opeyemi",
-        },
-        {
-          email: "oladepo.johnson@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Oladepo Johnson",
-          slug: "oladepo-johnson",
-          username: "Oladepo",
-        },
-        {
-          email: "akunna.chiamaka@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Akunna Chiamaka",
-          slug: "akunna-chiamaka",
-          username: "Akunna",
-        },
-        {
-          email: "idheme.wisdom@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Idheme Wisdom",
-          slug: "idheme-wisdom",
-          username: "Idheme",
-        },
-        {
-          email: "idisi.hope@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Idisi Hope",
-          slug: "idisi-hope",
-          username: "Idisi",
-        },
-        {
-          email: "ogbuinya.winifred@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Ogbuinya Winifred",
-          slug: "ogbuinya-winifred",
-          username: "Ogbuinya",
-        },
-        {
-          email: "enojo.grace@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Enojo Grace",
-          slug: "enojo-grace",
-          username: "Enojo",
-        },
-        {
-          email: "ebuka.ifeanyichukwu@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Ebuka Ifeanyichukwu",
-          slug: "ebuka-ifeanyichukwu",
-          username: "Ebuka",
-        },
-        {
-          email: "adeyemo.samuel@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adeyemo Samuel",
-          slug: "adeyemo-samuel",
-          username: "Adeyemo",
-        },
-      ],
       email: "",
       password: "",
       userslg: "",
@@ -264,17 +171,26 @@ export default {
           });
       } catch (error) {
         console.log(error);
-        this.hasError = true;
-        // console.log(this.hasError);
-        this.errorCode = error.response.status;
-        this.toast.dismiss("login");
-        setTimeout(() => {
-          this.hasError = false;
+        if (
+          error.response.data.non_field_errors[0] ===
+          "Unable to log in with provided credentials."
+        ) {
+          this.toast.error("Please check your email and password", {
+            timeout: 2000,
+          });
+          this.toast.dismiss("login");
+        } else {
+          this.hasError = true;
           // console.log(this.hasError);
-        }, 4000);
+          this.errorCode = error.response.status;
+          this.toast.dismiss("login");
+          setTimeout(() => {
+            this.hasError = false;
+            // console.log(this.hasError);
+          }, 4000);
+        }
       }
     },
-    // ksjdn jkkjdsb dkshshk dsjhjm ndbjbsjb
     async resetPasswordFn(email) {
       try {
         this.toast.info("Checking...", {
@@ -297,19 +213,14 @@ export default {
             console.log(newPass);
           })
           .catch((e) => {
+            console.log(e);
             this.toast.dismiss("checking");
-            this.toast.error(e, {
+            this.toast.error(e.response.data.email[0], {
               timeout: 2000,
             });
           });
       } catch (error) {
         console.log(error);
-      }
-    },
-    async generateUsers() {
-      this.users.forEach(generate);
-      async function generate(e) {
-        await getAPI.patch(`/users/${e.slug}`, e);
       }
     },
   },

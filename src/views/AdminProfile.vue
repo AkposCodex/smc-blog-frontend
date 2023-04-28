@@ -74,6 +74,7 @@
             placeholder="search posts"
             class="outline-none w-full bg-gray-100"
             v-model="word"
+            required
           />
         </form>
         <a
@@ -824,13 +825,14 @@
         <p class="text-2xl md:text-3xl font-semibold md:font-bold py-5">
           Create article
         </p>
-        <div class="flex flex-col gap-12">
+        <form class="flex flex-col gap-12">
           <div class="" id="title">
             <label for="title">Title*</label><br />
             <input
               type="text"
               name="title"
               v-model="title"
+              required
               class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id="title"
             />
@@ -840,6 +842,7 @@
             <input
               type="text"
               name="title"
+              required
               v-model="subtitle"
               class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id="subtitle"
@@ -917,6 +920,7 @@
                     :value="choice.slug"
                     id="category"
                     v-model="categorySel.selected"
+                    required
                   />
                   <label for="category" class="lg:px-4 pl-2">{{
                     choice.cat_title
@@ -950,6 +954,7 @@
           >
             <div class="w-full md:w-auto flex justify-center">
               <button
+                type="submit"
                 class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
                 @click="savePost()"
               >
@@ -958,6 +963,7 @@
             </div>
             <div class="w-full md:w-auto flex justify-center">
               <button
+                type="submit"
                 class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
                 @click="publishPost()"
               >
@@ -965,7 +971,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </section>
       <PriceIndexModal
         :show="showPriceIndexModal"
@@ -973,7 +979,7 @@
       />
       <section class="px-5" v-if="pages == 6" id="createVideoPosts">
         <p class="text-xl font-bold py-5">Create Video Headline</p>
-        <div class="flex flex-col gap-12">
+        <form class="flex flex-col gap-12">
           <div class="" id="title">
             <label for="" class="font-bold">Title*</label><br />
             <input
@@ -982,6 +988,7 @@
               v-model="title"
               class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id=""
+              required
             />
           </div>
           <div class="" id="subtitle">
@@ -989,6 +996,7 @@
             <input
               type="text"
               name="title"
+              required
               v-model="subtitle"
               class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-4 focus:border-b-green-300 border-b w-full border-b-black dark:border-b-white"
               id=""
@@ -1091,6 +1099,7 @@
                     :value="choice.slug"
                     id="category"
                     v-model="categorySel.selected"
+                    required
                   />
                   <label for="category" class="lg:px-4 pl-2">{{
                     choice.cat_title
@@ -1105,6 +1114,7 @@
           >
             <div class="w-full md:w-auto flex justify-center">
               <button
+                type="submit"
                 class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
                 @click="savePost()"
               >
@@ -1113,6 +1123,7 @@
             </div>
             <div class="w-full md:w-auto flex justify-center">
               <button
+                type="submit"
                 class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
                 @click="publishVideo()"
               >
@@ -1120,7 +1131,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </section>
     </div>
   </div>
@@ -1363,7 +1374,14 @@ export default {
             this.$router.go();
           })
           .catch((e) => {
+            this.hasError = true;
             console.log(e);
+            this.errorCode = e.response.status;
+            this.toast.dismiss("login");
+            setTimeout(() => {
+              this.hasError = false;
+              // console.log(this.hasError);
+            }, 4000);
           });
       } catch (error) {
         this.hasError = true;
