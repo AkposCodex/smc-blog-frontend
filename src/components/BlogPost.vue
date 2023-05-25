@@ -53,9 +53,13 @@ export default {
         getAPI
           .get("/posts?category=" + this.cat)
           .then((response) => {
-            const data = response.data.results;
-            const filtered = data.filter((e) => e.id !== this.posts.id);
-            this.similarposts = filtered;
+            for (let i = 0; i < response.data.length; i++) {
+              if (response.data[i].id == this.posts.id) {
+                response.data.splice(i, 1);
+                this.similarposts = response.data;
+                break;
+              }
+            }
             this.loadEmbeds();
           })
           .catch((err) => {});

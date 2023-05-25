@@ -10,7 +10,7 @@ export default {
   name: "Posts",
   data() {
     return {
-      blogPosts: [],
+      blogPosts: null,
       fall: false,
       loading: true,
       isMobile: false,
