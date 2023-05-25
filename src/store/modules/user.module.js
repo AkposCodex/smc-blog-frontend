@@ -12,21 +12,20 @@ const getInitialState = () => {
       token: "",
       password: "",
       posts: [],
-      roles: [],
+      role: "",
       isLoggedIn: false,
       drafts: null,
       isSuper: false,
     },
   };
 };
-// const state = getInitialState();
+const state = getInitialState();
 
 export default {
   namespaced: true,
-  state: getInitialState(),
+  state,
   mutations: {
     LOGIN: function (state) {
-      console.log("login", state);
       state.user.isLoggedIn = true;
     },
 
@@ -46,7 +45,7 @@ export default {
     },
 
     LOAD_ROLE: function (state, payload) {
-      state.user.roles = payload;
+      state.user.role = payload;
     },
 
     REVIEW_POST: function (state, payload) {
@@ -86,12 +85,20 @@ export default {
               await getAPI
                 .get(`/users?email=${payload.username}`)
                 .then((response) => {
-                  const user = response.data[0];
-                  dispatch("updateUser", user).then(async (e) => {
+                  // console.log(response);
+                  dispatch("updateUser", response.data[0]).then(async (e) => {
                     commit("LOGIN");
-                    commit("LOAD_ROLE", user.groups);
+                    try {
+                      let role = await getAPI.get(`/groups`, {
+                        headers: {
+                          Authorization: `Token ${token}`,
+                        },
+                      });
+                      console.log(role.data[0].name);
+                      commit("LOAD_ROLE", role.data[0].name);
+                    } catch (error) {}
                   });
-                  dispatch("loadPosts", user.slug);
+                  dispatch("loadPosts", response.data[0].slug);
                   return response;
                   // this.$router.push({ path: "profile/" + state.user.slug });
                 });
@@ -165,7 +172,7 @@ export default {
     },
 
     createDraft({ commit }, payload) {
-      console.log(payload);
+      console.log(payload)
       return commit("CREATE_DRAFT", payload);
     },
   },
