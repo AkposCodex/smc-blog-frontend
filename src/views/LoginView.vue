@@ -42,6 +42,11 @@
     </div>
   </BaseModal>
   <div class="font-baseFamily mx-auto max-w-xl w-5/6">
+    <div class="flex justify-start m-0 px-6 pt-3">
+      <a href="/">
+        <AppLogo class="text-black dark:text-white" />
+      </a>
+    </div>
     <div
       class="flex flex-col justify-start items-start md:bg-none mb-20 bg-center bg-contain mt-16"
     >
@@ -107,6 +112,7 @@ import ToastError from "../services/error.vue";
 import { useToast } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseModal from "../components/BaseModal.vue";
+import AppLogo from "../components/AppLogo.vue";
 import { getAPI } from "../axios";
 export default {
   setup(props) {
@@ -117,6 +123,7 @@ export default {
     ToastError,
     BaseIcon,
     BaseModal,
+    AppLogo,
   },
   data() {
     return {
@@ -156,14 +163,24 @@ export default {
           });
       } catch (error) {
         console.log(error);
-        this.hasError = true;
-        // console.log(this.hasError);
-        this.errorCode = error.response.status;
-        this.toast.dismiss("login");
-        setTimeout(() => {
-          this.hasError = false;
+        if (
+          error.response.data.non_field_errors[0] ===
+          "Unable to log in with provided credentials."
+        ) {
+          this.toast.error("Please check your email and password", {
+            timeout: 2000,
+          });
+          this.toast.dismiss("login");
+        } else {
+          this.hasError = true;
           // console.log(this.hasError);
-        }, 4000);
+          this.errorCode = error.response.status;
+          this.toast.dismiss("login");
+          setTimeout(() => {
+            this.hasError = false;
+            // console.log(this.hasError);
+          }, 4000);
+        }
       }
     },
     async resetPasswordFn(email) {
@@ -186,8 +203,9 @@ export default {
             console.log(newPass);
           })
           .catch((e) => {
+            console.log(e);
             this.toast.dismiss("checking");
-            this.toast.error(e, {
+            this.toast.error(e.response.data.email[0], {
               timeout: 2000,
             });
           });

@@ -428,7 +428,7 @@ export default {
           break;
 
         case 400:
-          this.toast.error(`Please check your Username and Password`, {
+          this.toast.error(`Something went wrong, try again.`, {
             timeout: 5000,
           });
           break;
@@ -443,7 +443,7 @@ export default {
           });
           break;
         case 404:
-          this.toast.error(`RESOURCE NOT FOUND`, {
+          this.toast.error(`404 NOT FOUND`, {
             timeout: 5000,
           });
           break;
