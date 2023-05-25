@@ -96,13 +96,6 @@
     <div class="flex flex-col items-center justify-center w-full mt-28">
       <BaseIcon name="powered" class="text-black w-[150px]" />
     </div>
-
-    <!-- <button
-      @click="generateUsers"
-      class="bg-black dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black"
-    >
-      GENERATE USERS
-    </button> -->
   </div>
 </template>
 
@@ -111,7 +104,7 @@
 <script>
 import { mapGetters } from "vuex";
 import ToastError from "../services/error.vue";
-import { useToast, POSITION } from "vue-toastification";
+import { useToast } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseModal from "../components/BaseModal.vue";
 import { getAPI } from "../axios";
@@ -127,106 +120,6 @@ export default {
   },
   data() {
     return {
-      users: [
-        {
-          email: "abimbola.hammed@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Abimbola Hammed",
-          slug: "abimbola-hammed",
-          username: "Abimbola",
-        },
-        {
-          email: "birima.ibrahim@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Birima Ibrahim",
-          slug: "birima-ibrahim",
-          username: "Birima",
-        },
-        {
-          email: "adebowale.odunoren@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adebowale Odunoren",
-          slug: "adebowale-odunoren",
-          username: "Adebowale",
-        },
-        {
-          email: "adeoye.imisioluwa@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adeoye Imisioluwa",
-          slug: "adeoye-imisioluwa",
-          username: "Adeoye",
-        },
-        {
-          email: "osigwe.michael@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Osigwe Michael",
-          slug: "osigwe-michael",
-          username: "Osigwe",
-        },
-        {
-          email: "opeyemi.oladepo@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Opeyemi Oladepo",
-          slug: "opeyemi-oladepo",
-          username: "Opeyemi",
-        },
-        {
-          email: "oladepo.johnson@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Oladepo Johnson",
-          slug: "oladepo-johnson",
-          username: "Oladepo",
-        },
-        {
-          email: "akunna.chiamaka@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Akunna Chiamaka",
-          slug: "akunna-chiamaka",
-          username: "Akunna",
-        },
-        {
-          email: "idheme.wisdom@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Idheme Wisdom",
-          slug: "idheme-wisdom",
-          username: "Idheme",
-        },
-        {
-          email: "idisi.hope@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Idisi Hope",
-          slug: "idisi-hope",
-          username: "Idisi",
-        },
-        {
-          email: "ogbuinya.winifred@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Ogbuinya Winifred",
-          slug: "ogbuinya-winifred",
-          username: "Ogbuinya",
-        },
-        {
-          email: "enojo.grace@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Enojo Grace",
-          slug: "enojo-grace",
-          username: "Enojo",
-        },
-        {
-          email: "ebuka.ifeanyichukwu@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Ebuka Ifeanyichukwu",
-          slug: "ebuka-ifeanyichukwu",
-          username: "Ebuka",
-        },
-        {
-          email: "adeyemo.samuel@smcreport.com",
-          password: "@4SmcDesk",
-          name: "Adeyemo Samuel",
-          slug: "adeyemo-samuel",
-          username: "Adeyemo",
-        },
-      ],
       email: "",
       password: "",
       userslg: "",
@@ -247,7 +140,6 @@ export default {
         this.toast.info("Logging In...", {
           timeout: false,
           id: "login",
-          position: POSITION.BOTTOM_CENTER,
         });
         await this.$store
           .dispatch("userModule/login", {
@@ -274,13 +166,11 @@ export default {
         }, 4000);
       }
     },
-    // ksjdn jkkjdsb dkshshk dsjhjm ndbjbsjb
     async resetPasswordFn(email) {
       try {
         this.toast.info("Checking...", {
           timeout: false,
           id: "checking",
-          position: POSITION.BOTTOM_CENTER,
         });
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
@@ -291,7 +181,6 @@ export default {
                 this.toast.dismiss("checking");
                 this.toast.success("Check your email to reset your password", {
                   timeout: 2000,
-                  position: POSITION.BOTTOM_CENTER,
                 });
               }); // for some odd reason you need to append slash to the end of the url
             console.log(newPass);
@@ -304,12 +193,6 @@ export default {
           });
       } catch (error) {
         console.log(error);
-      }
-    },
-    async generateUsers() {
-      this.users.forEach(generate);
-      async function generate(e) {
-        await getAPI.patch(`/users/${e.slug}`, e);
       }
     },
   },
