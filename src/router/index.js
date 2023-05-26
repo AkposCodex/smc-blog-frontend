@@ -7,20 +7,10 @@ function guardMyroute(to, from, next) {
   var isAuthenticated = false;
   if (store.getters.isLoggedIn) isAuthenticated = true;
   else isAuthenticated = false;
-  if (isAuthenticated) {
+  if (isAuthenticated || to.name === "login") {
     next();
   } else {
-    router.push({ name: "admin" });
-  }
-}
-function openMyroute(to, from, next) {
-  var isAuthenticated = false;
-  if (store.getters.isLoggedIn) isAuthenticated = true;
-  else isAuthenticated = false;
-  if (isAuthenticated) {
-    router.push({ name: "adminProfile" });
-  } else {
-    next();
+    router.push({ name: "login" });
   }
 }
 
@@ -40,23 +30,73 @@ const router = createRouter({
       },
     },
     {
-      path: "/admin",
-      name: "admin",
+      path: "/login",
+      name: "login",
       component: () => import("../views/LoginView.vue"),
-      beforeEnter: openMyroute,
       meta: {
         title: "SMC Report | LOGIN",
       },
     },
     {
-      path: "/profile",
-      name: "adminProfile",
-      component: () => import("../views/AdminProfile.vue"),
-      props: true,
+      path: "/admin",
+      name: "admin",
+      component: () => import("../views/AdminView.vue"),
       beforeEnter: guardMyroute,
       meta: {
-        title: "SMC Report | Admin Profile",
+        title: "SMC Report | Admin",
       },
+      children: [
+        {
+          path: "",
+          alias: "profile",
+          name: "adminProfile",
+          component: () => import("../views/AdminProfile.vue"),
+          props: true,
+          meta: {
+            title: "SMC Report | Admin Profile",
+          },
+        },
+        {
+          path: "create-article",
+          name: "createPost",
+          component: () => import("../views/AdminCreatePost.vue"),
+          meta: {
+            title: "SMC Report | Create Post",
+          },
+        },
+        {
+          path: "create-video-article",
+          name: "createVideoPost",
+          component: () => import("../views/AdminCreateVideoPost.vue"),
+          meta: {
+            title: "SMC Report | Create Video Post",
+          },
+        },
+        {
+          path: "drafts",
+          name: "drafts",
+          component: () => import("../views/AdminDrafts.vue"),
+          meta: {
+            title: "SMC Report | Drafts",
+          },
+        },
+        {
+          path: "articles",
+          name: "articles",
+          component: () => import("../views/AdminArticles.vue"),
+          meta: {
+            title: "SMC Report | Articles",
+          },
+        },
+        {
+          path: "reviews",
+          name: "reviews",
+          component: () => import("../views/AdminReviews.vue"),
+          meta: {
+            title: "SMC Report | Reviews",
+          },
+        },
+      ],
     },
     {
       path: "/geo",

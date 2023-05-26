@@ -26,21 +26,6 @@ export default {
       loading: true,
       isMobile: false,
       isDark: isDark,
-      slides: [
-        { id: "1", title: "Vue 3 Introduction", content: "VueJS is a library" },
-        { id: "2", title: "Vue 3 Components", content: "Know the components" },
-        {
-          id: "3",
-          title: "Vue 3 Conditional",
-          content: "Rendering Conditionally",
-        },
-        { id: "4", title: "Vue 3 Reactivity", content: "VueJS is Reactive" },
-        {
-          id: "5",
-          title: "Vue 3 Compute",
-          content: "VueJS uses computed properties",
-        },
-      ],
       // breakpoints are mobile first
       // any settings not specified will fallback to the carousel settings
     };
@@ -220,7 +205,7 @@ export default {
           :wrap-around="true"
           :items-to-show="1"
           :autoplay="7000"
-          v-if="blogPosts.length > 0"
+          v-if="!loading && blogPosts.length > 0"
         >
           <!-- v-for="(slide, index) in blogPosts" :key="slide" -->
           <Slide v-for="(slide, index) in blogPosts" :key="index">
@@ -275,14 +260,14 @@ export default {
             <Pagination />
           </template>
         </Carousel>
-        <div class="" v-else>
+        <div class="" v-else-if="!loading && !(blogPosts.length > 0)">
           <div
             class="font-baseFamily text-center font-bold text-2xl mt-32 mb-32"
           >
             <h3>No New Posts</h3>
           </div>
         </div>
-        <div class="w-100% mx-auto">
+        <div class="w-100% mx-auto" v-else>
           <free-style-shimmer
             :is-loading="loading"
             height="400px"

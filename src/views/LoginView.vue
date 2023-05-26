@@ -101,13 +101,6 @@
     <div class="flex flex-col items-center justify-center w-full mt-28">
       <BaseIcon name="powered" class="text-black w-[150px]" />
     </div>
-
-    <!-- <button
-      @click="generateUsers"
-      class="bg-black dark:bg-white/10 md:w-3/5 w-full px-10 py-3 text-white border border-white dark:border-black"
-    >
-      GENERATE USERS
-    </button> -->
   </div>
 </template>
 
@@ -116,7 +109,7 @@
 <script>
 import { mapGetters } from "vuex";
 import ToastError from "../services/error.vue";
-import { useToast, POSITION } from "vue-toastification";
+import { useToast } from "vue-toastification";
 import BaseIcon from "../components/BaseIcon.vue";
 import BaseModal from "../components/BaseModal.vue";
 import AppLogo from "../components/AppLogo.vue";
@@ -154,7 +147,6 @@ export default {
         this.toast.info("Logging In...", {
           timeout: false,
           id: "login",
-          position: POSITION.BOTTOM_CENTER,
         });
         await this.$store
           .dispatch("userModule/login", {
@@ -196,7 +188,6 @@ export default {
         this.toast.info("Checking...", {
           timeout: false,
           id: "checking",
-          position: POSITION.BOTTOM_CENTER,
         });
         let newUser = await getAPI
           .get(`/users?email=${email.email.toLowerCase()}`)
@@ -207,7 +198,6 @@ export default {
                 this.toast.dismiss("checking");
                 this.toast.success("Check your email to reset your password", {
                   timeout: 2000,
-                  position: POSITION.BOTTOM_CENTER,
                 });
               }); // for some odd reason you need to append slash to the end of the url
             console.log(newPass);
