@@ -121,14 +121,7 @@
         class="w-full md:flex-row items-center flex flex-col gap-4 mb-6"
         id="buttons"
       >
-        <div class="w-full md:w-auto flex justify-center">
-          <button
-            class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
-            @click="savePost"
-          >
-            Add To Draft
-          </button>
-        </div>
+       
         <div class="w-full md:w-auto flex justify-center">
           <button
             type="submit"

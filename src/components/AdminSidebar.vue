@@ -69,14 +69,6 @@
         <BaseIcon name="articles" class="" />
         <p>Your articles</p>
       </RouterLink>
-      <RouterLink
-        to="/admin/drafts"
-        class="w-max flex hover:cursor-pointer gap-3 items-center"
-        exact-active-class="text-blue-600 decoration-4"
-      >
-        <BaseIcon name="Vector-1" class="" />
-        <p>Drafts</p>
-      </RouterLink>
       <button
         class="w-max flex hover:cursor-pointer gap-3 items-center"
         v-if="user.isSuper"

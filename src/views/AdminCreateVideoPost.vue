@@ -132,14 +132,6 @@
       >
         <div class="w-full md:w-auto flex justify-center">
           <button
-            class="bg-white text-black border border-black rounded-lg md:rounded-sm p-3 w-full mx-auto"
-            @click="savePost()"
-          >
-            Add To Draft
-          </button>
-        </div>
-        <div class="w-full md:w-auto flex justify-center">
-          <button
             class="bg-black dark:bg-white/60 text-white dark:text-black p-3 w-full rounded-lg md:rounded-sm mx-auto"
             @click="publishVideo()"
           >
