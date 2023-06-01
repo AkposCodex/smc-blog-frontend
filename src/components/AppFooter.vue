@@ -35,10 +35,10 @@
         <div class="flex items-center md:space-x-4 text-sm justify-center">
           <span>&copy;2023 SMC Report &nbsp;|</span>
           <div class="mx-3 flex justify-center items-center space-x-6">
-            <a href="https://twitter.com/smcdao"
+            <a href="https://twitter.com/smcreport"
               ><img src="@/assets/icons/twitter.png" alt="" width="12"
             /></a>
-            <a href="https://youtube.com/@smcdao"
+            <a href="https://youtube.com/@smcreport"
               ><img src="@/assets/icons/youtube.png" alt="" width="12"
             /></a>
             <a href="https://t.me/smcnewdesk"

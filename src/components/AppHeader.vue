@@ -223,10 +223,10 @@ export default {
           Subscribe to our Newsletter
         </a>
         <div class="flex justify-center space-x-6">
-          <a href="https://twitter.com/smcdao"
+          <a href="https://twitter.com/smcreport"
             ><img src="@/assets/icons/twitter.png" alt="" width="20"
           /></a>
-          <a href="https://youtube.com/@smcdao"
+          <a href="https://youtube.com/@smcreport"
             ><img src="@/assets/icons/youtube.png" alt="" width="20"
           /></a>
           <a href="https://t.me/smcnewdesk"
