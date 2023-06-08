@@ -89,6 +89,7 @@ export default {
                   const user = response.data[0];
                   dispatch("updateUser", user).then(async (e) => {
                     commit("LOGIN");
+                    console.log(user.groups)
                     commit("LOAD_ROLE", user.groups);
                   });
                   dispatch("loadPosts", user.slug);

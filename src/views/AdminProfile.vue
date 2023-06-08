@@ -78,7 +78,6 @@
               v-for="group in allGroups"
               :key="group.id"
               :value="group.id"
-              :selected="user.roles.includes(group.id)"
             >
               {{ group.name }}
             </option>
@@ -95,7 +94,7 @@
         </div>
 
         <button
-          @click="UpdateProfile"
+          @click="UpdateProfile(role)"
           class="bg-black dark:bg-white/60 w-11/12 mx-auto h-[3rem] text-white text-base dark:text-black rounded-[10px] md:w-fit md:mx-0 px-10 block"
         >
           Save
@@ -189,7 +188,8 @@ export default {
       allGroups: [],
       proFile: null,
       file: "",
-      role: "",
+      role: [],
+      allGroups: [],
     };
   },
   computed: mapGetters({
@@ -197,6 +197,39 @@ export default {
   }),
   components: { BaseIcon, BaseModal },
   methods: {
+    async setRole(e) {
+      await getAPI
+        .patch(`/users/${this.user.slug}`, { groups: [e] })
+        .then((e) => {
+          // this.getRoles();
+        });
+    },
+    async getRoles() {
+      let roleList = [];
+
+      console.log(this.user);
+      await getAPI.get(`/users/${this.user.slug}`).then(async (e) => {
+        roleList = e.data.groups;
+        roleList.forEach((e) => {
+          console.log("roleList: ", e);
+          switch (e) {
+            case 1:
+              this.role.push("Editor");
+              break;
+            case 2:
+              this.role.push("Writer");
+              break;
+            case 3:
+              this.role.push("Head of Content");
+              break;
+            case 4:
+              this.role.push("Team Lead");
+              break;
+          }
+        });
+        console.log("role:", this.role, "roleList:", roleList, "User:", e);
+      });
+    },
     changeProfileImage(e) {
       let file = e.target.files[0];
       this.file = file;
@@ -204,7 +237,8 @@ export default {
       this.proFile = imageSRC;
       console.log(this.file, this.proFile);
     },
-    async UpdateProfile() {
+    async UpdateProfile(e) {
+      let roleData = e;
       let data = new FormData();
       console.log(this.proFile === null && this.user.profileImage != null);
       if (this.proFile != null && this.file != "") {
@@ -219,14 +253,17 @@ export default {
         await getAPI
           .patch("/users/" + this.user.slug, data)
           .then((response) => {
-            this.toast.dismiss("login");
-            this.toast.success("Post Successful!", {
-              timeout: 2000,
-              id: "success",
+            console.log(roleData);
+            this.setRole(roleData).then((e) => {
+              this.toast.dismiss("login");
+              this.toast.success("Post Successful!", {
+                timeout: 2000,
+                id: "success",
+              });
+              this.success = true;
+              console.log(response);
+              this.mssg = "Updated";
             });
-            this.success = true;
-            console.log(response);
-            this.mssg = "Updated";
             // this.$router.go();
           })
           .catch((err) => {
@@ -246,15 +283,17 @@ export default {
         await getAPI
           .patch("/users/" + this.user.slug, data)
           .then((response) => {
-            this.toast.dismiss("login");
-            this.toast.success("Profile Updated!", {
-              timeout: 2000,
-              id: "success",
+            this.setRole(roleData).then((e) => {
+              this.toast.dismiss("login");
+              this.toast.success("Profile Updated!", {
+                timeout: 2000,
+                id: "success",
+              });
+              this.success = true;
+              console.log(response);
+              this.mssg = "Updated";
+              // this.$router.go();
             });
-            this.success = true;
-            console.log(response);
-            this.mssg = "Updated";
-            // this.$router.go();
           })
           .catch((err) => {
             this.$emit("hasError", true, err.response.status);
@@ -272,15 +311,17 @@ export default {
         await getAPI
           .patch("/users/" + this.user.slug, data)
           .then((response) => {
-            this.toast.dismiss("login");
-            this.toast.success("Profile Updated!", {
-              timeout: 2000,
-              id: "success",
+            this.setRole(roleData).then((e) => {
+              this.toast.dismiss("login");
+              this.toast.success("Profile Updated!", {
+                timeout: 2000,
+                id: "success",
+              });
+              this.success = true;
+              console.log(response);
+              this.mssg = "Updated";
+              // this.$router.go();
             });
-            this.success = true;
-            console.log(response);
-            this.mssg = "Updated";
-            // this.$router.go();
           })
           .catch((err) => {
             this.$emit("hasError", true, err.response.status);
@@ -312,6 +353,22 @@ export default {
   },
   created() {
     this.proFile = this.user.profileImage;
+    this.getRoles();
+    getAPI
+      .get(`/groups`, {
+        headers: {
+          Authorization: `Token ${this.user.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("allgroups:", res.data);
+        const groupMapping = res.data.map((group) => ({
+          id: +group.url.split("/").at(-1),
+          name: group.name,
+        }));
+        this.allGroups = groupMapping;
+        console.log(this.allGroups);
+      });
   },
 };
 </script>
