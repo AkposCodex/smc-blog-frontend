@@ -71,7 +71,6 @@
                 /> -->
           <select
             v-model="user.roles[0]"
-            :disabled="!user.isSuper"
             class="h-[2.5rem] disabled:opacity-40 bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border w-full border-b-black dark:border-b-white"
           >
             <option
