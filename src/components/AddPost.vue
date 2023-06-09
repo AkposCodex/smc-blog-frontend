@@ -2,9 +2,15 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import { getAPI } from "../axios";
+import { useToast, POSITION } from "vue-toastification";
+
 export default {
   components: {
     ckeditor: CKEditor.component,
+  },
+  setup() {
+    const toast = useToast();
+    return { toast, POSITION };
   },
   data() {
     return {
@@ -50,7 +56,10 @@ export default {
       data.append("author", this.$route.params.slug.toString());
       data.append("categories", this.categorySel.selected);
       data.append("slug", this.title.split(" ").join("").toLowerCase());
-
+      this.toast.info("Creating Post...", {
+        timeout: false,
+        id: "login",
+      });
       getAPI
         .post("/posts", {
           title: this.title,
@@ -63,6 +72,11 @@ export default {
           slug: this.title.split(" ").join("").toLowerCase(),
         })
         .then((response) => {
+          this.toast.dismiss("login");
+          this.toast.success("Post Created!", {
+            timeout: 2000,
+            id: "success",
+          });
           this.success = true;
           this.$router.go();
         })

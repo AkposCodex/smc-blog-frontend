@@ -69,8 +69,9 @@
                 class="h-[2.5rem] bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 w-full border-b border-b-black dark:border-b-white"
                 :readonly="!user.isSuper"
                 /> -->
+          {{ group[0] }}
           <select
-            v-model="user.roles[0]"
+            v-model="role"
             class="h-[2.5rem] disabled:opacity-40 bg-gray-100 p-1 focus:outline-none focus:border-b-green-300 border w-full border-b-black dark:border-b-white"
           >
             <option
@@ -188,6 +189,7 @@ export default {
       proFile: null,
       file: "",
       role: [],
+      group: [],
       allGroups: [],
     };
   },
@@ -211,18 +213,19 @@ export default {
         roleList = e.data.groups;
         roleList.forEach((e) => {
           console.log("roleList: ", e);
+          this.role.push(e);
           switch (e) {
             case 1:
-              this.role.push("Editor");
+              this.group.push("Editor");
               break;
             case 2:
-              this.role.push("Writer");
+              this.group.push("Writer");
               break;
             case 3:
-              this.role.push("Head of Content");
+              this.group.push("Head of Content");
               break;
             case 4:
-              this.role.push("Team Lead");
+              this.group.push("Team Lead");
               break;
           }
         });
@@ -239,7 +242,7 @@ export default {
     async UpdateProfile(e) {
       let roleData = e;
       let data = new FormData();
-      console.log(this.proFile === null && this.user.profileImage != null);
+      console.log(roleData);
       if (this.proFile != null && this.file != "") {
         data.append("email", this.user.email);
         data.append("username", this.user.username);
@@ -291,7 +294,7 @@ export default {
               this.success = true;
               console.log(response);
               this.mssg = "Updated";
-              // this.$router.go();
+              this.$router.go();
             });
           })
           .catch((err) => {
@@ -319,7 +322,7 @@ export default {
               this.success = true;
               console.log(response);
               this.mssg = "Updated";
-              // this.$router.go();
+              this.$router.go();
             });
           })
           .catch((err) => {
@@ -353,6 +356,7 @@ export default {
   created() {
     this.proFile = this.user.profileImage;
     this.getRoles();
+    console.log(this.role);
     getAPI
       .get(`/groups`, {
         headers: {
