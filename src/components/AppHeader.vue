@@ -120,6 +120,14 @@ export default {
           >
             equity report</RouterLink
           >
+          <RouterLink
+            to="/videos"
+            class="font-bold text-sm"
+            exact-active-class="text-[#366bff]"
+            active-class="text-[#366bff]"
+          >
+            Video Headlines
+          </RouterLink>
         </div>
         <RouterLink to="/">
           <AppLogo class="text-black dark:text-white" />
@@ -168,15 +176,22 @@ export default {
       <!-- TODO: Refactor mobile menu dropdown -->
       <div
         v-if="isMenuOpen"
-        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] h-[100vh] z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
+        class="flex absolute bg-white dark:bg-[#272626] mt-[4.5rem] overflow-scroll h-4/5 pt-6 z-50 items-center text-left flex-col space-y-10 w-full capitalize border-t border-black dark:border-white top-0"
       >
-        <div class="flex flex-col justify-center gap-10 h-1/2 mt-14">
+        <div class="flex flex-col justify-center gap-8 h-1/2 mt-14">
           <RouterLink
             to="/"
             class="font-bold"
             exact-active-class="text-[#366bff]"
           >
             home
+          </RouterLink>
+          <RouterLink
+            to="/videos"
+            class="font-bold"
+            exact-active-class="text-[#366bff]"
+          >
+            Videos
           </RouterLink>
           <RouterLink
             to="/bc"
@@ -214,7 +229,7 @@ export default {
             <p>Dark Mode</p>
           </button>
         </div>
-        <hr class="border w-full" />
+        <hr class="border w-full opacity-0" />
         <a
           href="#footer"
           class="block mx-auto p-3 text-xs font-semibold bg-black text-white"

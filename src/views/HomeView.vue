@@ -4,6 +4,7 @@ import PriceMarqueeWidget from "../components/PriceMarqueeWidget.vue";
 import BlogCardList from "../components/BlogCardList.vue";
 import { useDark, useToggle } from "@vueuse/core";
 import AppHeader from "../components/AppHeader.vue";
+import BaseModal from "../components/BaseModal.vue";
 import AppFooter from "../components/AppFooter.vue";
 import BlogCard from "../components/BlogCard.vue";
 import BaseButton from "../components/BaseButton.vue";
@@ -24,13 +25,34 @@ export default {
       fall: false,
       count: 1,
       loading: true,
+      openPage: true,
       isMobile: false,
       isDark: isDark,
+      email: "",
+      response: "",
+      success: null,
       // breakpoints are mobile first
       // any settings not specified will fallback to the carousel settings
     };
   },
   methods: {
+    submitForm() {
+      getAPI
+        .post("/subscribe", { email: this.email })
+        .then((response) => {
+          this.success = true;
+          this.response = "Subscribed";
+          this.email = "";
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            this.response = "Email already subscribed";
+          } else {
+            this.response = "Something went wrong";
+          }
+          this.success = false;
+        });
+    },
     slideTo(val) {
       this.currentSlide = val;
     },
@@ -175,6 +197,7 @@ export default {
     BlogCard,
     BaseButton,
     BaseIcon,
+    BaseModal,
     AppHeader,
     AppFooter,
     Carousel,
@@ -187,6 +210,35 @@ export default {
 
 <template>
   <AppHeader></AppHeader>
+  <BaseModal :show="openPage" @close="openPage = false">
+    <div class="md:w-full md:mx-0 p-5">
+      <h1 class="text-3xl font-bold capitalize">
+        Sign up for daily report in your inbox
+      </h1>
+      <div class="mt-4 my-6">
+        <p>Get daily analysis, new and updates right into your inbox!</p>
+        <p>Sign up here so you don't miss a single newsletter</p>
+      </div>
+      <form method="post" @submit.prevent="submitForm">
+        <input
+          class="border-b outline-none bg-transparent w-full p-3 text-xs"
+          type="text"
+          name="email"
+          v-model="email"
+          placeholder="Enter your email address"
+          required
+        />
+        <br />
+        <button
+          class="bg-white h-[50px] p-3 my-4 w-full text-black border-2 text-xs font-semibold"
+        >
+          Subscribe
+        </button>
+        <p v-if="success"></p>
+        <pre>{{ response }}</pre>
+      </form>
+    </div>
+  </BaseModal>
 
   <header class="pb-4 capitalize">
     <div class="h-max" id="stats">
