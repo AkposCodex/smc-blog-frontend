@@ -9,6 +9,7 @@ import AppFooter from "../components/AppFooter.vue";
 import BlogCard from "../components/BlogCard.vue";
 import BaseButton from "../components/BaseButton.vue";
 import BaseIcon from "../components/BaseIcon.vue";
+import { mapGetters } from "vuex";
 import { getAPI } from "../axios";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
@@ -36,6 +37,9 @@ export default {
     };
   },
   methods: {
+    setApp(){
+      this.$store.dispatch("appModule/markApp")
+    },
     submitForm() {
       getAPI
         .post("/subscribe", { email: this.email })
@@ -82,6 +86,9 @@ export default {
       }
     },
   },
+  computed: mapGetters({
+    app: "getApp",
+  }),
   async created() {
     this.fetchTypedPost("equity", 1);
     this.loading = true;
@@ -210,7 +217,7 @@ export default {
 
 <template>
   <AppHeader></AppHeader>
-  <BaseModal :show="openPage" @close="openPage = false">
+  <BaseModal :show="app" @close="setApp">
     <div class="md:w-full md:mx-0 p-5">
       <h1 class="text-3xl font-bold capitalize">
         Sign up for daily report in your inbox
