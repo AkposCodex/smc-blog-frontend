@@ -132,15 +132,14 @@ export default {
     async loadAdminPosts() {
       let result;
       await getAPI.get(`/post/review`).then(async (response) => {
-        result = response.data.results;
-        console.log(result);
-        let count = response.data.count;
+        let result = response.data.results;
+        let count = result.length;
         while (count > 0) {
           await getAPI
             .get(`/posts/${result[count - 1].post}`)
             .then((r) => {
               let res = r.data;
-              let pos = count;
+              let pos = length;
               // this.reviewPosts.push(res);
               this.reviewPosts.push({
                 id: result[0].id,

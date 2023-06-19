@@ -95,7 +95,7 @@ export default {
     await getAPI
       .get("/post/review?state=Approved")
       .then((response) => {
-        console.log(response.data.results.length);
+        console.log(response);
         if (response.data.results.length === 0) this.loading = false;
         response.data.results.forEach(async (e) => {
           console.log(e);
@@ -106,7 +106,7 @@ export default {
             if (repo.author === "sir-mapy") {
               await getAPI.get(`/users/${repo.author}`).then((response) => {
                 // console.log(email, response.data[0].name);
-                this.blogPosts.push({
+                this.blogPosts.unshift({
                   title: repo.title,
                   slug: repo.slug,
                   picked: repo.picked,
@@ -124,7 +124,7 @@ export default {
               await getAPI.get(`/users/${repo.author}`).then((response) => {
                 // console.log(email, response.data[0].name);
                 console.log(response);
-                this.blogPosts.push({
+                this.blogPosts.unshift({
                   title: repo.title,
                   slug: repo.slug,
                   picked: repo.picked,
